@@ -1,19 +1,29 @@
 import GameContext from "./GameContext";
 import Time from "./Time";
+import Scene from "./Scene/Scene";
+import MainMenu from "./Scene/MainMenu";
+import Playing from "./Scene/Playing";
 
 
 class Engine {
-  private isPaused = false;
-
-
+  private currentScene: Scene = null;
   // Iniciar el motor del juego.
   public start = () => {
     this.init();
     requestAnimationFrame(this.tick);
   };
 
-  public eventListener = (event: KeyboardEvent) => {
+  public keydownEventHandler = (event: KeyboardEvent) => {
+    this.currentScene.handleKeyDown(event, this);
+  };
 
+  public keyupEventHandler = (event: KeyboardEvent) => {
+    this.currentScene.handleKeyUp(event);
+  };
+
+  public changeScene = (scene: Scene) => {
+    this.currentScene = scene;
+    this.currentScene.enter();
   };
 
   // Limpiar pantalla y dibujar fondo.
@@ -25,28 +35,24 @@ class Engine {
 
     context.save();
     context.beginPath();
-    context.fillStyle = "black";
+    context.fillStyle = "white";
     context.fillRect(0, 0, width, height);
-
-    // Todo
 
     context.closePath();
     context.restore();
   };
 
   public init = () => {
-    const width = GameContext.context.canvas.width;
-
-    // Todo.
-
+    this.currentScene = new Playing();
+    this.currentScene.enter();
   };
 
   // Método que se ejecuta en cada frame del juego.
   public tick = () => {
     this.clearScreen();
     Time.update();
-
-
+    this.currentScene.update();
+    this.currentScene.render();
     requestAnimationFrame(this.tick);
   };
 }

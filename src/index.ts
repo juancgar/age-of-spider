@@ -10,5 +10,5 @@ GameContext.context = context;
 
 const engine = new Engine();
 engine.start();
-canvas.addEventListener("keydown", engine.eventListener);
-canvas.addEventListener("keyup", engine.eventListener);
+canvas.addEventListener("keydown", engine.keydownEventHandler);
+canvas.addEventListener("keyup", engine.keyupEventHandler);
