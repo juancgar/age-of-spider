@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Desarrollo de videojuegos</title>
+  <style>
+    body {
+      margin: 0;
+    }
+
+    .flex {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 99vh;
+    }
+
+    .small-shadow {
+      box-shadow: 0 2px 6px 0 hsla(0, 0%, 0%, 0.2);
+    }
+  </style>
+</head>
+
+<body>
+  <main class="flex">
+    <canvas id="game-area" width="500" tabindex="0" height="300" class="small-shadow"></canvas>
+    <div id="square"></div><style> #square {width:20px; height:300px; background:whitesmoke; position: absolute;} </style>
+    <div id="circle"></div><style> #circle {width:100px; height:100px; background:white; -moz-border-radius:20px; -webkit-border-radius:20px; border-radius:50px;position: absolute;} </style>
+    <div id="circle2"></div><style> #circle2 {width:70px; height:70px; background:black; -moz-border-radius:50px; -webkit-border-radius:50px; border-radius:50px;position: absolute;} </style>
+
+  </main>
+  <script src="./src/index.ts"></script>
+</body>
+
+</html>
