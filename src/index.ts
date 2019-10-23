@@ -12,3 +12,7 @@ const engine = new Engine();
 engine.start();
 canvas.addEventListener("keydown", engine.keydownEventHandler);
 canvas.addEventListener("keyup", engine.keyupEventHandler);
+
+canvas.addEventListener("mousedown", engine.mouseDownListener);
+canvas.addEventListener("mouseenter", engine.mouseEnterListener);
+canvas.addEventListener("mousemove", engine.mouseEnterListener);

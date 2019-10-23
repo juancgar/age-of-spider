@@ -1,51 +1,52 @@
 import Scene from "./Scene";
-import Character from "../Character";
+
 import Engine from "../Engine";
 import MainMenu from "./MainMenu";
 import Camera from "../Camera";
 import background from "../background";
 
 class Playing extends Scene {
-  private character: Character = null;
+
   private camera: Camera = null;
   private background: background = null;
 
   public handleKeyDown = (event: KeyboardEvent, engine: Engine) => {
-    this.character.keydownHandler(event.key);
-    switch (event.key) {
-      case "Escape":
-        engine.changeScene(new MainMenu());
-        break;
-    }
+    this.camera.handleKeyDown(event);
   };
   public handleKeyUp = (event: KeyboardEvent) => {
-    this.character.keyupHandler(event.key);
+    this.camera.handleKeyUp(event);
+  };
+  public mouseDownListener = (event: MouseEvent) => {
+    this.camera.mouseDownListener(event);
+  };
+  public mouseEnterListener = (event: MouseEvent) => {
+    this.camera.mouseEnterListener(event);
+  };
+  public mouseMoveListener = (event: MouseEvent) => {
+    this.camera.mouseMoveListener(event);
   };
 
   public getCamera = () => {
     return this.camera;
   };
 
-  public getCharacter = () => {
-    return this.character;
-  };
-
+ 
   enter = () => {
-    this.character = new Character();
+   
     this.camera = new Camera();
     this.background = new background();
     
   };
 
   public update = () => {
-    this.character.update();
-    this.camera.update(this.character);
+   
+    this.camera.update();
   };
 
   public render = () => {
     this.camera.render();
     this.background.render();
-    this.character.render();
+
   };
 }
 

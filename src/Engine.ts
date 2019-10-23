@@ -20,6 +20,16 @@ class Engine {
   public keyupEventHandler = (event: KeyboardEvent) => {
     this.currentScene.handleKeyUp(event);
   };
+  public mouseDownListener = (event: MouseEvent) => {
+    this.currentScene.mouseDownListener(event);
+  };
+  public mouseEnterListener = (event: MouseEvent) => {
+    this.currentScene.mouseEnterListener(event);
+  };
+  public mouseMoveListener = (event: MouseEvent)=>{
+    this.currentScene.mouseMoveListener(event);
+
+  };
 
   public changeScene = (scene: Scene) => {
     this.currentScene = scene;

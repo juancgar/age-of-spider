@@ -29,6 +29,10 @@ class MainMenu extends Scene {
   };
 
   public handleKeyUp = (event: KeyboardEvent) => {};
+
+  public mouseDownListener = (event: MouseEvent)=>{};
+  public mouseEnterListener = (event: MouseEvent)=>{};
+  public mouseMoveListener = (event: MouseEvent)=>{};
   public enter = () => {};
 
   public render = () => {

@@ -5,7 +5,7 @@ import image2 from "../assets/2.png";
 import image3 from "../assets/3.png";
 import image4 from "../assets/4.png";
 import image5 from "../assets/5.png";
-import image6 from "../assets/6.png";
+
 
 class background
 {
@@ -24,8 +24,7 @@ constructor(){
    this.image[3].src = image4;
    this.image[4] = new Image();
    this.image[4].src = image5;
-   this.image[5] = new Image();
-   this.image[5].src = image6;
+
 
 
 }
@@ -45,7 +44,7 @@ public render()
 
 
     
-    for(let i = 0; i < 6; i++)
+    for(let i = 0; i < 5; i++)
     {
     Context.beginPath();
   

@@ -175,260 +175,19 @@ function () {
     this.handleKeyDown = function (event, engine) {};
 
     this.handleKeyUp = function (event) {};
+
+    this.mouseDownListener = function (event) {};
+
+    this.mouseEnterListener = function (event) {};
+
+    this.mouseMoveListener = function (event) {};
   }
 
   return Scene;
 }();
 
 exports["default"] = Scene;
-},{}],"assets/spritesheet.png":[function(require,module,exports) {
-module.exports = "/spritesheet.713aba4a.png";
-},{}],"src/Character.ts":[function(require,module,exports) {
-"use strict";
-
-var __importDefault = this && this.__importDefault || function (mod) {
-  return mod && mod.__esModule ? mod : {
-    "default": mod
-  };
-};
-
-exports.__esModule = true;
-
-var GameContext_1 = __importDefault(require("./GameContext"));
-
-var Time_1 = __importDefault(require("./Time")); // @ts-ignore
-
-
-var spritesheet_png_1 = __importDefault(require("/assets/spritesheet.png"));
-
-var CharacterDirection;
-
-(function (CharacterDirection) {
-  CharacterDirection[CharacterDirection["Left"] = -1] = "Left";
-  CharacterDirection[CharacterDirection["None"] = 0] = "None";
-  CharacterDirection[CharacterDirection["Right"] = 1] = "Right";
-})(CharacterDirection = exports.CharacterDirection || (exports.CharacterDirection = {}));
-
-var Character =
-/** @class */
-function () {
-  function Character() {
-    var _this = this;
-
-    this.position = [0, 0];
-    this.characterWidth = 80;
-    this.characterHeight = 100;
-    this.speed = 200;
-    this.direction = CharacterDirection.None;
-    this.characterImage = new Image();
-    this.currentCharacterFrame = 0;
-    this.frameCounter = 0;
-    this.lastPressedDirection = null;
-
-    this.keydownHandler = function (key) {
-      switch (key) {
-        case "ArrowRight":
-          _this.direction = CharacterDirection.Right;
-          _this.lastPressedDirection = _this.direction;
-          break;
-
-        case "ArrowLeft":
-          _this.direction = CharacterDirection.Left;
-          _this.lastPressedDirection = _this.direction;
-          break;
-      }
-    };
-
-    this.keyupHandler = function (key) {
-      if (key === "ArrowRight" && _this.direction === 1 || key === "ArrowLeft" && _this.direction === -1) {
-        _this.direction = CharacterDirection.None;
-      }
-    };
-
-    this.update = function () {
-      var context = GameContext_1["default"].context;
-      var width = context.canvas.width;
-      var _a = _this.position,
-          xPos = _a[0],
-          yPos = _a[1];
-      xPos = xPos + _this.speed * _this.direction * Time_1["default"].deltaTime;
-      _this.position = [xPos, yPos];
-      _this.frameCounter += 1;
-
-      if (_this.frameCounter % 2 === 0 && _this.direction !== CharacterDirection.None) {
-        _this.currentCharacterFrame = (_this.currentCharacterFrame + 1) % 15;
-      }
-    };
-
-    this.render = function () {
-      var context = GameContext_1["default"].context;
-      var _a = _this.position,
-          xPos = _a[0],
-          yPos = _a[1];
-      var offsetX = 108.8;
-      var sy = 0;
-      var sWidth = 55;
-      var sHeight = 92;
-      context.save();
-
-      if (_this.lastPressedDirection === CharacterDirection.Left) {
-        context.scale(-1, 1);
-        xPos = -xPos - _this.characterWidth;
-      }
-
-      context.translate(xPos, yPos);
-      context.beginPath();
-      context.fillStyle = "lime";
-      context.drawImage(_this.characterImage, _this.currentCharacterFrame * offsetX, sy, sWidth, sHeight, 0, 0, _this.characterWidth, _this.characterHeight);
-      context.closePath();
-      context.restore();
-    };
-
-    var context = GameContext_1["default"].context;
-    var _a = context.canvas,
-        width = _a.width,
-        height = _a.height;
-    this.characterImage.src = spritesheet_png_1["default"];
-    this.position = [(width - this.characterWidth) / 2, height * 0.9 - this.characterHeight];
-  }
-
-  Character.prototype.getPosition = function () {
-    return this.position;
-  };
-
-  Character.prototype.getWidth = function () {
-    return this.characterWidth;
-  };
-
-  return Character;
-}();
-
-exports["default"] = Character;
-},{"./GameContext":"src/GameContext.ts","./Time":"src/Time.ts","/assets/spritesheet.png":"assets/spritesheet.png"}],"src/Scene/MainMenu.ts":[function(require,module,exports) {
-"use strict";
-
-var __extends = this && this.__extends || function () {
-  var _extendStatics = function extendStatics(d, b) {
-    _extendStatics = Object.setPrototypeOf || {
-      __proto__: []
-    } instanceof Array && function (d, b) {
-      d.__proto__ = b;
-    } || function (d, b) {
-      for (var p in b) {
-        if (b.hasOwnProperty(p)) d[p] = b[p];
-      }
-    };
-
-    return _extendStatics(d, b);
-  };
-
-  return function (d, b) {
-    _extendStatics(d, b);
-
-    function __() {
-      this.constructor = d;
-    }
-
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-  };
-}();
-
-var __importDefault = this && this.__importDefault || function (mod) {
-  return mod && mod.__esModule ? mod : {
-    "default": mod
-  };
-};
-
-exports.__esModule = true;
-
-var Scene_1 = __importDefault(require("./Scene"));
-
-var GameContext_1 = __importDefault(require("../GameContext"));
-
-var Playing_1 = __importDefault(require("./Playing"));
-
-var MainMenu =
-/** @class */
-function (_super) {
-  __extends(MainMenu, _super);
-
-  function MainMenu() {
-    var _this = _super !== null && _super.apply(this, arguments) || this;
-
-    _this.options = ["Jugar", "Salir"];
-    _this.selectedOptionIndex = 0;
-    _this.backgroundColorHue = 0;
-    _this.skipUpdate = false;
-
-    _this.handleKeyDown = function (event, engine) {
-      switch (event.key) {
-        case "ArrowUp":
-          _this.selectedOptionIndex = (_this.selectedOptionIndex - 1 + _this.options.length) % _this.options.length;
-          break;
-
-        case "ArrowDown":
-          _this.selectedOptionIndex = (_this.selectedOptionIndex + 1) % _this.options.length;
-          break;
-
-        case "Enter":
-          if (_this.selectedOptionIndex === 0) {
-            engine.changeScene(new Playing_1["default"]());
-          }
-
-          break;
-      }
-    };
-
-    _this.handleKeyUp = function (event) {};
-
-    _this.enter = function () {};
-
-    _this.render = function () {
-      var context = GameContext_1["default"].context;
-      var _a = context.canvas,
-          width = _a.width,
-          height = _a.height;
-      context.save();
-      context.beginPath();
-
-      if (!_this.skipUpdate) {
-        _this.backgroundColorHue = (_this.backgroundColorHue + 1) % 360;
-      }
-
-      _this.skipUpdate = !_this.skipUpdate;
-      context.fillStyle = "hsl(" + _this.backgroundColorHue + ", 100%, 80%)";
-      context.fillRect(0, 0, width, height);
-      context.closePath();
-      context.beginPath();
-      context.fillStyle = "black";
-      context.strokeStyle = "darkblue";
-      context.font = "30px sans-serif";
-      context.textAlign = "center";
-
-      for (var i = 0; i < _this.options.length; i++) {
-        var xPoint = width / 2;
-        var yPoint = height * 0.65 + i * 35;
-
-        if (_this.selectedOptionIndex === i) {
-          context.lineWidth = 2;
-          context.strokeText(_this.options[i], xPoint, yPoint);
-        }
-
-        context.fillText(_this.options[i], xPoint, yPoint);
-      }
-
-      context.closePath();
-      context.restore();
-    };
-
-    return _this;
-  }
-
-  return MainMenu;
-}(Scene_1["default"]);
-
-exports["default"] = MainMenu;
-},{"./Scene":"src/Scene/Scene.ts","../GameContext":"src/GameContext.ts","./Playing":"src/Scene/Playing.ts"}],"src/Camera.ts":[function(require,module,exports) {
+},{}],"src/Camera.ts":[function(require,module,exports) {
 "use strict";
 
 var __importDefault = this && this.__importDefault || function (mod) {
@@ -447,42 +206,44 @@ function () {
   function Camera() {
     var _this = this;
 
-    this.position = [0, 0];
-    this.width = 400;
-    this.padding = 50;
+    this.position = 0;
+    this.realtPos = 0;
+    this.width = 1200;
+    this.dir = 0;
+    this.padding = 7;
 
-    this.getLeft = function () {
-      return _this.position[0];
+    this.handleKeyDown = function (event) {};
+
+    this.handleKeyUp = function (event) {};
+
+    this.mouseDownListener = function (event) {};
+
+    this.mouseEnterListener = function (event) {
+      _this.position = event.offsetX;
     };
+
+    this.mouseMoveListener = function (event) {};
   }
 
-  Camera.prototype.update = function (character) {
-    var _a;
+  Camera.prototype.update = function () {
+    if (this.position >= 1000 && this.realtPos > -2400) {
+      this.dir = -1;
+      this.realtPos -= this.padding;
+    } else if (this.position <= 200 && this.realtPos < 2400) {
+      this.dir = 1;
+      this.realtPos += this.padding;
+    } else {}
 
-    var charx = character.getPosition()[0];
-    var _b = this.position,
-        camx = _b[0],
-        camy = _b[1];
-    var characterWidth = character.getWidth();
-
-    if (charx < camx + this.padding) {
-      this.position = [charx - this.padding, camy];
-    }
-
-    if (charx + characterWidth > camx + this.width - this.padding) {
-      this.position = [charx + characterWidth - this.width + this.padding, camy];
-    }
-
-    _a = this.position, camx = _a[0], camy = _a[1];
-    this.position = [camx, camy];
+    console.log(this.realtPos);
   };
 
   Camera.prototype.render = function () {
     var context = GameContext_1["default"].context;
-    var camaraX = this.position[0];
+    var camaraX = this.position;
+    console.log(this.dir);
     context.restore();
     context.save();
-    context.translate(-camaraX, 0);
+    if (this.dir != 0) context.translate(this.realtPos + this.dir * this.padding, 0);
   };
 
   return Camera;
@@ -499,8 +260,6 @@ module.exports = "/3.8e3e98a2.png";
 module.exports = "/4.aec15ad6.png";
 },{}],"assets/5.png":[function(require,module,exports) {
 module.exports = "/5.a57f67a3.png";
-},{}],"assets/6.png":[function(require,module,exports) {
-module.exports = "/6.fdb86936.png";
 },{}],"src/background.ts":[function(require,module,exports) {
 "use strict";
 
@@ -524,8 +283,6 @@ var _4_png_1 = __importDefault(require("../assets/4.png"));
 
 var _5_png_1 = __importDefault(require("../assets/5.png"));
 
-var _6_png_1 = __importDefault(require("../assets/6.png"));
-
 var background =
 /** @class */
 function () {
@@ -541,8 +298,6 @@ function () {
     this.image[3].src = _4_png_1["default"];
     this.image[4] = new Image();
     this.image[4].src = _5_png_1["default"];
-    this.image[5] = new Image();
-    this.image[5].src = _6_png_1["default"];
   }
 
   background.prototype.render = function () {
@@ -551,7 +306,7 @@ function () {
     var width = Canvas.width;
     var Context = GameContext_1["default"].context;
 
-    for (var i = 0; i < 6; i++) {
+    for (var i = 0; i < 5; i++) {
       Context.beginPath();
       var Iheight = this.image[i].naturalHeight;
       var Iwidth = this.image[i].naturalWidth;
@@ -567,7 +322,7 @@ function () {
 
 ;
 exports["default"] = background;
-},{"./GameContext":"src/GameContext.ts","../assets/1.png":"assets/1.png","../assets/2.png":"assets/2.png","../assets/3.png":"assets/3.png","../assets/4.png":"assets/4.png","../assets/5.png":"assets/5.png","../assets/6.png":"assets/6.png"}],"src/Scene/Playing.ts":[function(require,module,exports) {
+},{"./GameContext":"src/GameContext.ts","../assets/1.png":"assets/1.png","../assets/2.png":"assets/2.png","../assets/3.png":"assets/3.png","../assets/4.png":"assets/4.png","../assets/5.png":"assets/5.png"}],"src/Scene/Playing.ts":[function(require,module,exports) {
 "use strict";
 
 var __extends = this && this.__extends || function () {
@@ -606,10 +361,6 @@ exports.__esModule = true;
 
 var Scene_1 = __importDefault(require("./Scene"));
 
-var Character_1 = __importDefault(require("../Character"));
-
-var MainMenu_1 = __importDefault(require("./MainMenu"));
-
 var Camera_1 = __importDefault(require("../Camera"));
 
 var background_1 = __importDefault(require("../background"));
@@ -622,50 +373,46 @@ function (_super) {
   function Playing() {
     var _this = _super !== null && _super.apply(this, arguments) || this;
 
-    _this.character = null;
     _this.camera = null;
     _this.background = null;
 
     _this.handleKeyDown = function (event, engine) {
-      _this.character.keydownHandler(event.key);
-
-      switch (event.key) {
-        case "Escape":
-          engine.changeScene(new MainMenu_1["default"]());
-          break;
-      }
+      _this.camera.handleKeyDown(event);
     };
 
     _this.handleKeyUp = function (event) {
-      _this.character.keyupHandler(event.key);
+      _this.camera.handleKeyUp(event);
+    };
+
+    _this.mouseDownListener = function (event) {
+      _this.camera.mouseDownListener(event);
+    };
+
+    _this.mouseEnterListener = function (event) {
+      _this.camera.mouseEnterListener(event);
+    };
+
+    _this.mouseMoveListener = function (event) {
+      _this.camera.mouseMoveListener(event);
     };
 
     _this.getCamera = function () {
       return _this.camera;
     };
 
-    _this.getCharacter = function () {
-      return _this.character;
-    };
-
     _this.enter = function () {
-      _this.character = new Character_1["default"]();
       _this.camera = new Camera_1["default"]();
       _this.background = new background_1["default"]();
     };
 
     _this.update = function () {
-      _this.character.update();
-
-      _this.camera.update(_this.character);
+      _this.camera.update();
     };
 
     _this.render = function () {
       _this.camera.render();
 
       _this.background.render();
-
-      _this.character.render();
     };
 
     return _this;
@@ -675,7 +422,7 @@ function (_super) {
 }(Scene_1["default"]);
 
 exports["default"] = Playing;
-},{"./Scene":"src/Scene/Scene.ts","../Character":"src/Character.ts","./MainMenu":"src/Scene/MainMenu.ts","../Camera":"src/Camera.ts","../background":"src/background.ts"}],"src/Engine.ts":[function(require,module,exports) {
+},{"./Scene":"src/Scene/Scene.ts","../Camera":"src/Camera.ts","../background":"src/background.ts"}],"src/Engine.ts":[function(require,module,exports) {
 "use strict";
 
 var __importDefault = this && this.__importDefault || function (mod) {
@@ -712,6 +459,18 @@ function () {
 
     this.keyupEventHandler = function (event) {
       _this.currentScene.handleKeyUp(event);
+    };
+
+    this.mouseDownListener = function (event) {
+      _this.currentScene.mouseDownListener(event);
+    };
+
+    this.mouseEnterListener = function (event) {
+      _this.currentScene.mouseEnterListener(event);
+    };
+
+    this.mouseMoveListener = function (event) {
+      _this.currentScene.mouseMoveListener(event);
     };
 
     this.changeScene = function (scene) {
@@ -781,6 +540,9 @@ var engine = new Engine_1["default"]();
 engine.start();
 canvas.addEventListener("keydown", engine.keydownEventHandler);
 canvas.addEventListener("keyup", engine.keyupEventHandler);
+canvas.addEventListener("mousedown", engine.mouseDownListener);
+canvas.addEventListener("mouseenter", engine.mouseEnterListener);
+canvas.addEventListener("mousemove", engine.mouseEnterListener);
 },{"./Engine":"src/Engine.ts","./GameContext":"src/GameContext.ts"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -809,7 +571,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51563" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57685" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

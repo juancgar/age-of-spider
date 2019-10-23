@@ -1,41 +1,54 @@
-import Character from "./Character";
 import GameContext from "./GameContext";
 
 class Camera {
-  private position = [0, 0];
-  private width = 400;
-  private readonly padding = 50;
+  private position = 0;
+  private realtPos = 0;
+  private width = 1200;
+  private dir = 0;
+  private readonly padding = 7;
 
-  public getLeft = () => {
-    return this.position[0];
+  public handleKeyDown = (event: KeyboardEvent) => {
+    
   };
-
-  update(character: Character) {
-    const [charx] = character.getPosition();
-    let [camx, camy] = this.position;
-    const characterWidth = character.getWidth();
-
-    if (charx < camx + this.padding) {
-      this.position = [charx - this.padding, camy];
+  public handleKeyUp = (event: KeyboardEvent) => {
+    
+  };
+  public mouseDownListener = (event: MouseEvent) => {
+    
+  };
+  public mouseEnterListener = (event: MouseEvent) => {
+    this.position = event.offsetX;
+    
+  };
+  public mouseMoveListener = (event: MouseEvent) => {
+    
+  };
+  update() {
+    if(this.position >= 1000 && this.realtPos > -2400)
+    {
+      this.dir = -1;
+      this.realtPos -= this.padding; 
+      
     }
-    if (charx + characterWidth > camx + this.width - this.padding) {
-      this.position = [
-        charx + characterWidth - this.width + this.padding,
-        camy,
-      ];
-    }
-    [camx, camy] = this.position;
+    else if(this.position <= 200 && this.realtPos < 2400 )
+    {
+      this.dir = 1;
+      this.realtPos += this.padding; 
+    }else
+    {
 
-    this.position = [camx, camy];
+    }
+    console.log(this.realtPos);
   }
 
   render() {
     const { context } = GameContext;
-    const [camaraX] = this.position;
-
+    const camaraX = this.position;
+    console.log(this.dir);
     context.restore();
     context.save();
-    context.translate(-camaraX, 0);
+    if(this.dir != 0)
+      context.translate( this.realtPos + this.dir*this.padding,0);
   }
 }
 
