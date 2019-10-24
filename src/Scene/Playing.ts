@@ -20,6 +20,7 @@ class Playing extends Scene {
   };
   public mouseDownListener = (event: MouseEvent) => {
     this.camera.mouseDownListener(event);
+    this.HUD.mouseDownListener(event);
   };
   public mouseEnterListener = (event: MouseEvent) => {
     this.camera.mouseEnterListener(event);

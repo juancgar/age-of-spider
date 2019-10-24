@@ -339,8 +339,66 @@ var HUD =
 /** @class */
 function () {
   function HUD() {
+    var _this = this;
+
     this.HUD = new Image();
     this.positionX = -50;
+    this.color = "#A4A5A3"; ///alphas for each button
+
+    this.a1 = 0;
+    this.a2 = 0;
+    this.a3 = 0;
+    this.a4 = 0;
+    this.stateBoton1 = false;
+    this.stateBoton2 = false;
+    this.stateBoton3 = false;
+    this.stateBoton4 = false;
+    this.backColor = "green";
+
+    this.mouseDownListener = function (event) {
+      console.log(event.offsetX);
+
+      if (event.offsetX > _this.positionX + 214 && event.offsetX < _this.positionX + 214 + 100 && event.offsetY > 230 && event.offsetY < 326) {
+        if (_this.stateBoton1) {
+          _this.a1 = .6;
+          _this.stateBoton1 = false;
+        } else {
+          _this.a1 = 0;
+          _this.stateBoton1 = true;
+        }
+      }
+
+      if (event.offsetX > _this.positionX + 214 + 93 * 2 && event.offsetX < _this.positionX + 214 + 100 + 93 * 2 && event.offsetY > 230 && event.offsetY < 326) {
+        if (_this.stateBoton2) {
+          _this.a2 = .6;
+          _this.stateBoton2 = false;
+        } else {
+          _this.a2 = 0;
+          _this.stateBoton2 = true;
+        }
+      }
+
+      if (event.offsetX > _this.positionX + 214 + 93 * 4 && event.offsetX < _this.positionX + 214 + 100 + 93 * 4 && event.offsetY > 230 && event.offsetY < 326) {
+        if (_this.stateBoton3) {
+          _this.a3 = .6;
+          _this.stateBoton3 = false;
+        } else {
+          _this.a3 = 0;
+          _this.stateBoton3 = true;
+        }
+      }
+
+      if (event.offsetX > _this.positionX + 214 + 93 * 6 && event.offsetX < _this.positionX + 214 + 100 + 93 * 6 && event.offsetY > 230 && event.offsetY < 326) {
+        if (_this.stateBoton4) {
+          _this.a4 = .6;
+          _this.stateBoton4 = false;
+        } else {
+          _this.a4 = 0;
+          _this.stateBoton4 = true;
+        }
+      }
+    };
+
     this.HUD.src = HUD_png_1["default"];
   }
 
@@ -350,25 +408,51 @@ function () {
     Context.restore();
     Context.save();
     Context.drawImage(this.HUD, this.positionX, -Context.canvas.height / 3, Context.canvas.width / 2, Context.canvas.width / 2);
-    Context.closePath();
+    Context.closePath(); // background rectanlges
+
     Context.beginPath();
     Context.rect(this.positionX + 214, 230, 100, 96);
-    Context.fillStyle = "black";
+    Context.fillStyle = this.backColor;
     Context.fill();
     Context.closePath();
     Context.beginPath();
     Context.rect(this.positionX + 214 + 93 * 2, 230, 100, 96);
-    Context.fillStyle = "black";
+    Context.fillStyle = this.backColor;
     Context.fill();
     Context.closePath();
     Context.beginPath();
     Context.rect(this.positionX + 214 + 93 * 4, 230, 100, 96);
-    Context.fillStyle = "black";
+    Context.fillStyle = this.backColor;
     Context.fill();
     Context.closePath();
     Context.beginPath();
     Context.rect(this.positionX + 214 + 93 * 6, 230, 100, 96);
-    Context.fillStyle = "black";
+    Context.fillStyle = this.backColor;
+    Context.fill();
+    Context.closePath(); //cooldown meshes
+
+    Context.beginPath();
+    Context.rect(this.positionX + 214, 230, 100, 96);
+    Context.fillStyle = this.color;
+    Context.globalAlpha = this.a1;
+    Context.fill();
+    Context.closePath();
+    Context.beginPath();
+    Context.rect(this.positionX + 214 + 93 * 2, 230, 100, 96);
+    Context.fillStyle = this.color;
+    Context.globalAlpha = this.a2;
+    Context.fill();
+    Context.closePath();
+    Context.beginPath();
+    Context.rect(this.positionX + 214 + 93 * 4, 230, 100, 96);
+    Context.fillStyle = this.color;
+    Context.globalAlpha = this.a3;
+    Context.fill();
+    Context.closePath();
+    Context.beginPath();
+    Context.rect(this.positionX + 214 + 93 * 6, 230, 100, 96);
+    Context.fillStyle = this.color;
+    Context.globalAlpha = this.a4;
     Context.fill();
     Context.closePath();
   };
@@ -377,7 +461,6 @@ function () {
     var Canvas = GameContext_1["default"].context.canvas;
     var Context = GameContext_1["default"].context;
     this.positionX = Canvas.scrollLeft;
-    console.log(this.positionX);
   };
 
   return HUD;
@@ -452,6 +535,8 @@ function (_super) {
 
     _this.mouseDownListener = function (event) {
       _this.camera.mouseDownListener(event);
+
+      _this.HUD.mouseDownListener(event);
     };
 
     _this.mouseEnterListener = function (event) {

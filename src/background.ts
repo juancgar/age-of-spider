@@ -55,7 +55,7 @@ public render()
      Context.drawImage(this.image[2],0,100,finalW,finalH);
      Context.drawImage(this.image[2],1240,100,finalW,finalH);
      Context.drawImage(this.image[2],-1240,100,finalW,finalH);
-
+      
      
      Context.drawImage(this.image[1],0,0,finalW,finalH);
      Context.drawImage(this.image[1],1240,0,finalW,finalH);
