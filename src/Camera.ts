@@ -4,6 +4,7 @@ class Camera {
   private position = 0;
   private realtPos = 0;
   private width = 1200;
+  private inside = false;
   private dir = 0;
   private readonly padding = 7;
 
@@ -24,13 +25,13 @@ class Camera {
     
   };
   update() {
-    if(this.position >= 1000 && this.realtPos > -2400)
+    if(this.position >= 1000 && this.realtPos > -1200)
     {
       this.dir = -1;
       this.realtPos -= this.padding; 
       
     }
-    else if(this.position <= 200 && this.realtPos < 2400 )
+    else if(this.position <= 200 && this.realtPos < 1200 )
     {
       this.dir = 1;
       this.realtPos += this.padding; 
