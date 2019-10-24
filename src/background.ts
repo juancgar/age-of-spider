@@ -43,16 +43,18 @@ public render()
      var finalW = (Iwidth * height)/ Iheight;
      var finalH = height;
 
-     Context.drawImage(this.image[0],0,0,finalW,finalH);
-     Context.drawImage(this.image[0],1240,0,finalW,finalH);
+     Context.drawImage(this.image[0],300,0,finalW,finalH);
      Context.drawImage(this.image[0],-1240,0,finalW,finalH);
+     Context.drawImage(this.image[0],1040,0,finalW,finalH);
+     Context.drawImage(this.image[0],2000,0,finalW,finalH);
+     
      Iheight = this.image[2].naturalHeight;
      Iwidth = this.image[2].naturalWidth;
      finalW = (Iwidth * height)/ Iheight;
      finalH = height;
-     Context.drawImage(this.image[2],0,0,finalW,finalH);
-     Context.drawImage(this.image[2],1240,0,finalW,finalH);
-     Context.drawImage(this.image[2],-1240,0,finalW,finalH);
+     Context.drawImage(this.image[2],0,100,finalW,finalH);
+     Context.drawImage(this.image[2],1240,100,finalW,finalH);
+     Context.drawImage(this.image[2],-1240,100,finalW,finalH);
 
      
      Context.drawImage(this.image[1],0,0,finalW,finalH);

@@ -1,12 +1,15 @@
 import GameContext from "./GameContext";
 
+
 class Camera {
-  private position = 0;
-  private realtPos = 0;
+  public position = 0;
+  public realtPos = 0;
   private width = 1200;
   private inside = false;
   private dir = 0;
-  private readonly padding = 7;
+  private readonly padding = 12;
+
+
 
   public handleKeyDown = (event: KeyboardEvent) => {
     
@@ -24,7 +27,14 @@ class Camera {
   public mouseMoveListener = (event: MouseEvent) => {
     
   };
+  constructor()
+  {
+    
+  }
+
   update() {
+   
+   
     if(this.position >= 1000 && this.realtPos > -1200)
     {
       this.dir = -1;
@@ -39,13 +49,15 @@ class Camera {
     {
 
     }
-    console.log(this.realtPos);
+    
   }
 
   render() {
     const { context } = GameContext;
     const camaraX = this.position;
-    console.log(this.dir);
+
+
+    
     context.restore();
     context.save();
     if(this.dir != 0)

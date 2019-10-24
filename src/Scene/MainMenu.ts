@@ -4,6 +4,7 @@ import Engine from "../Engine";
 import Playing from "./Playing";
 
 class MainMenu extends Scene {
+  private Title: string = "Age Of Animals";
   private options: string[] = ["Jugar", "Salir"];
   private selectedOptionIndex: number = 0;
   private backgroundColorHue = 0;
@@ -47,16 +48,20 @@ class MainMenu extends Scene {
     this.skipUpdate = !this.skipUpdate;
     context.fillStyle = `hsl(${this.backgroundColorHue}, 100%, 80%)`;
     context.fillRect(0, 0, width, height);
+    context.fillStyle = "black";
+
+    context.font = "80px sans-serif";
+    context.fillText(this.Title, width/2-250, 0+400);
     context.closePath();
 
     context.beginPath();
     context.fillStyle = "black";
     context.strokeStyle = "darkblue";
-    context.font = "30px sans-serif";
+    context.font = "50px sans-serif";
     context.textAlign = "center";
     for (let i = 0; i < this.options.length; i++) {
       const xPoint = width / 2;
-      const yPoint = height * 0.65 + i * 35;
+      const yPoint = height * 0.65 + i * 50;
       if (this.selectedOptionIndex === i) {
         context.lineWidth = 2;
         context.strokeText(this.options[i], xPoint, yPoint);
