@@ -5,12 +5,16 @@ import MainMenu from "./MainMenu";
 import Camera from "../Camera";
 import background from "../background";
 import HUD from "../HUD.ts";
+import Base from "../Base.ts";
+import BaseE from "../BaseEnemy.ts";
 
 class Playing extends Scene {
 
   private camera: Camera = null;
   private background: background = null;
   private HUD: HUD = null;
+  private Base: Base = null;
+  private BaseE: BaseE = null;
 
   public handleKeyDown = (event: KeyboardEvent, engine: Engine) => {
     this.camera.handleKeyDown(event);
@@ -39,6 +43,8 @@ class Playing extends Scene {
     this.camera = new Camera();
     this.background = new background();
     this.HUD = new HUD();
+    this.Base = new Base();
+    this.BaseE = new BaseE();
         
   };
 
@@ -53,7 +59,10 @@ class Playing extends Scene {
     
     this.camera.render();
     
+    
     this.background.render();
+    this.Base.render();
+    this.BaseE.render();
     this.HUD.render();
     
     

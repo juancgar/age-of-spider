@@ -468,7 +468,114 @@ function () {
 
 ;
 exports["default"] = HUD;
-},{"./GameContext":"src/GameContext.ts","../assets/HUD.png":"assets/HUD.png"}],"src/Scene/Playing.ts":[function(require,module,exports) {
+},{"./GameContext":"src/GameContext.ts","../assets/HUD.png":"assets/HUD.png"}],"assets/base.png":[function(require,module,exports) {
+module.exports = "/base.881e12d6.png";
+},{}],"src/Base.ts":[function(require,module,exports) {
+"use strict";
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+exports.__esModule = true;
+
+var GameContext_1 = __importDefault(require("./GameContext"));
+
+var base_png_1 = __importDefault(require("../assets/base.png"));
+
+var Base =
+/** @class */
+function () {
+  function Base() {
+    this.vida = 3000;
+    this.xcoord = 0;
+    this.ycoord = 200;
+    this.Base = new Image();
+    this.Base.src = base_png_1["default"];
+    this.ycoord = 550;
+    this.xcoord = GameContext_1["default"].context.canvas.width / 2 * -1 + -10;
+  }
+
+  Base.prototype.getLife = function () {
+    return this.vida;
+  };
+
+  Base.prototype.subsLife = function (x) {
+    this.vida -= x;
+  };
+
+  Base.prototype.render = function () {
+    var Context = GameContext_1["default"].context;
+    Context.beginPath();
+    Context.save();
+    Context.drawImage(this.Base, this.xcoord, this.ycoord, 600, 600);
+    Context.restore();
+    Context.closePath();
+  };
+
+  Base.prototype.update = function () {};
+
+  return Base;
+}();
+
+;
+exports["default"] = Base;
+},{"./GameContext":"src/GameContext.ts","../assets/base.png":"assets/base.png"}],"src/BaseEnemy.ts":[function(require,module,exports) {
+"use strict";
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+exports.__esModule = true;
+
+var GameContext_1 = __importDefault(require("./GameContext"));
+
+var base_png_1 = __importDefault(require("../assets/base.png"));
+
+var BaseEnemy =
+/** @class */
+function () {
+  function BaseEnemy() {
+    this.vida = 3000;
+    this.xcoord = 0;
+    this.ycoord = 200;
+    this.Base = new Image();
+    this.Base.src = base_png_1["default"];
+    this.ycoord = 550;
+    this.xcoord = GameContext_1["default"].context.canvas.width + 1210;
+  }
+
+  BaseEnemy.prototype.getLife = function () {
+    return this.vida;
+  };
+
+  BaseEnemy.prototype.subsLife = function (x) {
+    this.vida -= x;
+  };
+
+  BaseEnemy.prototype.render = function () {
+    var Context = GameContext_1["default"].context;
+    Context.beginPath();
+    Context.save();
+    Context.scale(-1, 1);
+    Context.drawImage(this.Base, -this.xcoord, this.ycoord, 600, 600);
+    Context.restore();
+    Context.closePath();
+  };
+
+  BaseEnemy.prototype.update = function () {};
+
+  return BaseEnemy;
+}();
+
+;
+exports["default"] = BaseEnemy;
+},{"./GameContext":"src/GameContext.ts","../assets/base.png":"assets/base.png"}],"src/Scene/Playing.ts":[function(require,module,exports) {
 "use strict";
 
 var __extends = this && this.__extends || function () {
@@ -513,6 +620,10 @@ var background_1 = __importDefault(require("../background"));
 
 var HUD_ts_1 = __importDefault(require("../HUD.ts"));
 
+var Base_ts_1 = __importDefault(require("../Base.ts"));
+
+var BaseEnemy_ts_1 = __importDefault(require("../BaseEnemy.ts"));
+
 var Playing =
 /** @class */
 function (_super) {
@@ -524,6 +635,8 @@ function (_super) {
     _this.camera = null;
     _this.background = null;
     _this.HUD = null;
+    _this.Base = null;
+    _this.BaseE = null;
 
     _this.handleKeyDown = function (event, engine) {
       _this.camera.handleKeyDown(event);
@@ -555,6 +668,8 @@ function (_super) {
       _this.camera = new Camera_1["default"]();
       _this.background = new background_1["default"]();
       _this.HUD = new HUD_ts_1["default"]();
+      _this.Base = new Base_ts_1["default"]();
+      _this.BaseE = new BaseEnemy_ts_1["default"]();
     };
 
     _this.update = function () {
@@ -568,6 +683,10 @@ function (_super) {
 
       _this.background.render();
 
+      _this.Base.render();
+
+      _this.BaseE.render();
+
       _this.HUD.render();
     };
 
@@ -578,7 +697,7 @@ function (_super) {
 }(Scene_1["default"]);
 
 exports["default"] = Playing;
-},{"./Scene":"src/Scene/Scene.ts","../Camera":"src/Camera.ts","../background":"src/background.ts","../HUD.ts":"src/HUD.ts"}],"src/Engine.ts":[function(require,module,exports) {
+},{"./Scene":"src/Scene/Scene.ts","../Camera":"src/Camera.ts","../background":"src/background.ts","../HUD.ts":"src/HUD.ts","../Base.ts":"src/Base.ts","../BaseEnemy.ts":"src/BaseEnemy.ts"}],"src/Engine.ts":[function(require,module,exports) {
 "use strict";
 
 var __importDefault = this && this.__importDefault || function (mod) {
