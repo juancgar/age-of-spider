@@ -320,7 +320,333 @@ function () {
 exports["default"] = background;
 },{"./GameContext":"src/GameContext.ts","../assets/mountain.png":"assets/mountain.png","../assets/layer.png":"assets/layer.png","../assets/back.png":"assets/back.png"}],"assets/HUD.png":[function(require,module,exports) {
 module.exports = "/HUD.2e40d58b.png";
-},{}],"src/HUD.ts":[function(require,module,exports) {
+},{}],"src/Unit.ts":[function(require,module,exports) {
+"use strict";
+
+exports.__esModule = true;
+
+var Unit =
+/** @class */
+function () {
+  function Unit() {}
+
+  return Unit;
+}();
+
+;
+exports["default"] = Unit;
+},{}],"assets/bat.png":[function(require,module,exports) {
+module.exports = "/bat.91fd6996.png";
+},{}],"src/bat.ts":[function(require,module,exports) {
+"use strict";
+
+var __extends = this && this.__extends || function () {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
+      __proto__: []
+    } instanceof Array && function (d, b) {
+      d.__proto__ = b;
+    } || function (d, b) {
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
+    };
+
+    return _extendStatics(d, b);
+  };
+
+  return function (d, b) {
+    _extendStatics(d, b);
+
+    function __() {
+      this.constructor = d;
+    }
+
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+  };
+}();
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+exports.__esModule = true;
+
+var Unit_1 = __importDefault(require("../src/Unit"));
+
+var bat_png_1 = __importDefault(require("../assets/bat.png"));
+
+var GameContext_1 = __importDefault(require("./GameContext"));
+
+var bat =
+/** @class */
+function (_super) {
+  __extends(bat, _super);
+
+  function bat() {
+    var _this = _super.call(this) || this;
+
+    _this.bat = new Image();
+    _this.frame = 0;
+    _this.FrameCounter = 0;
+    _this.xCutAnimation = 0;
+    _this.speed = 200;
+    _this.bat = new Image();
+    _this.bat.src = bat_png_1["default"];
+    return _this;
+  }
+
+  bat.prototype.render = function () {
+    var sx = 28;
+    var sy = 33;
+    var padding = 60;
+    var sWidth = 293;
+    var sHeight = 330;
+    var context = GameContext_1["default"].context;
+    context.beginPath();
+    context.save();
+
+    if (this.Pertenece == 1) {
+      context.scale(-1, 1);
+    }
+
+    context.drawImage(this.bat, sx + sWidth * this.frame * 2, sy, sWidth, sHeight, this.xcoord, this.ycoord, 100, 100);
+    context.restore();
+    context.closePath();
+  };
+
+  bat.prototype.update = function () {
+    this.FrameCounter++;
+
+    if (this.FrameCounter % 8 == 0) {
+      this.frame++;
+    }
+
+    if (this.frame > 2) {
+      this.frame = 0;
+    }
+
+    if (this.Pertenece == 0) {
+      this.xcoord += 5;
+    } else this.xcoord -= 5;
+  };
+
+  return bat;
+}(Unit_1["default"]);
+
+;
+exports["default"] = bat;
+},{"../src/Unit":"src/Unit.ts","../assets/bat.png":"assets/bat.png","./GameContext":"src/GameContext.ts"}],"assets/Bear.png":[function(require,module,exports) {
+module.exports = "/Bear.6a15ee17.png";
+},{}],"src/Bear.ts":[function(require,module,exports) {
+"use strict";
+
+var __extends = this && this.__extends || function () {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
+      __proto__: []
+    } instanceof Array && function (d, b) {
+      d.__proto__ = b;
+    } || function (d, b) {
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
+    };
+
+    return _extendStatics(d, b);
+  };
+
+  return function (d, b) {
+    _extendStatics(d, b);
+
+    function __() {
+      this.constructor = d;
+    }
+
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+  };
+}();
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+exports.__esModule = true;
+
+var Unit_1 = __importDefault(require("../src/Unit"));
+
+var Bear_png_1 = __importDefault(require("../assets/Bear.png"));
+
+var GameContext_1 = __importDefault(require("./GameContext"));
+
+var Bear =
+/** @class */
+function (_super) {
+  __extends(Bear, _super);
+
+  function Bear() {
+    var _this = _super.call(this) || this;
+
+    _this.Bear = new Image();
+    _this.frame = 0;
+    _this.FrameCounter = 0;
+    _this.xCutAnimation = 0;
+    _this.speed = 3;
+    _this.Bear = new Image();
+    _this.Bear.src = Bear_png_1["default"];
+    return _this;
+  }
+
+  Bear.prototype.render = function () {
+    var sx = 0;
+    var sy = 0;
+    var sWidth = 64;
+    var sHeight = 33;
+    var context = GameContext_1["default"].context;
+    context.beginPath();
+    context.save();
+
+    if (this.Pertenece == 0) {
+      context.scale(-1, 1);
+    }
+
+    context.drawImage(this.Bear, sx + sWidth * this.frame, sy, sWidth, sHeight, this.xcoord, this.ycoord, 200, 100);
+    context.restore();
+    context.closePath();
+  };
+
+  Bear.prototype.update = function () {
+    this.FrameCounter++;
+
+    if (this.FrameCounter % 10 == 0) {
+      this.frame++;
+    }
+
+    if (this.frame > 4) {
+      this.frame = 0;
+    }
+
+    if (this.Pertenece == 0) {
+      this.xcoord -= this.speed;
+    } else {
+      this.xcoord += this.speed;
+    }
+  };
+
+  return Bear;
+}(Unit_1["default"]);
+
+;
+exports["default"] = Bear;
+},{"../src/Unit":"src/Unit.ts","../assets/Bear.png":"assets/Bear.png","./GameContext":"src/GameContext.ts"}],"src/ControllerMobs.ts":[function(require,module,exports) {
+"use strict";
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+exports.__esModule = true;
+
+var bat_1 = __importDefault(require("./bat"));
+
+var GameContext_1 = __importDefault(require("./GameContext"));
+
+var Bear_1 = __importDefault(require("./Bear"));
+
+var unidad =
+/** @class */
+function () {
+  function unidad(x) {
+    this.tipo = x;
+
+    if (x == 0) {
+      this.Bat = new bat_1["default"]();
+    }
+
+    if (x == 2) {
+      this.Bear = new Bear_1["default"]();
+    }
+  }
+
+  unidad.prototype.render = function () {
+    if (this.tipo == 0) this.Bat.render();
+    if (this.tipo == 2) this.Bear.render();
+  };
+
+  unidad.prototype.update = function () {
+    if (this.tipo == 0) this.Bat.update();
+    if (this.tipo == 2) this.Bear.update();
+  };
+
+  return unidad;
+}();
+
+var ControllerMobs =
+/** @class */
+function () {
+  function ControllerMobs() {
+    var _this = this;
+
+    this.EnemyArr = [];
+    this.Arr = []; // x tipo 0-3 and y 0 || 1  0-> ally 1 ->enemy
+
+    this.addmobs = function (x, y) {
+      console.log("mob added");
+
+      if (y == 0) {
+        if (x == 0) {
+          var uni1 = new unidad(0);
+          uni1.Bat.xcoord = -GameContext_1["default"].context.canvas.width / 2 + 300;
+          uni1.Bat.ycoord = 900;
+          uni1.Bat.Pertenece = y;
+
+          _this.Arr.push(uni1);
+        } else if (x == 2) {
+          var uni2 = new unidad(2);
+          uni2.Bear.xcoord = GameContext_1["default"].context.canvas.width / 2 - 300;
+          uni2.Bear.ycoord = 950;
+          uni2.Bear.Pertenece = y;
+
+          _this.Arr.push(uni2);
+        }
+      } else {}
+
+      if (x = 0) ;
+    };
+  }
+
+  ControllerMobs.prototype.update = function () {
+    if (this.Arr != undefined) {
+      var len = this.Arr.length;
+
+      for (var i = 0; i < len; i++) {
+        this.Arr[i].update();
+      }
+    }
+  };
+
+  ControllerMobs.prototype.render = function () {
+    if (this.Arr != undefined) {
+      var len = this.Arr.length;
+
+      for (var i = 0; i < len; i++) {
+        this.Arr[i].render();
+      }
+    }
+  };
+
+  return ControllerMobs;
+}();
+
+;
+exports["default"] = ControllerMobs;
+},{"./bat":"src/bat.ts","./GameContext":"src/GameContext.ts","./Bear":"src/Bear.ts"}],"src/HUD.ts":[function(require,module,exports) {
 "use strict";
 
 var __importDefault = this && this.__importDefault || function (mod) {
@@ -335,6 +661,8 @@ var GameContext_1 = __importDefault(require("./GameContext"));
 
 var HUD_png_1 = __importDefault(require("../assets/HUD.png"));
 
+var ControllerMobs_1 = __importDefault(require("./ControllerMobs"));
+
 var HUD =
 /** @class */
 function () {
@@ -343,12 +671,14 @@ function () {
 
     this.HUD = new Image();
     this.positionX = -50;
-    this.color = "#A4A5A3"; ///alphas for each button
+    this.color = "#A4A5A3";
+    this.cont = null; ///alphas for each button
 
     this.a1 = 0;
     this.a2 = 0;
     this.a3 = 0;
     this.a4 = 0;
+    this.ally = 0;
     this.stateBoton1 = false;
     this.stateBoton2 = false;
     this.stateBoton3 = false;
@@ -356,8 +686,6 @@ function () {
     this.backColor = "green";
 
     this.mouseDownListener = function (event) {
-      console.log(event.offsetX);
-
       if (event.offsetX > _this.positionX + 214 && event.offsetX < _this.positionX + 214 + 100 && event.offsetY > 230 && event.offsetY < 326) {
         if (_this.stateBoton1) {
           _this.a1 = .6;
@@ -366,6 +694,8 @@ function () {
           _this.a1 = 0;
           _this.stateBoton1 = true;
         }
+
+        _this.cont.addmobs(0, _this.ally);
       }
 
       if (event.offsetX > _this.positionX + 214 + 93 * 2 && event.offsetX < _this.positionX + 214 + 100 + 93 * 2 && event.offsetY > 230 && event.offsetY < 326) {
@@ -376,6 +706,8 @@ function () {
           _this.a2 = 0;
           _this.stateBoton2 = true;
         }
+
+        _this.cont.addmobs(2, _this.ally);
       }
 
       if (event.offsetX > _this.positionX + 214 + 93 * 4 && event.offsetX < _this.positionX + 214 + 100 + 93 * 4 && event.offsetY > 230 && event.offsetY < 326) {
@@ -400,15 +732,17 @@ function () {
     };
 
     this.HUD.src = HUD_png_1["default"];
+    this.cont = new ControllerMobs_1["default"]();
   }
 
   HUD.prototype.render = function () {
+    this.cont.render();
     var Context = GameContext_1["default"].context;
     Context.beginPath();
     Context.restore();
     Context.save();
     Context.drawImage(this.HUD, this.positionX, -Context.canvas.height / 3, Context.canvas.width / 2, Context.canvas.width / 2);
-    Context.closePath(); // background rectanlges
+    Context.closePath(); // background rectangles
 
     Context.beginPath();
     Context.rect(this.positionX + 214, 230, 100, 96);
@@ -457,10 +791,11 @@ function () {
     Context.closePath();
   };
 
-  HUD.prototype.update = function (x) {
+  HUD.prototype.update = function (cont1) {
     var Canvas = GameContext_1["default"].context.canvas;
     var Context = GameContext_1["default"].context;
     this.positionX = Canvas.scrollLeft;
+    this.cont.update();
   };
 
   return HUD;
@@ -468,7 +803,7 @@ function () {
 
 ;
 exports["default"] = HUD;
-},{"./GameContext":"src/GameContext.ts","../assets/HUD.png":"assets/HUD.png"}],"assets/base.png":[function(require,module,exports) {
+},{"./GameContext":"src/GameContext.ts","../assets/HUD.png":"assets/HUD.png","./ControllerMobs":"src/ControllerMobs.ts"}],"assets/base.png":[function(require,module,exports) {
 module.exports = "/base.881e12d6.png";
 },{}],"src/Base.ts":[function(require,module,exports) {
 "use strict";
@@ -637,6 +972,7 @@ function (_super) {
     _this.HUD = null;
     _this.Base = null;
     _this.BaseE = null;
+    _this.MobCont = null;
 
     _this.handleKeyDown = function (event, engine) {
       _this.camera.handleKeyDown(event);
@@ -667,9 +1003,9 @@ function (_super) {
     _this.enter = function () {
       _this.camera = new Camera_1["default"]();
       _this.background = new background_1["default"]();
-      _this.HUD = new HUD_ts_1["default"]();
       _this.Base = new Base_ts_1["default"]();
       _this.BaseE = new BaseEnemy_ts_1["default"]();
+      _this.HUD = new HUD_ts_1["default"]();
     };
 
     _this.update = function () {
@@ -846,7 +1182,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59872" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50283" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
