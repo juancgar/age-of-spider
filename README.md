@@ -1,3 +1,10 @@
+
+Editado por: 
+Bernardo Montemayor A01194086
+Juan Carlos Garza Lopez A00822601
+
+
+
 - [Desarrollo de videojuegos](#desarrollo-de-videojuegos)
   - [Instalación](#instalaci%c3%b3n)
   - [Bundling](#bundling)
@@ -29,5 +36,12 @@ contenido resultante.
 Este repositorio está basado en el libro *Introducing JavaScript Game
 Development: Build a 2D Game from the Ground Up* con orientación a enseñar
 Programación Orientada a Objetos.
+
+##Instrucciones de uso
+  El menu se utiliza con las flechas y el resto del movimiento es con el mouse
+ 
+Bernardo Montemayor A01194086
+Juan Carlos Garza Lopez A00822601
+
 
 - [Repositorio oficial del libro](https://github.com/Apress/intro-javascript-game-dev)
