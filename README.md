@@ -38,11 +38,9 @@ Este repositorio está basado en el libro *Introducing JavaScript Game
 Development: Build a 2D Game from the Ground Up* con orientación a enseñar
 Programación Orientada a Objetos.
 
-##Instrucciones de uso
-  El menu se utiliza con las flechas y el resto del movimiento es con el mouse
- 
-Bernardo Montemayor A01194086
-Juan Carlos Garza Lopez A00822601
+## Instruciones de uso
+
+El menu se utiliza con las flechas y el resto del movimiento es con el mouse
 
 
 - [Repositorio oficial del libro](https://github.com/Apress/intro-javascript-game-dev)
