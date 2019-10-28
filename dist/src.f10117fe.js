@@ -172,11 +172,15 @@ function () {
 
     this.render = function () {};
 
+    this.pause = function () {};
+
+    this.exit = function () {};
+
     this.handleKeyDown = function (event, engine) {};
 
     this.handleKeyUp = function (event) {};
 
-    this.mouseDownListener = function (event) {};
+    this.mouseDownListener = function (event, engine) {};
 
     this.mouseEnterListener = function (event) {};
 
@@ -217,7 +221,7 @@ function () {
 
     this.handleKeyUp = function (event) {};
 
-    this.mouseDownListener = function (event) {};
+    this.mouseDownListener = function (event, engine) {};
 
     this.mouseEnterListener = function (event) {
       _this.position = event.offsetX;
@@ -335,7 +339,137 @@ function () {
 
 ;
 exports["default"] = Unit;
-},{}],"assets/bat.png":[function(require,module,exports) {
+},{}],"assets/lions.png":[function(require,module,exports) {
+module.exports = "/lions.4cb7a812.png";
+},{}],"src/Lion.ts":[function(require,module,exports) {
+"use strict";
+
+var __extends = this && this.__extends || function () {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
+      __proto__: []
+    } instanceof Array && function (d, b) {
+      d.__proto__ = b;
+    } || function (d, b) {
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
+    };
+
+    return _extendStatics(d, b);
+  };
+
+  return function (d, b) {
+    _extendStatics(d, b);
+
+    function __() {
+      this.constructor = d;
+    }
+
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+  };
+}();
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+exports.__esModule = true;
+
+var Unit_1 = __importDefault(require("./Unit"));
+
+var lions_png_1 = __importDefault(require("../assets/lions.png"));
+
+var GameContext_1 = __importDefault(require("./GameContext"));
+
+var State;
+
+(function (State) {
+  State[State["Attack"] = -1] = "Attack";
+  State[State["Stop"] = 0] = "Stop";
+  State[State["Walk"] = 1] = "Walk";
+})(State = exports.State || (exports.State = {}));
+
+var Lion =
+/** @class */
+function (_super) {
+  __extends(Lion, _super);
+
+  function Lion() {
+    var _this = _super.call(this) || this;
+
+    _this.attack = 5;
+    _this.life = 300;
+    _this.State = State.Walk;
+    _this.Lion = new Image();
+    _this.frame = 0;
+    _this.FrameCounter = 0;
+    _this.xCutAnimation = 0;
+    _this.speed = 5;
+    _this.realx = 0;
+    _this.Lion = new Image();
+    _this.Lion.src = lions_png_1["default"];
+    return _this;
+  }
+
+  Lion.prototype.render = function () {
+    var sx = 0;
+    var sy = 0;
+    var sWidth = 580;
+    var sHeight = 520;
+    var context = GameContext_1["default"].context;
+    context.beginPath();
+    context.save();
+
+    if (this.Pertenece == 1) {
+      context.scale(-1, 1);
+    }
+
+    context.drawImage(this.Lion, sx + sWidth * this.frame, sy, sWidth, sHeight, this.xcoord, this.ycoord, 180, 140);
+    context.restore();
+    context.closePath();
+  };
+
+  Lion.prototype.update = function () {
+    //walk
+    if (this.State == State.Walk) {
+      this.FrameCounter++;
+
+      if (this.FrameCounter % 10 == 0) {
+        this.frame++;
+      }
+
+      if (this.frame > 2) {
+        this.frame = 0;
+      }
+
+      if (this.Pertenece == 1) {
+        this.realx -= this.speed;
+      } else this.realx += this.speed;
+
+      this.xcoord += this.speed;
+    } //attack
+    else if (this.State == State.Attack) {
+        this.FrameCounter++;
+
+        if (this.FrameCounter % 10 == 0) {
+          this.frame++;
+        }
+
+        if (this.frame > 2) {
+          this.frame = 0;
+        }
+      } else {}
+  };
+
+  return Lion;
+}(Unit_1["default"]);
+
+;
+exports["default"] = Lion;
+},{"./Unit":"src/Unit.ts","../assets/lions.png":"assets/lions.png","./GameContext":"src/GameContext.ts"}],"assets/bat.png":[function(require,module,exports) {
 module.exports = "/bat.91fd6996.png";
 },{}],"src/bat.ts":[function(require,module,exports) {
 "use strict";
@@ -380,6 +514,14 @@ var bat_png_1 = __importDefault(require("../assets/bat.png"));
 
 var GameContext_1 = __importDefault(require("./GameContext"));
 
+var State;
+
+(function (State) {
+  State[State["Attack"] = -1] = "Attack";
+  State[State["Stop"] = 0] = "Stop";
+  State[State["Walk"] = 1] = "Walk";
+})(State = exports.State || (exports.State = {}));
+
 var bat =
 /** @class */
 function (_super) {
@@ -388,11 +530,15 @@ function (_super) {
   function bat() {
     var _this = _super.call(this) || this;
 
+    _this.attack = 20;
+    _this.life = 100;
+    _this.State = State.Walk;
     _this.bat = new Image();
     _this.frame = 0;
     _this.FrameCounter = 0;
     _this.xCutAnimation = 0;
-    _this.speed = 200;
+    _this.speed = 5;
+    _this.realx = 0;
     _this.bat = new Image();
     _this.bat.src = bat_png_1["default"];
     return _this;
@@ -418,19 +564,35 @@ function (_super) {
   };
 
   bat.prototype.update = function () {
-    this.FrameCounter++;
+    if (this.State == State.Walk) {
+      this.FrameCounter++;
 
-    if (this.FrameCounter % 8 == 0) {
-      this.frame++;
-    }
+      if (this.FrameCounter % 8 == 0) {
+        this.frame++;
+      }
 
-    if (this.frame > 2) {
-      this.frame = 0;
-    }
+      if (this.frame > 2) {
+        this.frame = 0;
+      }
 
-    if (this.Pertenece == 0) {
-      this.xcoord += 5;
-    } else this.xcoord -= 5;
+      if (this.Pertenece == 0) {
+        this.xcoord += this.speed;
+      } else this.xcoord += this.speed;
+
+      if (this.Pertenece == 1) {
+        this.realx -= this.speed;
+      } else this.realx += this.speed;
+    } else if (this.State == State.Attack) {
+      this.FrameCounter++;
+
+      if (this.FrameCounter % 8 == 0) {
+        this.frame++;
+      }
+
+      if (this.frame > 2) {
+        this.frame = 0;
+      }
+    } else {}
   };
 
   return bat;
@@ -483,6 +645,14 @@ var Bear_png_1 = __importDefault(require("../assets/Bear.png"));
 
 var GameContext_1 = __importDefault(require("./GameContext"));
 
+var State;
+
+(function (State) {
+  State[State["Attack"] = -1] = "Attack";
+  State[State["Stop"] = 0] = "Stop";
+  State[State["Walk"] = 1] = "Walk";
+})(State = exports.State || (exports.State = {}));
+
 var Bear =
 /** @class */
 function (_super) {
@@ -491,11 +661,15 @@ function (_super) {
   function Bear() {
     var _this = _super.call(this) || this;
 
+    _this.attack = 20;
+    _this.life = 400;
+    _this.State = State.Walk;
     _this.Bear = new Image();
     _this.frame = 0;
     _this.FrameCounter = 0;
     _this.xCutAnimation = 0;
-    _this.speed = 3;
+    _this.speed = 5;
+    _this.realx = 0;
     _this.Bear = new Image();
     _this.Bear.src = Bear_png_1["default"];
     return _this;
@@ -520,21 +694,33 @@ function (_super) {
   };
 
   Bear.prototype.update = function () {
-    this.FrameCounter++;
+    if (this.State == State.Walk) {
+      this.FrameCounter++;
 
-    if (this.FrameCounter % 10 == 0) {
-      this.frame++;
-    }
+      if (this.FrameCounter % 10 == 0) {
+        this.frame++;
+      }
 
-    if (this.frame > 4) {
-      this.frame = 0;
-    }
+      if (this.frame > 4) {
+        this.frame = 0;
+      }
 
-    if (this.Pertenece == 0) {
       this.xcoord -= this.speed;
-    } else {
-      this.xcoord += this.speed;
-    }
+
+      if (this.Pertenece == 1) {
+        this.realx -= this.speed;
+      } else this.realx += this.speed;
+    } else if (this.State == State.Attack) {
+      this.FrameCounter++;
+
+      if (this.FrameCounter % 10 == 0) {
+        this.frame++;
+      }
+
+      if (this.frame > 4) {
+        this.frame = 0;
+      }
+    } else {}
   };
 
   return Bear;
@@ -542,7 +728,141 @@ function (_super) {
 
 ;
 exports["default"] = Bear;
-},{"../src/Unit":"src/Unit.ts","../assets/Bear.png":"assets/Bear.png","./GameContext":"src/GameContext.ts"}],"src/ControllerMobs.ts":[function(require,module,exports) {
+},{"../src/Unit":"src/Unit.ts","../assets/Bear.png":"assets/Bear.png","./GameContext":"src/GameContext.ts"}],"assets/tigers.png":[function(require,module,exports) {
+module.exports = "/tigers.6109efd4.png";
+},{}],"src/Tiger.ts":[function(require,module,exports) {
+"use strict";
+
+var __extends = this && this.__extends || function () {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
+      __proto__: []
+    } instanceof Array && function (d, b) {
+      d.__proto__ = b;
+    } || function (d, b) {
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
+    };
+
+    return _extendStatics(d, b);
+  };
+
+  return function (d, b) {
+    _extendStatics(d, b);
+
+    function __() {
+      this.constructor = d;
+    }
+
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+  };
+}();
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+exports.__esModule = true;
+
+var Unit_1 = __importDefault(require("../src/Unit"));
+
+var tigers_png_1 = __importDefault(require("../assets/tigers.png"));
+
+var GameContext_1 = __importDefault(require("./GameContext"));
+
+var State;
+
+(function (State) {
+  State[State["Attack"] = -1] = "Attack";
+  State[State["Stop"] = 0] = "Stop";
+  State[State["Walk"] = 1] = "Walk";
+})(State = exports.State || (exports.State = {}));
+
+var Tiger =
+/** @class */
+function (_super) {
+  __extends(Tiger, _super);
+
+  function Tiger() {
+    var _this = _super.call(this) || this;
+
+    _this.life = 200;
+    _this.attack = 10;
+    _this.State = State.Walk;
+    _this.Tiger = new Image();
+    _this.frame = 0;
+    _this.FrameCounter = 0;
+    _this.xCutAnimation = 0;
+    _this.speed = 5;
+    _this.realx = 0;
+    _this.Tiger = new Image();
+    _this.Tiger.src = tigers_png_1["default"];
+    return _this;
+  }
+
+  Tiger.prototype.render = function () {
+    var sx = 0;
+    var sy = 0;
+    var sWidth = 575;
+    var sHeight = 552;
+    var context = GameContext_1["default"].context;
+    context.beginPath();
+    context.save();
+
+    if (this.Pertenece == 1) {
+      context.scale(-1, 1);
+    }
+
+    context.drawImage(this.Tiger, sx + sWidth * this.frame, sy, sWidth, sHeight, this.xcoord, this.ycoord, 180, 140);
+    context.restore();
+    context.closePath();
+  };
+
+  Tiger.prototype.update = function () {
+    if (this.State == State.Walk) {
+      this.FrameCounter++;
+
+      if (this.FrameCounter % 8 == 0) {
+        this.frame++;
+      }
+
+      if (this.frame > 5) {
+        this.frame = 0;
+      }
+
+      if (this.Pertenece == 1) {
+        this.xcoord += this.speed;
+      } else {
+        this.xcoord += this.speed;
+      }
+
+      if (this.Pertenece == 1) {
+        this.realx -= this.speed;
+      } else this.realx += this.speed;
+    } else if (this.State == State.Attack) {
+      this.FrameCounter++;
+
+      if (this.FrameCounter % 8 == 0) {
+        this.frame++;
+      }
+
+      if (this.frame > 5) {
+        this.frame = 0;
+      }
+    }
+
+    ;
+  };
+
+  return Tiger;
+}(Unit_1["default"]);
+
+;
+exports["default"] = Tiger;
+},{"../src/Unit":"src/Unit.ts","../assets/tigers.png":"assets/tigers.png","./GameContext":"src/GameContext.ts"}],"src/ControllerMobs.ts":[function(require,module,exports) {
 "use strict";
 
 var __importDefault = this && this.__importDefault || function (mod) {
@@ -553,11 +873,23 @@ var __importDefault = this && this.__importDefault || function (mod) {
 
 exports.__esModule = true;
 
+var Lion_1 = __importDefault(require("./Lion"));
+
 var bat_1 = __importDefault(require("./bat"));
 
 var GameContext_1 = __importDefault(require("./GameContext"));
 
 var Bear_1 = __importDefault(require("./Bear"));
+
+var Tiger_1 = __importDefault(require("./Tiger"));
+
+var State;
+
+(function (State) {
+  State[State["Attack"] = -1] = "Attack";
+  State[State["Stop"] = 0] = "Stop";
+  State[State["Walk"] = 1] = "Walk";
+})(State = exports.State || (exports.State = {}));
 
 var unidad =
 /** @class */
@@ -567,21 +899,44 @@ function () {
 
     if (x == 0) {
       this.Bat = new bat_1["default"]();
-    }
-
-    if (x == 2) {
+    } else if (x == 2) {
       this.Bear = new Bear_1["default"]();
-    }
+    } else if (x == 1) this.Lion = new Lion_1["default"]();else if (x == 3) this.Tiger = new Tiger_1["default"]();
   }
 
   unidad.prototype.render = function () {
     if (this.tipo == 0) this.Bat.render();
     if (this.tipo == 2) this.Bear.render();
+    if (this.tipo == 1) this.Lion.render();
+    if (this.tipo == 3) this.Tiger.render();
+  };
+
+  unidad.prototype.accessObject = function () {
+    if (this.tipo == 0) return this.Bat;
+    if (this.tipo == 2) return this.Bear;
+    if (this.tipo == 1) return this.Lion;
+    if (this.tipo == 3) return this.Tiger;
   };
 
   unidad.prototype.update = function () {
     if (this.tipo == 0) this.Bat.update();
     if (this.tipo == 2) this.Bear.update();
+    if (this.tipo == 1) this.Lion.update();
+    if (this.tipo == 3) this.Tiger.update();
+  };
+
+  unidad.prototype.getXcoord = function () {
+    if (this.tipo == 0) return this.Bat.realx;
+    if (this.tipo == 2) return this.Bear.realx;
+    if (this.tipo == 1) return this.Lion.realx;
+    if (this.tipo == 3) return this.Tiger.realx;
+  };
+
+  unidad.prototype.setState = function (State) {
+    if (this.tipo == 0) this.Bat.State = State;
+    if (this.tipo == 2) this.Bear.State = State;
+    if (this.tipo == 1) this.Lion.State = State;
+    if (this.tipo == 3) this.Tiger.State = State;
   };
 
   return unidad;
@@ -594,7 +949,12 @@ function () {
     var _this = this;
 
     this.EnemyArr = [];
-    this.Arr = []; // x tipo 0-3 and y 0 || 1  0-> ally 1 ->enemy
+    this.allyHead = 0;
+    this.enemyHead = 0;
+    this.Arr = [];
+    this.spawnE = false;
+    this.spawnA = false;
+    this.gameState = State.Walk; // x tipo 0-3 and y 0 || 1  0-> ally 1 ->enemy
 
     this.addmobs = function (x, y) {
       console.log("mob added");
@@ -605,6 +965,8 @@ function () {
           uni1.Bat.xcoord = -GameContext_1["default"].context.canvas.width / 2 + 300;
           uni1.Bat.ycoord = 900;
           uni1.Bat.Pertenece = y;
+          uni1.Bat.State = State.Walk;
+          uni1.Bat.realx = 0;
 
           _this.Arr.push(uni1);
         } else if (x == 2) {
@@ -612,26 +974,137 @@ function () {
           uni2.Bear.xcoord = GameContext_1["default"].context.canvas.width / 2 - 300;
           uni2.Bear.ycoord = 950;
           uni2.Bear.Pertenece = y;
+          uni2.Bear.realx = 0;
+          uni2.Bear.State = State.Walk;
 
           _this.Arr.push(uni2);
-        }
-      } else {}
+        } else if (x == 1) {
+          var uni2 = new unidad(1);
+          uni2.Lion.xcoord = -GameContext_1["default"].context.canvas.width / 2 + 300;
+          uni2.Lion.ycoord = 950;
+          uni2.Lion.Pertenece = y;
+          uni2.Lion.State = State.Walk;
+          uni2.Lion.realx = 0;
 
-      if (x = 0) ;
+          _this.Arr.push(uni2);
+        } else if (x == 3) {
+          var uni2 = new unidad(3);
+          uni2.Tiger.xcoord = -GameContext_1["default"].context.canvas.width / 2 + 300;
+          uni2.Tiger.ycoord = 950;
+          uni2.Tiger.Pertenece = y;
+          uni2.Tiger.realx = 0;
+          uni2.Tiger.State = State.Walk;
+
+          _this.Arr.push(uni2);
+        } //enemy
+
+      } else {
+        if (x == 0) {
+          var uni1 = new unidad(0);
+          uni1.Bat.xcoord = -GameContext_1["default"].context.canvas.width - 800;
+          uni1.Bat.ycoord = 900;
+          uni1.Bat.Pertenece = y;
+          uni1.Bat.realx = 4200;
+
+          _this.EnemyArr.push(uni1);
+        } else if (x == 2) {
+          var uni2 = new unidad(2);
+          uni2.Bear.xcoord = GameContext_1["default"].context.canvas.width + 800;
+          uni2.Bear.ycoord = 950;
+          uni2.Bear.Pertenece = y;
+          uni2.Bear.realx = 4200;
+
+          _this.EnemyArr.push(uni2);
+        } else if (x == 1) {
+          var uni2 = new unidad(1);
+          uni2.Lion.xcoord = -GameContext_1["default"].context.canvas.width - 800;
+          ;
+          uni2.Lion.ycoord = 950;
+          uni2.Lion.Pertenece = y;
+          uni2.Lion.realx = 4200;
+
+          _this.EnemyArr.push(uni2);
+        } else if (x == 3) {
+          var uni2 = new unidad(3);
+          uni2.Tiger.xcoord = -GameContext_1["default"].context.canvas.width - 800;
+          uni2.Tiger.ycoord = 950;
+          uni2.Tiger.Pertenece = y;
+          uni2.Tiger.realx = 4200;
+
+          _this.EnemyArr.push(uni2);
+        }
+      }
     };
   }
 
-  ControllerMobs.prototype.update = function () {
+  ControllerMobs.prototype.setAttack = function () {
+    if (this.EnemyArr != undefined) {
+      var len = this.EnemyArr.length;
+
+      for (var i = 1; i < len; i++) {
+        this.EnemyArr[i].setState(State.Stop);
+      }
+    } //ally
+
+
     if (this.Arr != undefined) {
       var len = this.Arr.length;
 
-      for (var i = 0; i < len; i++) {
-        this.Arr[i].update();
+      for (var i = 1; i < len; i++) {
+        this.Arr[i].setState(State.Stop);
       }
     }
   };
 
+  ControllerMobs.prototype.update = function () {
+    //enemy
+    //Atack Logic
+    if (this.gameState == State.Walk) {
+      if (this.spawnE && this.spawnA) {
+        console.log(this.Arr[this.allyHead].getXcoord() + " " + this.EnemyArr[this.enemyHead].getXcoord());
+
+        if (this.Arr[this.allyHead].getXcoord() + 600 >= this.EnemyArr[this.enemyHead].getXcoord()) {
+          console.log("encuentro");
+          this.Arr[this.allyHead].setState(State.Attack);
+          this.EnemyArr[this.enemyHead].setState(State.Attack);
+          this.setAttack();
+        }
+      }
+
+      if (this.EnemyArr != undefined) {
+        var len = this.EnemyArr.length;
+
+        for (var i = 0; i < len; i++) {
+          this.EnemyArr[i].update();
+          this.spawnE = true;
+        }
+      } //ally
+
+
+      if (this.Arr != undefined) {
+        var len = this.Arr.length;
+
+        for (var i = 0; i < len; i++) {
+          this.Arr[i].update();
+          this.spawnA = true;
+        }
+      }
+    } else if (this.gameState == State.Attack) {
+      this.Arr[this.allyHead];
+    }
+  };
+
   ControllerMobs.prototype.render = function () {
+    //enemy
+    if (this.EnemyArr != undefined) {
+      var len = this.EnemyArr.length;
+
+      for (var i = 0; i < len; i++) {
+        this.EnemyArr[i].render();
+      }
+    } //ally
+
+
     if (this.Arr != undefined) {
       var len = this.Arr.length;
 
@@ -646,7 +1119,36 @@ function () {
 
 ;
 exports["default"] = ControllerMobs;
-},{"./bat":"src/bat.ts","./GameContext":"src/GameContext.ts","./Bear":"src/Bear.ts"}],"src/HUD.ts":[function(require,module,exports) {
+},{"./Lion":"src/Lion.ts","./bat":"src/bat.ts","./GameContext":"src/GameContext.ts","./Bear":"src/Bear.ts","./Tiger":"src/Tiger.ts"}],"src/IA.ts":[function(require,module,exports) {
+"use strict";
+
+exports.__esModule = true;
+
+var IA =
+/** @class */
+function () {
+  function IA() {
+    this.frameCounter = 0;
+    this.first = false;
+  }
+
+  IA.prototype.update = function () {
+    this.frameCounter++;
+    var rand = Math.floor(Math.random() * 4);
+
+    if (this.frameCounter % 100 == 0) {
+      return rand;
+    }
+
+    return -1;
+  };
+
+  return IA;
+}();
+
+;
+exports["default"] = IA;
+},{}],"src/HUD.ts":[function(require,module,exports) {
 "use strict";
 
 var __importDefault = this && this.__importDefault || function (mod) {
@@ -663,6 +1165,8 @@ var HUD_png_1 = __importDefault(require("../assets/HUD.png"));
 
 var ControllerMobs_1 = __importDefault(require("./ControllerMobs"));
 
+var IA_1 = __importDefault(require("./IA"));
+
 var HUD =
 /** @class */
 function () {
@@ -672,17 +1176,21 @@ function () {
     this.HUD = new Image();
     this.positionX = -50;
     this.color = "#A4A5A3";
-    this.cont = null; ///alphas for each button
+    this.cont = null;
+    this.IA = null;
+    this.Play = null; ///alphas for each button
 
     this.a1 = 0;
     this.a2 = 0;
     this.a3 = 0;
     this.a4 = 0;
+    this.a5 = 1;
     this.ally = 0;
     this.stateBoton1 = false;
     this.stateBoton2 = false;
     this.stateBoton3 = false;
     this.stateBoton4 = false;
+    this.stateBoton5 = true;
     this.backColor = "green";
 
     this.mouseDownListener = function (event) {
@@ -718,6 +1226,8 @@ function () {
           _this.a3 = 0;
           _this.stateBoton3 = true;
         }
+
+        _this.cont.addmobs(1, _this.ally);
       }
 
       if (event.offsetX > _this.positionX + 214 + 93 * 6 && event.offsetX < _this.positionX + 214 + 100 + 93 * 6 && event.offsetY > 230 && event.offsetY < 326) {
@@ -728,11 +1238,24 @@ function () {
           _this.a4 = 0;
           _this.stateBoton4 = true;
         }
+
+        _this.cont.addmobs(3, _this.ally);
+      }
+
+      if (event.offsetX > _this.positionX + 214 + 93 * 20 && event.offsetX < _this.positionX + 214 + 100 + 93 * 20 && event.offsetY > 230 && event.offsetY < 326) {
+        if (_this.stateBoton5) {
+          _this.a5 = 0;
+          _this.stateBoton5 = false;
+        } else {
+          _this.a5 = 1;
+          _this.stateBoton5 = true;
+        }
       }
     };
 
     this.HUD.src = HUD_png_1["default"];
     this.cont = new ControllerMobs_1["default"]();
+    this.IA = new IA_1["default"]();
   }
 
   HUD.prototype.render = function () {
@@ -763,6 +1286,21 @@ function () {
     Context.rect(this.positionX + 214 + 93 * 6, 230, 100, 96);
     Context.fillStyle = this.backColor;
     Context.fill();
+    Context.closePath();
+    Context.beginPath();
+    Context.rect(this.positionX + 214 + 93 * 20, 230, 100, 96);
+    Context.fillStyle = this.backColor;
+    Context.fillStyle = "White";
+    Context.globalAlpha = this.a5;
+    Context.fill();
+    Context.closePath();
+    Context.beginPath();
+    Context.save();
+    Context.globalAlpha = 1;
+    Context.font = "100px Arial";
+    Context.fillStyle = "BLACK";
+    Context.fillText("P", this.positionX + 230 + 93 * 20, 320);
+    Context.restore();
     Context.closePath(); //cooldown meshes
 
     Context.beginPath();
@@ -789,13 +1327,17 @@ function () {
     Context.globalAlpha = this.a4;
     Context.fill();
     Context.closePath();
+    Context.closePath();
   };
 
-  HUD.prototype.update = function (cont1) {
+  HUD.prototype.update = function () {
     var Canvas = GameContext_1["default"].context.canvas;
     var Context = GameContext_1["default"].context;
     this.positionX = Canvas.scrollLeft;
     this.cont.update();
+    var rand = this.IA.update();
+    console.log(rand);
+    if (rand <= 3 && rand >= 0) this.cont.addmobs(rand, 1);
   };
 
   return HUD;
@@ -803,7 +1345,7 @@ function () {
 
 ;
 exports["default"] = HUD;
-},{"./GameContext":"src/GameContext.ts","../assets/HUD.png":"assets/HUD.png","./ControllerMobs":"src/ControllerMobs.ts"}],"assets/base.png":[function(require,module,exports) {
+},{"./GameContext":"src/GameContext.ts","../assets/HUD.png":"assets/HUD.png","./ControllerMobs":"src/ControllerMobs.ts","./IA":"src/IA.ts"}],"assets/base.png":[function(require,module,exports) {
 module.exports = "/base.881e12d6.png";
 },{}],"src/Base.ts":[function(require,module,exports) {
 "use strict";
@@ -910,7 +1452,9 @@ function () {
 
 ;
 exports["default"] = BaseEnemy;
-},{"./GameContext":"src/GameContext.ts","../assets/base.png":"assets/base.png"}],"src/Scene/Playing.ts":[function(require,module,exports) {
+},{"./GameContext":"src/GameContext.ts","../assets/base.png":"assets/base.png"}],"assets/Tears.mp3":[function(require,module,exports) {
+module.exports = "/Tears.4a1c11f6.mp3";
+},{}],"src/Scene/Playing.ts":[function(require,module,exports) {
 "use strict";
 
 var __extends = this && this.__extends || function () {
@@ -949,6 +1493,8 @@ exports.__esModule = true;
 
 var Scene_1 = __importDefault(require("./Scene"));
 
+var MainMenu_1 = __importDefault(require("./MainMenu"));
+
 var Camera_1 = __importDefault(require("../Camera"));
 
 var background_1 = __importDefault(require("../background"));
@@ -958,6 +1504,10 @@ var HUD_ts_1 = __importDefault(require("../HUD.ts"));
 var Base_ts_1 = __importDefault(require("../Base.ts"));
 
 var BaseEnemy_ts_1 = __importDefault(require("../BaseEnemy.ts"));
+
+var Tears_mp3_1 = __importDefault(require("../../assets/Tears.mp3"));
+
+var GameContext_1 = __importDefault(require("../GameContext"));
 
 var Playing =
 /** @class */
@@ -973,19 +1523,31 @@ function (_super) {
     _this.Base = null;
     _this.BaseE = null;
     _this.MobCont = null;
+    _this.BackGroundMusic = new Audio(Tears_mp3_1["default"]);
+
+    _this.pause = function () {};
 
     _this.handleKeyDown = function (event, engine) {
       _this.camera.handleKeyDown(event);
+
+      if (event.key == 'p') {
+        var temp = _this;
+
+        _this.BackGroundMusic.pause();
+
+        engine.clearScreen();
+        engine.changeScene(new MainMenu_1["default"]());
+      }
     };
 
     _this.handleKeyUp = function (event) {
       _this.camera.handleKeyUp(event);
     };
 
-    _this.mouseDownListener = function (event) {
-      _this.camera.mouseDownListener(event);
+    _this.mouseDownListener = function (event, engine) {
+      _this.camera.mouseDownListener(event, engine);
 
-      _this.HUD.mouseDownListener(event);
+      _this.HUD.mouseDownListener(event, engine);
     };
 
     _this.mouseEnterListener = function (event) {
@@ -1000,7 +1562,19 @@ function (_super) {
       return _this.camera;
     };
 
+    _this.exit = function () {
+      _this.camera = new Camera_1["default"]();
+      _this.background = new background_1["default"]();
+      _this.Base = new Base_ts_1["default"]();
+      _this.BaseE = new BaseEnemy_ts_1["default"]();
+      _this.HUD = new HUD_ts_1["default"]();
+      var canvas = GameContext_1["default"].context.canvas;
+      GameContext_1["default"].context.clearRect(0, 0, canvas.width, canvas.height);
+    };
+
     _this.enter = function () {
+      _this.BackGroundMusic.play();
+
       _this.camera = new Camera_1["default"]();
       _this.background = new background_1["default"]();
       _this.Base = new Base_ts_1["default"]();
@@ -1033,7 +1607,163 @@ function (_super) {
 }(Scene_1["default"]);
 
 exports["default"] = Playing;
-},{"./Scene":"src/Scene/Scene.ts","../Camera":"src/Camera.ts","../background":"src/background.ts","../HUD.ts":"src/HUD.ts","../Base.ts":"src/Base.ts","../BaseEnemy.ts":"src/BaseEnemy.ts"}],"src/Engine.ts":[function(require,module,exports) {
+},{"./Scene":"src/Scene/Scene.ts","./MainMenu":"src/Scene/MainMenu.ts","../Camera":"src/Camera.ts","../background":"src/background.ts","../HUD.ts":"src/HUD.ts","../Base.ts":"src/Base.ts","../BaseEnemy.ts":"src/BaseEnemy.ts","../../assets/Tears.mp3":"assets/Tears.mp3","../GameContext":"src/GameContext.ts"}],"assets/The_Healing.mp3":[function(require,module,exports) {
+module.exports = "/The_Healing.e43ec224.mp3";
+},{}],"assets/Forest.png":[function(require,module,exports) {
+module.exports = "/Forest.18f49d4c.png";
+},{}],"src/Scene/MainMenu.ts":[function(require,module,exports) {
+"use strict";
+
+var __extends = this && this.__extends || function () {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
+      __proto__: []
+    } instanceof Array && function (d, b) {
+      d.__proto__ = b;
+    } || function (d, b) {
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
+    };
+
+    return _extendStatics(d, b);
+  };
+
+  return function (d, b) {
+    _extendStatics(d, b);
+
+    function __() {
+      this.constructor = d;
+    }
+
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+  };
+}();
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+exports.__esModule = true;
+
+var Scene_1 = __importDefault(require("./Scene"));
+
+var GameContext_1 = __importDefault(require("../GameContext"));
+
+var Playing_1 = __importDefault(require("./Playing"));
+
+var The_Healing_mp3_1 = __importDefault(require("../../assets/The_Healing.mp3"));
+
+var Forest_png_1 = __importDefault(require("../../assets/Forest.png"));
+
+var sound = new Audio(The_Healing_mp3_1["default"]);
+var image = new Image();
+
+var MainMenu =
+/** @class */
+function (_super) {
+  __extends(MainMenu, _super);
+
+  function MainMenu() {
+    var _this = _super !== null && _super.apply(this, arguments) || this;
+
+    _this.Title = "Age Of Animals";
+    _this.options = ["Jugar", "Salir"];
+    _this.selectedOptionIndex = 0;
+    _this.backgroundColorHue = 0;
+    _this.skipUpdate = false;
+
+    _this.handleKeyDown = function (event, engine) {
+      switch (event.key) {
+        case "ArrowUp":
+          _this.selectedOptionIndex = (_this.selectedOptionIndex - 1 + _this.options.length) % _this.options.length;
+          break;
+
+        case "ArrowDown":
+          _this.selectedOptionIndex = (_this.selectedOptionIndex + 1) % _this.options.length;
+          break;
+
+        case "Enter":
+          if (_this.selectedOptionIndex === 0) {
+            sound.pause();
+            engine.clearScreen();
+            engine.changeScene(new Playing_1["default"]());
+          }
+
+          break;
+      }
+    };
+
+    _this.exit = function () {};
+
+    _this.pause = function () {};
+
+    _this.handleKeyUp = function (event) {};
+
+    _this.mouseDownListener = function (event) {};
+
+    _this.mouseEnterListener = function (event) {};
+
+    _this.mouseMoveListener = function (event) {};
+
+    _this.enter = function () {
+      sound.play();
+      image.src = Forest_png_1["default"];
+    };
+
+    _this.render = function () {
+      var context = GameContext_1["default"].context;
+      var _a = context.canvas,
+          width = _a.width,
+          height = _a.height;
+      context.save();
+      context.beginPath();
+      context.drawImage(image, 0, 0);
+      context.closePath();
+      /*if (!this.skipUpdate) {
+        this.backgroundColorHue = (this.backgroundColorHue + 1) % 360;
+      }
+      this.skipUpdate = !this.skipUpdate;
+      context.fillStyle = `hsl(${this.backgroundColorHue}, 100%, 80%)`;
+      context.fillRect(0, 0, width, height);
+      context.fillStyle = "black";
+      */
+
+      context.font = "160px sans-serif";
+      context.fillText(_this.Title, width / 2 - 500, 0 + 400);
+      context.closePath();
+      context.beginPath();
+      context.fillStyle = "black";
+      context.strokeStyle = "darkblue";
+      context.font = "100px sans-serif";
+      context.textAlign = "center";
+
+      for (var i = 0; i < _this.options.length; i++) {
+        var xPoint = width / 2;
+        var yPoint = height * 0.65 + i * 100;
+
+        if (_this.selectedOptionIndex === i) {
+          context.lineWidth = 2;
+          context.strokeText(_this.options[i], xPoint, yPoint);
+        }
+
+        context.fillText(_this.options[i], xPoint, yPoint);
+      }
+
+      context.closePath();
+      context.restore();
+    };
+
+    return _this;
+  }
+
+  return MainMenu;
+}(Scene_1["default"]);
+
+exports["default"] = MainMenu;
+},{"./Scene":"src/Scene/Scene.ts","../GameContext":"src/GameContext.ts","./Playing":"src/Scene/Playing.ts","../../assets/The_Healing.mp3":"assets/The_Healing.mp3","../../assets/Forest.png":"assets/Forest.png"}],"src/Engine.ts":[function(require,module,exports) {
 "use strict";
 
 var __importDefault = this && this.__importDefault || function (mod) {
@@ -1048,7 +1778,7 @@ var GameContext_1 = __importDefault(require("./GameContext"));
 
 var Time_1 = __importDefault(require("./Time"));
 
-var Playing_1 = __importDefault(require("./Scene/Playing"));
+var MainMenu_1 = __importDefault(require("./Scene/MainMenu"));
 
 var Engine =
 /** @class */
@@ -1072,8 +1802,8 @@ function () {
       _this.currentScene.handleKeyUp(event);
     };
 
-    this.mouseDownListener = function (event) {
-      _this.currentScene.mouseDownListener(event);
+    this.mouseDownListener = function (event, engine) {
+      _this.currentScene.mouseDownListener(event, _this);
     };
 
     this.mouseEnterListener = function (event) {
@@ -1083,6 +1813,8 @@ function () {
     this.mouseMoveListener = function (event) {
       _this.currentScene.mouseMoveListener(event);
     };
+
+    this.ScenePause = function (scene) {};
 
     this.changeScene = function (scene) {
       _this.currentScene = scene;
@@ -1105,7 +1837,7 @@ function () {
     };
 
     this.init = function () {
-      _this.currentScene = new Playing_1["default"]();
+      _this.currentScene = new MainMenu_1["default"]();
 
       _this.currentScene.enter();
     }; // Método que se ejecuta en cada frame del juego.
@@ -1128,7 +1860,7 @@ function () {
 }();
 
 exports["default"] = Engine;
-},{"./GameContext":"src/GameContext.ts","./Time":"src/Time.ts","./Scene/Playing":"src/Scene/Playing.ts"}],"src/index.ts":[function(require,module,exports) {
+},{"./GameContext":"src/GameContext.ts","./Time":"src/Time.ts","./Scene/MainMenu":"src/Scene/MainMenu.ts"}],"src/index.ts":[function(require,module,exports) {
 "use strict";
 
 var __importDefault = this && this.__importDefault || function (mod) {
@@ -1182,7 +1914,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50283" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62437" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

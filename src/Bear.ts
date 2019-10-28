@@ -2,20 +2,28 @@
 import Unit from "../src/Unit";
 import image from "../assets/Bear.png";
 import GameContext from "./GameContext";
+export enum State {
+    Attack = -1,
+    Stop = 0,
+    Walk = 1,
+  }
 class Bear extends Unit
 {
     public Pertenece;
     public range;
-    public attack;
+    public attack = 20;
     public xcoord;
+    public life = 400;
     public ycoord;
+    public State: State =  State.Walk;
     private Bear = new Image();
     //animation variables
     private padding;
     private frame = 0;
     private FrameCounter = 0;
     private xCutAnimation = 0;
-    private speed = 3;
+    private speed = 5;
+    public realx = 0;
  
     
     constructor()
@@ -52,22 +60,39 @@ class Bear extends Unit
     }
     public update()
     {
-        this.FrameCounter++;
-        if(this.FrameCounter % 10 == 0){
-            this.frame++;
-        }
-        if(this.frame > 4)
+        if(this.State == State.Walk){
+            this.FrameCounter++;
+            if(this.FrameCounter % 10 == 0){
+                this.frame++;
+            }
+            if(this.frame > 4)
+            {
+                this.frame = 0;
+            }
+            
+                this.xcoord -= this.speed;
+
+                if(this.Pertenece == 1)
+            {
+                this.realx -= this.speed;
+            }
+            else
+                this.realx += this.speed;
+        }else if(this.State == State.Attack)
         {
-            this.frame = 0;
+            this.FrameCounter++;
+            if(this.FrameCounter % 10 == 0){
+                this.frame++;
+            }
+            if(this.frame > 4)
+            {
+                this.frame = 0;
+            }
+
+        }else{
+
         }
-        if(this.Pertenece == 0)
-        {
-            this.xcoord -= this.speed;
-        }
-        else
-        {
-            this.xcoord += this.speed;
-        }
+        
         
 
         

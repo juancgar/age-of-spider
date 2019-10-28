@@ -20,8 +20,8 @@ class Engine {
   public keyupEventHandler = (event: KeyboardEvent) => {
     this.currentScene.handleKeyUp(event);
   };
-  public mouseDownListener = (event: MouseEvent) => {
-    this.currentScene.mouseDownListener(event);
+  public mouseDownListener = (event: MouseEvent,engine: Engine) => {
+    this.currentScene.mouseDownListener(event,this);
   };
   public mouseEnterListener = (event: MouseEvent) => {
     this.currentScene.mouseEnterListener(event);
@@ -31,13 +31,20 @@ class Engine {
 
   };
 
+  public ScenePause = (scene:Scene) =>{
+
+
+  };
+
+
   public changeScene = (scene: Scene) => {
+    
     this.currentScene = scene;
     this.currentScene.enter();
   };
 
   // Limpiar pantalla y dibujar fondo.
-  private clearScreen = () => {
+  public clearScreen = () => {
     const context = GameContext.context;
     const canvas = context.canvas;
     const width = canvas.width;
@@ -53,7 +60,7 @@ class Engine {
   };
 
   public init = () => {
-    this.currentScene = new Playing();
+    this.currentScene = new MainMenu();
     this.currentScene.enter();
   };
 

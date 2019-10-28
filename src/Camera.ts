@@ -17,7 +17,8 @@ class Camera {
   public handleKeyUp = (event: KeyboardEvent) => {
     
   };
-  public mouseDownListener = (event: MouseEvent) => {
+  public mouseDownListener = (event: MouseEvent,engine) => {
+    
     
   };
   public mouseEnterListener = (event: MouseEvent) => {
