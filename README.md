@@ -1,7 +1,4 @@
 
-Editado por: 
-Bernardo Montemayor A01194086
-Juan Carlos Garza Lopez A00822601
 
 
 
@@ -13,6 +10,10 @@ Juan Carlos Garza Lopez A00822601
 # Desarrollo de videojuegos
 
 Repositorio para el curso TC-1021, Desarrollo de Videojuegos.
+
+Editado por: 
+Bernardo Montemayor A01194086
+Juan Carlos Garza Lopez A00822601
 
 ## Instalación
 
