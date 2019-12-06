@@ -8,7 +8,7 @@ import Back from "../../assets/Forest.png";
 const sound = new Audio(audio);
 const image = new Image;
 class MainMenu extends Scene {
-  private Title: string = "Age Of Animals";
+  private Title: string = "Age of Animals";
   private options: string[] = ["Jugar", "Salir"];
   private selectedOptionIndex: number = 0;
   private backgroundColorHue = 0;

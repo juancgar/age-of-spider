@@ -112,7 +112,7 @@ class HUD {
     };
     public render()
     {
-
+        
         this.cont.render();
         const Context = GameContext.context;
         
@@ -203,7 +203,7 @@ class HUD {
     
         Context.closePath();
         Context.closePath();
-
+        Context.restore();
         
     }
 

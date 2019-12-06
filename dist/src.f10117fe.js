@@ -1328,6 +1328,7 @@ function () {
     Context.fill();
     Context.closePath();
     Context.closePath();
+    Context.restore();
   };
 
   HUD.prototype.update = function () {
@@ -1669,7 +1670,7 @@ function (_super) {
   function MainMenu() {
     var _this = _super !== null && _super.apply(this, arguments) || this;
 
-    _this.Title = "Age Of Animals";
+    _this.Title = "Age of Animals";
     _this.options = ["Jugar", "Salir"];
     _this.selectedOptionIndex = 0;
     _this.backgroundColorHue = 0;
@@ -1914,7 +1915,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62437" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54458" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
