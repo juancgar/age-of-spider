@@ -6,8 +6,8 @@ import MainMenu from "./MainMenu";
 import Camera from "../Camera";
 import background from "../background";
 import HUD from "../HUD.ts";
-import Base from "../Base.ts";
-import BaseE from "../BaseEnemy.ts";
+import Base from "../Base";
+import BaseE from "../BaseEnemy";
 import MobCont from "../ControllerMobs";
 import ControllerMobs from "../ControllerMobs";
 import music from "../../assets/Tears.mp3";
@@ -20,8 +20,7 @@ class Playing extends Scene {
   private camera: Camera = null;
   private background: background = null;
   private HUD: HUD = null;
-  private Base: Base = null;
-  private BaseE: BaseE = null;
+
   private MobCont: MobCont = null;
   private BackGroundMusic = new Audio(music);
   public pause = () =>{}
@@ -63,9 +62,8 @@ class Playing extends Scene {
   exit = () =>{
     this.camera = new Camera();
     this.background = new background();  
-    this.Base = new Base();
-    this.BaseE = new BaseE();
-    this.HUD = new HUD();
+
+    this.HUD = new HUD(Base,BaseE);
     const canvas = GameContext.context.canvas;
     GameContext.context.clearRect(0,0,canvas.width,canvas.height);
 
@@ -77,8 +75,7 @@ class Playing extends Scene {
     this.camera = new Camera();
     this.background = new background();
     
-    this.Base = new Base();
-    this.BaseE = new BaseE();
+
     
     this.HUD = new HUD();
 
@@ -101,8 +98,7 @@ class Playing extends Scene {
     
     
     this.background.render();
-    this.Base.render();
-    this.BaseE.render();
+ 
     this.HUD.render();
     
     

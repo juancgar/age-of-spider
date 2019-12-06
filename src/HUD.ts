@@ -5,6 +5,8 @@ import IA from "./IA";
 import engine from "./Engine";
 import Pause from "./Scene/Pause";
 import Scene from "./Scene/Playing";
+import Base from "./Base"
+import BaseE from "./BaseEnemy";
 import Playing from "./Scene/Playing";
 class HUD {
 
@@ -12,9 +14,11 @@ class HUD {
     private HUD = new Image;
     public positionX: number = -50;
     private color = "#A4A5A3";
+    
     private cont : ControllerMobs = null;
     private IA : IA = null;
     private Play : Playing = null;
+    private enemyTimer = 200;
     ///alphas for each button
     private a1 = 0;
     private a2 = 0;
@@ -31,64 +35,43 @@ class HUD {
     private stateBoton5 = true;
     private backColor = "green"
 
+    private timer = 200;
+
     constructor()
     {
         
         this.HUD.src = image;
         this.cont = new ControllerMobs();
+        
+        
         this.IA = new IA();
     }
     public mouseDownListener = (event: MouseEvent) => {
         
-        if(event.offsetX > this.positionX +214 && event.offsetX < this.positionX +214+100 && event.offsetY > 230 && event.offsetY <326 )
-        {
-            if(this.stateBoton1){
-                this.a1 = .6;
-                this.stateBoton1 = false;
-            }
-            else{
-                this.a1 = 0;
-                this.stateBoton1 = true;
-            }
-            this.cont.addmobs(0,this.ally);
-        }
-
-        if(event.offsetX > this.positionX + 214 + 93*2 && event.offsetX < this.positionX +214+100 + 93*2 && event.offsetY > 230 && event.offsetY <326 )
-        {
-            if(this.stateBoton2){
-                this.a2 = .6;
-                this.stateBoton2 = false;
-            }
-            else{
-                this.a2 = 0;
-                this.stateBoton2 = true;
-            }
-            this.cont.addmobs(2,this.ally);
-        }
-        if(event.offsetX > this.positionX + 214 + 93*4 && event.offsetX < this.positionX +214+100 + 93*4 && event.offsetY > 230 && event.offsetY <326 )
-        {
-            if(this.stateBoton3){
-                this.a3 = .6;
-                this.stateBoton3 = false;
-            }
-            else{
-                this.a3 = 0;
-                this.stateBoton3 = true;
-            }
-            this.cont.addmobs(1,this.ally);
-        }
-        if(event.offsetX > this.positionX + 214 + 93*6 && event.offsetX < this.positionX +214+100 + 93*6 && event.offsetY > 230 && event.offsetY <326 )
+        if(this.timer > 200 && event.offsetX > this.positionX +214 && event.offsetX < this.positionX +214+100 && event.offsetY > 230 && event.offsetY <326 )
         {
             
-            if(this.stateBoton4){
-                this.a4 = .6;
-                this.stateBoton4 = false;
-            }
-            else{
-                this.a4 = 0;
-                this.stateBoton4 = true;
-            }
+            this.cont.addmobs(0,this.ally);
+            this.timer = 0;
+        }
+
+        if(this.timer > 200 && event.offsetX > this.positionX + 214 + 93*2 && event.offsetX < this.positionX +214+100 + 93*2 && event.offsetY > 230 && event.offsetY <326 )
+        {
+
+            this.cont.addmobs(2,this.ally);
+            this.timer = 0;
+        }
+        if(this.timer > 200 && event.offsetX > this.positionX + 214 + 93*4 && event.offsetX < this.positionX +214+100 + 93*4 && event.offsetY > 230 && event.offsetY <326 )
+        {
+
+            this.cont.addmobs(1,this.ally);
+            this.timer = 0;
+        }
+        if(this.timer > 200 && event.offsetX > this.positionX + 214 + 93*6 && event.offsetX < this.positionX +214+100 + 93*6 && event.offsetY > 230 && event.offsetY <326 )
+        {
+  
         this.cont.addmobs(3,this.ally);
+        this.timer = 0;
             
             
         }
@@ -214,13 +197,29 @@ class HUD {
         const Context = GameContext.context;
         this.positionX = Canvas.scrollLeft;
         this.cont.update();
-    
+        
+        this.timer =this.timer + 1;
+        this.enemyTimer = this.enemyTimer +1;
+        if(this.timer >= 200)
+        {
+        this.a1 = .0;
+        this.a2 = .0;
+        this.a3 = .0;
+        this.a4 = .0;
+        }
+        else
+        {
+        this.a1 = .6;
+        this.a2 = .6;
+        this.a3 = .6;
+        this.a4 = .6;
+
+        }
         let rand = this.IA.update();
-        console.log(rand);
+        
         if(rand <= 3 && rand >= 0)
-            this.cont.addmobs(rand,1);
-        
-        
+            if(this.enemyTimer >= 200)
+                this.cont.addmobs(rand,1);
     }
 
 

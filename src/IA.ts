@@ -10,7 +10,7 @@ class IA{
     {
         
         this.frameCounter++;
-        let rand = Math.floor(Math.random() * 4);
+        let rand = Math.floor(Math.random() * 7);
         if(this.frameCounter % 100 == 0)
             {
                 return rand;                

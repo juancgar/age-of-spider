@@ -14,13 +14,13 @@ class BaseEnemy {
         this.ycoord = 550;
         this.xcoord = GameContext.context.canvas.width+1210;
     }
-    private getLife()
+    public getLife()
     {
 
         return this.vida;
     }
 
-    private subsLife(x:number)
+    public subsLife(x:number)
     {
         this.vida -= x;
 

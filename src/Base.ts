@@ -14,13 +14,13 @@ class Base {
         this.ycoord = 550;
         this.xcoord = GameContext.context.canvas.width/2 * -1 + -10;
     }
-    private getLife()
+    public getLife()
     {
 
         return this.vida;
     }
 
-    private subsLife(x:number)
+    public subsLife(x:number)
     {
         this.vida -= x;
 

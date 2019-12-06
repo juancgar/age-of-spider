@@ -5,9 +5,11 @@ import GameContext from "./GameContext";
 import bat from "./bat";
 import Bear from "./Bear";
 import Tiger from "./Tiger";
+import Base from "./Base"
+import BaseE from "./BaseEnemy";
 import { all } from "q";
-
 import { Queue } from 'queue-typescript';
+
 
 export enum State {
     Attack = -1,
@@ -114,15 +116,21 @@ class unidad
 }
 class ControllerMobs
 {
-    
+ 
+
     private Ally = new Queue<unidad>();
     public Enemy = new Queue<unidad>();
 
+    private BaseA : Base = null;
+    private BaseB : BaseE = null;
+
+    private initial = false;
     private gameState: State = State.Walk;
 
     constructor()
     {
-        
+        this.BaseA = new Base();
+        this.BaseB = new BaseE();
     }
 
     private setAttack()
@@ -130,7 +138,14 @@ class ControllerMobs
         
       
     }
-    
+    public subtractLifeAlly(attack) 
+    {
+        this.BaseA.subsLife(attack);
+    }
+    public subtractLifeEnemy(attack)
+    {
+        this.BaseB.subsLife(attack);
+    }
     public update()
     {
         
@@ -143,11 +158,27 @@ class ControllerMobs
         for(let unit of this.Ally.toArray()){
             unit.update();
         }
+
+        //deque and take life from enemy base
+        
+        if(this.Ally.front != null && this.Ally.front.getXcoord() >= 4000)
+        {
+            this.subtractLifeEnemy(this.Ally.front.accessObject().attack);
+            this.Ally.dequeue();
+            
+        }
+        if(this.Enemy.front != null && this.Enemy.front.getXcoord() <= 200)
+        {
+            this.subtractLifeAlly(this.Enemy.front.accessObject().attack);
+            this.Enemy.dequeue();
+            
+        }
        
 
         //check for an attack
         if((this.Ally.front != null && this.Enemy.front != null))
         {
+            
             if(this.Ally.front.life < 0)
                 this.Ally.dequeue();
             if(this.Enemy.front.life < 0)
@@ -179,7 +210,7 @@ class ControllerMobs
         }
         if(Ally.accessObject().State == State.Attack && Enemy.accessObject().State == State.Attack )
         {
-            console.log(Ally.life + "   " + Enemy.life);
+           
             
                 Ally.life -= Enemy.accessObject().attack;
                 Enemy.life -= Ally.accessObject().attack;
@@ -190,6 +221,7 @@ class ControllerMobs
     private checkFront()
     {
         if(this.Enemy.front != null){
+            
             let temp = this.Enemy.toArray();
             let len = temp.length;
 
@@ -210,6 +242,7 @@ class ControllerMobs
             }
         }
         if(this.Ally.front != null){
+            
             let temp = this.Ally.toArray();
             let len = temp.length;
             if(this.Ally.front != null && this.Enemy.front == null)
@@ -229,6 +262,8 @@ class ControllerMobs
                 
             }
         }
+        this.BaseA.update();
+        this.BaseB.update();
     }
     public render()
     {
@@ -240,7 +275,8 @@ class ControllerMobs
             unit.render();
         }
 //ally
-        
+    this.BaseA.render();
+    this.BaseB.render();
        
     }
     // x tipo 0-3 and y 0 || 1  0-> ally 1 ->enemy
@@ -331,7 +367,7 @@ class ControllerMobs
 
         }
         
-
+        
       
     }
 

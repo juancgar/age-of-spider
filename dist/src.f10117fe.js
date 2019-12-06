@@ -862,7 +862,114 @@ function (_super) {
 
 ;
 exports["default"] = Tiger;
-},{"../src/Unit":"src/Unit.ts","../assets/tigers.png":"assets/tigers.png","./GameContext":"src/GameContext.ts"}],"node_modules/linked-list-typescript/lib/src/index.js":[function(require,module,exports) {
+},{"../src/Unit":"src/Unit.ts","../assets/tigers.png":"assets/tigers.png","./GameContext":"src/GameContext.ts"}],"assets/base.png":[function(require,module,exports) {
+module.exports = "/base.881e12d6.png";
+},{}],"src/Base.ts":[function(require,module,exports) {
+"use strict";
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+exports.__esModule = true;
+
+var GameContext_1 = __importDefault(require("./GameContext"));
+
+var base_png_1 = __importDefault(require("../assets/base.png"));
+
+var Base =
+/** @class */
+function () {
+  function Base() {
+    this.vida = 3000;
+    this.xcoord = 0;
+    this.ycoord = 200;
+    this.Base = new Image();
+    this.Base.src = base_png_1["default"];
+    this.ycoord = 550;
+    this.xcoord = GameContext_1["default"].context.canvas.width / 2 * -1 + -10;
+  }
+
+  Base.prototype.getLife = function () {
+    return this.vida;
+  };
+
+  Base.prototype.subsLife = function (x) {
+    this.vida -= x;
+  };
+
+  Base.prototype.render = function () {
+    var Context = GameContext_1["default"].context;
+    Context.beginPath();
+    Context.save();
+    Context.drawImage(this.Base, this.xcoord, this.ycoord, 600, 600);
+    Context.restore();
+    Context.closePath();
+  };
+
+  Base.prototype.update = function () {};
+
+  return Base;
+}();
+
+;
+exports["default"] = Base;
+},{"./GameContext":"src/GameContext.ts","../assets/base.png":"assets/base.png"}],"src/BaseEnemy.ts":[function(require,module,exports) {
+"use strict";
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+exports.__esModule = true;
+
+var GameContext_1 = __importDefault(require("./GameContext"));
+
+var base_png_1 = __importDefault(require("../assets/base.png"));
+
+var BaseEnemy =
+/** @class */
+function () {
+  function BaseEnemy() {
+    this.vida = 3000;
+    this.xcoord = 0;
+    this.ycoord = 200;
+    this.Base = new Image();
+    this.Base.src = base_png_1["default"];
+    this.ycoord = 550;
+    this.xcoord = GameContext_1["default"].context.canvas.width + 1210;
+  }
+
+  BaseEnemy.prototype.getLife = function () {
+    return this.vida;
+  };
+
+  BaseEnemy.prototype.subsLife = function (x) {
+    this.vida -= x;
+  };
+
+  BaseEnemy.prototype.render = function () {
+    var Context = GameContext_1["default"].context;
+    Context.beginPath();
+    Context.save();
+    Context.scale(-1, 1);
+    Context.drawImage(this.Base, -this.xcoord, this.ycoord, 600, 600);
+    Context.restore();
+    Context.closePath();
+  };
+
+  BaseEnemy.prototype.update = function () {};
+
+  return BaseEnemy;
+}();
+
+;
+exports["default"] = BaseEnemy;
+},{"./GameContext":"src/GameContext.ts","../assets/base.png":"assets/base.png"}],"node_modules/linked-list-typescript/lib/src/index.js":[function(require,module,exports) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class LinkedList {
@@ -1113,6 +1220,10 @@ var Bear_1 = __importDefault(require("./Bear"));
 
 var Tiger_1 = __importDefault(require("./Tiger"));
 
+var Base_1 = __importDefault(require("./Base"));
+
+var BaseEnemy_1 = __importDefault(require("./BaseEnemy"));
+
 var queue_typescript_1 = require("queue-typescript");
 
 var State;
@@ -1190,6 +1301,9 @@ function () {
 
     this.Ally = new queue_typescript_1.Queue();
     this.Enemy = new queue_typescript_1.Queue();
+    this.BaseA = null;
+    this.BaseB = null;
+    this.initial = false;
     this.gameState = State.Walk; // x tipo 0-3 and y 0 || 1  0-> ally 1 ->enemy
 
     this.addmobs = function (x, y) {
@@ -1271,9 +1385,20 @@ function () {
         }
       }
     };
+
+    this.BaseA = new Base_1["default"]();
+    this.BaseB = new BaseEnemy_1["default"]();
   }
 
   ControllerMobs.prototype.setAttack = function () {};
+
+  ControllerMobs.prototype.subtractLifeAlly = function (attack) {
+    this.BaseA.subsLife(attack);
+  };
+
+  ControllerMobs.prototype.subtractLifeEnemy = function (attack) {
+    this.BaseB.subsLife(attack);
+  };
 
   ControllerMobs.prototype.update = function () {
     this.checkFront();
@@ -1286,6 +1411,17 @@ function () {
     for (var _b = 0, _c = this.Ally.toArray(); _b < _c.length; _b++) {
       var unit = _c[_b];
       unit.update();
+    } //deque and take life from enemy base
+
+
+    if (this.Ally.front != null && this.Ally.front.getXcoord() >= 4000) {
+      this.subtractLifeEnemy(this.Ally.front.accessObject().attack);
+      this.Ally.dequeue();
+    }
+
+    if (this.Enemy.front != null && this.Enemy.front.getXcoord() <= 200) {
+      this.subtractLifeAlly(this.Enemy.front.accessObject().attack);
+      this.Enemy.dequeue();
     } //check for an attack
 
 
@@ -1311,7 +1447,6 @@ function () {
     }
 
     if (Ally.accessObject().State == State.Attack && Enemy.accessObject().State == State.Attack) {
-      console.log(Ally.life + "   " + Enemy.life);
       Ally.life -= Enemy.accessObject().attack;
       Enemy.life -= Ally.accessObject().attack;
     }
@@ -1345,6 +1480,9 @@ function () {
         }
       }
     }
+
+    this.BaseA.update();
+    this.BaseB.update();
   };
 
   ControllerMobs.prototype.render = function () {
@@ -1359,6 +1497,9 @@ function () {
       unit.render();
     } //ally
 
+
+    this.BaseA.render();
+    this.BaseB.render();
   };
 
   return ControllerMobs;
@@ -1366,7 +1507,7 @@ function () {
 
 ;
 exports["default"] = ControllerMobs;
-},{"./Lion":"src/Lion.ts","./bat":"src/bat.ts","./GameContext":"src/GameContext.ts","./Bear":"src/Bear.ts","./Tiger":"src/Tiger.ts","queue-typescript":"node_modules/queue-typescript/lib/src/index.js"}],"src/IA.ts":[function(require,module,exports) {
+},{"./Lion":"src/Lion.ts","./bat":"src/bat.ts","./GameContext":"src/GameContext.ts","./Bear":"src/Bear.ts","./Tiger":"src/Tiger.ts","./Base":"src/Base.ts","./BaseEnemy":"src/BaseEnemy.ts","queue-typescript":"node_modules/queue-typescript/lib/src/index.js"}],"src/IA.ts":[function(require,module,exports) {
 "use strict";
 
 exports.__esModule = true;
@@ -1381,7 +1522,7 @@ function () {
 
   IA.prototype.update = function () {
     this.frameCounter++;
-    var rand = Math.floor(Math.random() * 4);
+    var rand = Math.floor(Math.random() * 7);
 
     if (this.frameCounter % 100 == 0) {
       return rand;
@@ -1425,7 +1566,8 @@ function () {
     this.color = "#A4A5A3";
     this.cont = null;
     this.IA = null;
-    this.Play = null; ///alphas for each button
+    this.Play = null;
+    this.enemyTimer = 200; ///alphas for each button
 
     this.a1 = 0;
     this.a2 = 0;
@@ -1439,54 +1581,31 @@ function () {
     this.stateBoton4 = false;
     this.stateBoton5 = true;
     this.backColor = "green";
+    this.timer = 200;
 
     this.mouseDownListener = function (event) {
-      if (event.offsetX > _this.positionX + 214 && event.offsetX < _this.positionX + 214 + 100 && event.offsetY > 230 && event.offsetY < 326) {
-        if (_this.stateBoton1) {
-          _this.a1 = .6;
-          _this.stateBoton1 = false;
-        } else {
-          _this.a1 = 0;
-          _this.stateBoton1 = true;
-        }
-
+      if (_this.timer > 200 && event.offsetX > _this.positionX + 214 && event.offsetX < _this.positionX + 214 + 100 && event.offsetY > 230 && event.offsetY < 326) {
         _this.cont.addmobs(0, _this.ally);
+
+        _this.timer = 0;
       }
 
-      if (event.offsetX > _this.positionX + 214 + 93 * 2 && event.offsetX < _this.positionX + 214 + 100 + 93 * 2 && event.offsetY > 230 && event.offsetY < 326) {
-        if (_this.stateBoton2) {
-          _this.a2 = .6;
-          _this.stateBoton2 = false;
-        } else {
-          _this.a2 = 0;
-          _this.stateBoton2 = true;
-        }
-
+      if (_this.timer > 200 && event.offsetX > _this.positionX + 214 + 93 * 2 && event.offsetX < _this.positionX + 214 + 100 + 93 * 2 && event.offsetY > 230 && event.offsetY < 326) {
         _this.cont.addmobs(2, _this.ally);
+
+        _this.timer = 0;
       }
 
-      if (event.offsetX > _this.positionX + 214 + 93 * 4 && event.offsetX < _this.positionX + 214 + 100 + 93 * 4 && event.offsetY > 230 && event.offsetY < 326) {
-        if (_this.stateBoton3) {
-          _this.a3 = .6;
-          _this.stateBoton3 = false;
-        } else {
-          _this.a3 = 0;
-          _this.stateBoton3 = true;
-        }
-
+      if (_this.timer > 200 && event.offsetX > _this.positionX + 214 + 93 * 4 && event.offsetX < _this.positionX + 214 + 100 + 93 * 4 && event.offsetY > 230 && event.offsetY < 326) {
         _this.cont.addmobs(1, _this.ally);
+
+        _this.timer = 0;
       }
 
-      if (event.offsetX > _this.positionX + 214 + 93 * 6 && event.offsetX < _this.positionX + 214 + 100 + 93 * 6 && event.offsetY > 230 && event.offsetY < 326) {
-        if (_this.stateBoton4) {
-          _this.a4 = .6;
-          _this.stateBoton4 = false;
-        } else {
-          _this.a4 = 0;
-          _this.stateBoton4 = true;
-        }
-
+      if (_this.timer > 200 && event.offsetX > _this.positionX + 214 + 93 * 6 && event.offsetX < _this.positionX + 214 + 100 + 93 * 6 && event.offsetY > 230 && event.offsetY < 326) {
         _this.cont.addmobs(3, _this.ally);
+
+        _this.timer = 0;
       }
 
       if (event.offsetX > _this.positionX + 214 + 93 * 20 && event.offsetX < _this.positionX + 214 + 100 + 93 * 20 && event.offsetY > 230 && event.offsetY < 326) {
@@ -1583,9 +1702,23 @@ function () {
     var Context = GameContext_1["default"].context;
     this.positionX = Canvas.scrollLeft;
     this.cont.update();
+    this.timer = this.timer + 1;
+    this.enemyTimer = this.enemyTimer + 1;
+
+    if (this.timer >= 200) {
+      this.a1 = .0;
+      this.a2 = .0;
+      this.a3 = .0;
+      this.a4 = .0;
+    } else {
+      this.a1 = .6;
+      this.a2 = .6;
+      this.a3 = .6;
+      this.a4 = .6;
+    }
+
     var rand = this.IA.update();
-    console.log(rand);
-    if (rand <= 3 && rand >= 0) this.cont.addmobs(rand, 1);
+    if (rand <= 3 && rand >= 0) if (this.enemyTimer >= 200) this.cont.addmobs(rand, 1);
   };
 
   return HUD;
@@ -1593,114 +1726,7 @@ function () {
 
 ;
 exports["default"] = HUD;
-},{"./GameContext":"src/GameContext.ts","../assets/HUD.png":"assets/HUD.png","./ControllerMobs":"src/ControllerMobs.ts","./IA":"src/IA.ts"}],"assets/base.png":[function(require,module,exports) {
-module.exports = "/base.881e12d6.png";
-},{}],"src/Base.ts":[function(require,module,exports) {
-"use strict";
-
-var __importDefault = this && this.__importDefault || function (mod) {
-  return mod && mod.__esModule ? mod : {
-    "default": mod
-  };
-};
-
-exports.__esModule = true;
-
-var GameContext_1 = __importDefault(require("./GameContext"));
-
-var base_png_1 = __importDefault(require("../assets/base.png"));
-
-var Base =
-/** @class */
-function () {
-  function Base() {
-    this.vida = 3000;
-    this.xcoord = 0;
-    this.ycoord = 200;
-    this.Base = new Image();
-    this.Base.src = base_png_1["default"];
-    this.ycoord = 550;
-    this.xcoord = GameContext_1["default"].context.canvas.width / 2 * -1 + -10;
-  }
-
-  Base.prototype.getLife = function () {
-    return this.vida;
-  };
-
-  Base.prototype.subsLife = function (x) {
-    this.vida -= x;
-  };
-
-  Base.prototype.render = function () {
-    var Context = GameContext_1["default"].context;
-    Context.beginPath();
-    Context.save();
-    Context.drawImage(this.Base, this.xcoord, this.ycoord, 600, 600);
-    Context.restore();
-    Context.closePath();
-  };
-
-  Base.prototype.update = function () {};
-
-  return Base;
-}();
-
-;
-exports["default"] = Base;
-},{"./GameContext":"src/GameContext.ts","../assets/base.png":"assets/base.png"}],"src/BaseEnemy.ts":[function(require,module,exports) {
-"use strict";
-
-var __importDefault = this && this.__importDefault || function (mod) {
-  return mod && mod.__esModule ? mod : {
-    "default": mod
-  };
-};
-
-exports.__esModule = true;
-
-var GameContext_1 = __importDefault(require("./GameContext"));
-
-var base_png_1 = __importDefault(require("../assets/base.png"));
-
-var BaseEnemy =
-/** @class */
-function () {
-  function BaseEnemy() {
-    this.vida = 3000;
-    this.xcoord = 0;
-    this.ycoord = 200;
-    this.Base = new Image();
-    this.Base.src = base_png_1["default"];
-    this.ycoord = 550;
-    this.xcoord = GameContext_1["default"].context.canvas.width + 1210;
-  }
-
-  BaseEnemy.prototype.getLife = function () {
-    return this.vida;
-  };
-
-  BaseEnemy.prototype.subsLife = function (x) {
-    this.vida -= x;
-  };
-
-  BaseEnemy.prototype.render = function () {
-    var Context = GameContext_1["default"].context;
-    Context.beginPath();
-    Context.save();
-    Context.scale(-1, 1);
-    Context.drawImage(this.Base, -this.xcoord, this.ycoord, 600, 600);
-    Context.restore();
-    Context.closePath();
-  };
-
-  BaseEnemy.prototype.update = function () {};
-
-  return BaseEnemy;
-}();
-
-;
-exports["default"] = BaseEnemy;
-},{"./GameContext":"src/GameContext.ts","../assets/base.png":"assets/base.png"}],"assets/Tears.mp3":[function(require,module,exports) {
+},{"./GameContext":"src/GameContext.ts","../assets/HUD.png":"assets/HUD.png","./ControllerMobs":"src/ControllerMobs.ts","./IA":"src/IA.ts"}],"assets/Tears.mp3":[function(require,module,exports) {
 module.exports = "/Tears.4a1c11f6.mp3";
 },{}],"src/Scene/Pause.ts":[function(require,module,exports) {
 "use strict";
@@ -1885,9 +1911,9 @@ var background_1 = __importDefault(require("../background"));
 
 var HUD_ts_1 = __importDefault(require("../HUD.ts"));
 
-var Base_ts_1 = __importDefault(require("../Base.ts"));
+var Base_1 = __importDefault(require("../Base"));
 
-var BaseEnemy_ts_1 = __importDefault(require("../BaseEnemy.ts"));
+var BaseEnemy_1 = __importDefault(require("../BaseEnemy"));
 
 var Tears_mp3_1 = __importDefault(require("../../assets/Tears.mp3"));
 
@@ -1906,8 +1932,6 @@ function (_super) {
     _this.camera = null;
     _this.background = null;
     _this.HUD = null;
-    _this.Base = null;
-    _this.BaseE = null;
     _this.MobCont = null;
     _this.BackGroundMusic = new Audio(Tears_mp3_1["default"]);
 
@@ -1951,9 +1975,7 @@ function (_super) {
     _this.exit = function () {
       _this.camera = new Camera_1["default"]();
       _this.background = new background_1["default"]();
-      _this.Base = new Base_ts_1["default"]();
-      _this.BaseE = new BaseEnemy_ts_1["default"]();
-      _this.HUD = new HUD_ts_1["default"]();
+      _this.HUD = new HUD_ts_1["default"](Base_1["default"], BaseEnemy_1["default"]);
       var canvas = GameContext_1["default"].context.canvas;
       GameContext_1["default"].context.clearRect(0, 0, canvas.width, canvas.height);
     };
@@ -1963,8 +1985,6 @@ function (_super) {
 
       _this.camera = new Camera_1["default"]();
       _this.background = new background_1["default"]();
-      _this.Base = new Base_ts_1["default"]();
-      _this.BaseE = new BaseEnemy_ts_1["default"]();
       _this.HUD = new HUD_ts_1["default"]();
     };
 
@@ -1979,10 +1999,6 @@ function (_super) {
 
       _this.background.render();
 
-      _this.Base.render();
-
-      _this.BaseE.render();
-
       _this.HUD.render();
     };
 
@@ -1993,7 +2009,7 @@ function (_super) {
 }(Scene_1["default"]);
 
 exports["default"] = Playing;
-},{"./Scene":"src/Scene/Scene.ts","../Camera":"src/Camera.ts","../background":"src/background.ts","../HUD.ts":"src/HUD.ts","../Base.ts":"src/Base.ts","../BaseEnemy.ts":"src/BaseEnemy.ts","../../assets/Tears.mp3":"assets/Tears.mp3","../GameContext":"src/GameContext.ts","./Pause":"src/Scene/Pause.ts"}],"assets/The_Healing.mp3":[function(require,module,exports) {
+},{"./Scene":"src/Scene/Scene.ts","../Camera":"src/Camera.ts","../background":"src/background.ts","../HUD.ts":"src/HUD.ts","../Base":"src/Base.ts","../BaseEnemy":"src/BaseEnemy.ts","../../assets/Tears.mp3":"assets/Tears.mp3","../GameContext":"src/GameContext.ts","./Pause":"src/Scene/Pause.ts"}],"assets/The_Healing.mp3":[function(require,module,exports) {
 module.exports = "/The_Healing.e43ec224.mp3";
 },{}],"assets/Forest.png":[function(require,module,exports) {
 module.exports = "/Forest.18f49d4c.png";
@@ -2300,7 +2316,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52413" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54795" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
