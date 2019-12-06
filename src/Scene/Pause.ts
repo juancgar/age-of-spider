@@ -12,9 +12,11 @@ class Pause extends Scene {
   private PScene: Scene = null;
 
 
-  constructor()
+  constructor(Playing)
   {
+      
       super();
+      this.PScene = Playing;
       
 
   }

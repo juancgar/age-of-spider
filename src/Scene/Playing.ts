@@ -2,6 +2,7 @@ import Scene from "./Scene";
 
 import Engine from "../Engine";
 import MainMenu from "./MainMenu";
+
 import Camera from "../Camera";
 import background from "../background";
 import HUD from "../HUD.ts";
@@ -34,7 +35,7 @@ class Playing extends Scene {
       this.BackGroundMusic.pause();
       engine.clearScreen();
       
-      engine.changeScene(new MainMenu());
+      engine.changeScene(new Pause(temp));
     }
     
   };

@@ -7,6 +7,8 @@ import Bear from "./Bear";
 import Tiger from "./Tiger";
 import { all } from "q";
 
+import { Queue } from 'queue-typescript';
+
 export enum State {
     Attack = -1,
     Stop = 0,
@@ -16,6 +18,8 @@ export enum State {
 
 class unidad
 {
+
+    public life;
     tipo: number;
     // 0 = bat
     Bat: Bat;
@@ -89,15 +93,21 @@ class unidad
         if(x == 0)
         {
             this.Bat = new Bat();
+            this.life = this.Bat.life;
         }
         else if(x == 2)
         {
             this.Bear = new Bear();
+            this.life = this.Bear.life;
         }
-        else if(x == 1)
+        else if(x == 1){
             this.Lion = new Lion();
-        else if(x == 3)
+            this.life = this.Lion.life;
+        }
+        else if(x == 3){
             this.Tiger = new Tiger();
+            this.life = this.Tiger.life;
+        }
     }
 
     
@@ -105,12 +115,8 @@ class unidad
 class ControllerMobs
 {
     
-    public EnemyArr : Array<unidad> = [];
-    public allyHead =0;
-    public enemyHead = 0;
-    public Arr : Array<unidad> = [];
-    private spawnE = false;
-    private spawnA = false;
+    private Ally = new Queue<unidad>();
+    public Enemy = new Queue<unidad>();
 
     private gameState: State = State.Walk;
 
@@ -122,105 +128,119 @@ class ControllerMobs
     private setAttack()
     {
         
-        if(this.EnemyArr != undefined)
-        {
-
-            let len = this.EnemyArr.length;
-            for(let i = 1; i < len;i++)
-            {
-                this.EnemyArr[i].setState(State.Stop);
-                
-                    
-            }
-        }
-//ally
-        if(this.Arr != undefined)
-        {
-            let len = this.Arr.length;
-            for(let i = 1; i < len;i++)
-            {
-                this.Arr[i].setState(State.Stop);
-            }
-        }
+      
     }
     
     public update()
     {
         
         
+        this.checkFront();
         
-        
-        //enemy
-        
-
-        //Atack Logic
-        if(this.gameState == State.Walk){
-            if(this.spawnE && this.spawnA){
-                console.log(this.Arr[this.allyHead].getXcoord() + " " + this.EnemyArr[this.enemyHead].getXcoord());
-                if(this.Arr[this.allyHead].getXcoord() + 600 >= this.EnemyArr[this.enemyHead].getXcoord())
-                {
-                    console.log("encuentro");
-                    this.Arr[this.allyHead].setState(State.Attack);
-                    this.EnemyArr[this.enemyHead].setState(State.Attack);
-                    this.setAttack();
-                }
-
-            }
-
-            if(this.EnemyArr != undefined)
-            {
-
-                let len = this.EnemyArr.length;
-                for(let i = 0; i < len;i++)
-                {
-                    this.EnemyArr[i].update();
-                    this.spawnE = true;
-                        
-                }
-            }
-    //ally
-            if(this.Arr != undefined)
-            {
-                let len = this.Arr.length;
-                for(let i = 0; i < len;i++)
-                {
-                    this.Arr[i].update();
-                    
-                    this.spawnA = true;
-                }
-            }
-        
-
+        for(let unit of this.Enemy.toArray()){
+            unit.update();
         }
+        for(let unit of this.Ally.toArray()){
+            unit.update();
+        }
+       
+
+        //check for an attack
+        if((this.Ally.front != null && this.Enemy.front != null))
+        {
+            if(this.Ally.front.life < 0)
+                this.Ally.dequeue();
+            if(this.Enemy.front.life < 0)
+                this.Enemy.dequeue();
+            
+        }
+        if((this.Ally.front != null && this.Enemy.front != null))
+            this.checkAttack(this.Enemy.front,this.Ally.front);
     
-    else if(this.gameState == State.Attack)
+
+    }
+
+    private checkAttack(Ally: unidad, Enemy:unidad)
     {
 
-        this.Arr[this.allyHead]
-    }
-    
+        if(Ally.accessObject().State != State.Attack ||Enemy.accessObject().State != State.Attack ){
+            if(Math.abs(Ally.getXcoord() - Enemy.getXcoord()) <= 400 )
+                {
+                    Ally.setState(State.Attack);
+                    Enemy.setState(State.Attack);
+                    return true;
+                }
+            else if( Math.abs(Ally.getXcoord() - Enemy.getXcoord()) >= 500){
+                Ally.setState(State.Walk);
+                Enemy.setState(State.Walk);
+                return false;
 
+            }
+        }
+        if(Ally.accessObject().State == State.Attack && Enemy.accessObject().State == State.Attack )
+        {
+            console.log(Ally.life + "   " + Enemy.life);
+            
+                Ally.life -= Enemy.accessObject().attack;
+                Enemy.life -= Ally.accessObject().attack;
+ 
+        }
+    }
+
+    private checkFront()
+    {
+        if(this.Enemy.front != null){
+            let temp = this.Enemy.toArray();
+            let len = temp.length;
+
+            if(this.Enemy.front != null && this.Ally.front == null)
+                this.Enemy.front.setState(State.Walk);
+            for(let i = 1; i < len;i++)
+            {
+                
+                    
+                    if(Math.abs(temp[i].getXcoord()-temp[i-1].getXcoord()) <= 300)
+                        {
+                            temp[i].setState(State.Stop);
+                        }
+                    else
+                    {
+                        temp[i].setState(State.Walk);
+                    } 
+            }
+        }
+        if(this.Ally.front != null){
+            let temp = this.Ally.toArray();
+            let len = temp.length;
+            if(this.Ally.front != null && this.Enemy.front == null)
+                this.Ally.front.setState(State.Walk);
+            for(let i = 1; i < len;i++)
+            {
+               
+                    
+                    if(Math.abs(temp[i].getXcoord()-temp[i-1].getXcoord()) <= 300)
+                        {
+                            temp[i].setState(State.Stop);
+                        }
+                        else
+                        {
+                            temp[i].setState(State.Walk);
+                        }
+                
+            }
+        }
     }
     public render()
     {
         //enemy
-        if(this.EnemyArr != undefined)
-        {
-            let len = this.EnemyArr.length;
-            for(let i = 0; i < len;i++)
-            {
-                this.EnemyArr[i].render();
-            }
+        for(let unit of this.Enemy.toArray()){
+            unit.render()
+        }
+        for(let unit of this.Ally.toArray()){
+            unit.render();
         }
 //ally
-        if(this.Arr != undefined)
-        {
-            let len = this.Arr.length;
-            for(let i = 0; i < len;i++)
-            {
-                this.Arr[i].render();
-            }
-        }
+        
        
     }
     // x tipo 0-3 and y 0 || 1  0-> ally 1 ->enemy
@@ -236,7 +256,7 @@ class ControllerMobs
                 uni1.Bat.Pertenece = y;
                 uni1.Bat.State = State.Walk;
                 uni1.Bat.realx = 0;
-                this.Arr.push(uni1);
+                this.Ally.enqueue(uni1);
                 
 
             }else if (x == 2){
@@ -247,7 +267,7 @@ class ControllerMobs
                  uni2.Bear.Pertenece = y;
                  uni2.Bear.realx = 0;
                  uni2.Bear.State = State.Walk;
-                this.Arr.push(uni2);
+                this.Ally.enqueue(uni2);
             }
             else if (x == 1){
                 
@@ -257,7 +277,7 @@ class ControllerMobs
                 uni2.Lion.Pertenece = y;
                 uni2.Lion.State = State.Walk;
                 uni2.Lion.realx = 0;
-                this.Arr.push(uni2);
+                this.Ally.enqueue(uni2);
         }
         else if (x == 3){
                 
@@ -267,7 +287,7 @@ class ControllerMobs
             uni2.Tiger.Pertenece = y;
             uni2.Tiger.realx = 0;
             uni2.Tiger.State = State.Walk;
-            this.Arr.push(uni2);
+            this.Ally.enqueue(uni2);
     }
     //enemy
 
@@ -279,7 +299,7 @@ class ControllerMobs
                 uni1.Bat.ycoord = 900;
                 uni1.Bat.Pertenece = y;
                 uni1.Bat.realx = 4200;
-                this.EnemyArr.push(uni1);
+                this.Enemy.enqueue(uni1);
 
             }else if (x == 2){
                 
@@ -288,7 +308,7 @@ class ControllerMobs
                 uni2.Bear.ycoord = 950;
                 uni2.Bear.Pertenece = y;
                 uni2.Bear.realx = 4200;
-                this.EnemyArr.push(uni2);
+                this.Enemy.enqueue(uni2);
             }
             else if (x == 1){
                 
@@ -297,7 +317,7 @@ class ControllerMobs
                 uni2.Lion.ycoord = 950;
                 uni2.Lion.Pertenece = y;
                 uni2.Lion.realx = 4200;
-                this.EnemyArr.push(uni2);
+                this.Enemy.enqueue(uni2);
         }
         else if (x == 3){
                 
@@ -306,7 +326,7 @@ class ControllerMobs
             uni2.Tiger.ycoord = 950;
             uni2.Tiger.Pertenece = y;
             uni2.Tiger.realx = 4200;
-            this.EnemyArr.push(uni2);
+            this.Enemy.enqueue(uni2);
     }
 
         }

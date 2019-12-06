@@ -401,7 +401,7 @@ function (_super) {
     var _this = _super.call(this) || this;
 
     _this.attack = 5;
-    _this.life = 300;
+    _this.life = 3000;
     _this.State = State.Walk;
     _this.Lion = new Image();
     _this.frame = 0;
@@ -531,7 +531,7 @@ function (_super) {
     var _this = _super.call(this) || this;
 
     _this.attack = 20;
-    _this.life = 100;
+    _this.life = 1000;
     _this.State = State.Walk;
     _this.bat = new Image();
     _this.frame = 0;
@@ -662,7 +662,7 @@ function (_super) {
     var _this = _super.call(this) || this;
 
     _this.attack = 20;
-    _this.life = 400;
+    _this.life = 4000;
     _this.State = State.Walk;
     _this.Bear = new Image();
     _this.frame = 0;
@@ -789,7 +789,7 @@ function (_super) {
   function Tiger() {
     var _this = _super.call(this) || this;
 
-    _this.life = 200;
+    _this.life = 2000;
     _this.attack = 10;
     _this.State = State.Walk;
     _this.Tiger = new Image();
@@ -862,7 +862,237 @@ function (_super) {
 
 ;
 exports["default"] = Tiger;
-},{"../src/Unit":"src/Unit.ts","../assets/tigers.png":"assets/tigers.png","./GameContext":"src/GameContext.ts"}],"src/ControllerMobs.ts":[function(require,module,exports) {
+},{"../src/Unit":"src/Unit.ts","../assets/tigers.png":"assets/tigers.png","./GameContext":"src/GameContext.ts"}],"node_modules/linked-list-typescript/lib/src/index.js":[function(require,module,exports) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+class LinkedList {
+    constructor(...values) {
+        this._head = this._tail = null;
+        this._length = 0;
+        if (values.length > 0) {
+            values.forEach((value) => {
+                this.append(value);
+            });
+        }
+    }
+    *iterator() {
+        let currentItem = this._head;
+        while (currentItem) {
+            yield currentItem.value;
+            currentItem = currentItem.next;
+        }
+    }
+    [Symbol.iterator]() {
+        return this.iterator();
+    }
+    get head() {
+        return this._head ? this._head.value : null;
+    }
+    get tail() {
+        return this._tail ? this._tail.value : null;
+    }
+    get length() {
+        return this._length;
+    }
+    // Adds the element at a specific position inside the linked list
+    insert(val, previousItem, checkDuplicates = false) {
+        if (checkDuplicates && this.isDuplicate(val)) {
+            return false;
+        }
+        let newItem = new LinkedListItem(val);
+        let currentItem = this._head;
+        if (!currentItem) {
+            return false;
+        }
+        else {
+            while (true) {
+                if (currentItem.value === previousItem) {
+                    newItem.next = currentItem.next;
+                    newItem.prev = currentItem;
+                    currentItem.next = newItem;
+                    if (newItem.next) {
+                        newItem.next.prev = newItem;
+                    }
+                    else {
+                        this._tail = newItem;
+                    }
+                    this._length++;
+                    return true;
+                }
+                else {
+                    if (currentItem.next) {
+                        currentItem = currentItem.next;
+                    }
+                    else {
+                        // can't locate previousItem
+                        return false;
+                    }
+                }
+            }
+        }
+    }
+    // Adds the element at the end of the linked list
+    append(val, checkDuplicates = false) {
+        if (checkDuplicates && this.isDuplicate(val)) {
+            return false;
+        }
+        let newItem = new LinkedListItem(val);
+        if (!this._tail) {
+            this._head = this._tail = newItem;
+        }
+        else {
+            this._tail.next = newItem;
+            newItem.prev = this._tail;
+            this._tail = newItem;
+        }
+        this._length++;
+        return true;
+    }
+    // Add the element at the beginning of the linked list
+    prepend(val, checkDuplicates = false) {
+        if (checkDuplicates && this.isDuplicate(val)) {
+            return false;
+        }
+        let newItem = new LinkedListItem(val);
+        if (!this._head) {
+            this._head = this._tail = newItem;
+        }
+        else {
+            newItem.next = this._head;
+            this._head.prev = newItem;
+            this._head = newItem;
+        }
+        this._length++;
+        return true;
+    }
+    remove(val) {
+        let currentItem = this._head;
+        if (!currentItem) {
+            return;
+        }
+        if (currentItem.value === val) {
+            this._head = currentItem.next;
+            this._head.prev = null;
+            currentItem.next = currentItem.prev = null;
+            this._length--;
+            return currentItem.value;
+        }
+        else {
+            while (true) {
+                if (currentItem.value === val) {
+                    if (currentItem.next) { // special case for last element
+                        currentItem.prev.next = currentItem.next;
+                        currentItem.next.prev = currentItem.prev;
+                        currentItem.next = currentItem.prev = null;
+                    }
+                    else {
+                        currentItem.prev.next = null;
+                        this._tail = currentItem.prev;
+                        currentItem.next = currentItem.prev = null;
+                    }
+                    this._length--;
+                    return currentItem.value;
+                }
+                else {
+                    if (currentItem.next) {
+                        currentItem = currentItem.next;
+                    }
+                    else {
+                        return;
+                    }
+                }
+            }
+        }
+    }
+    removeHead() {
+        let currentItem = this._head;
+        // empty list
+        if (!currentItem) {
+            return;
+        }
+        // single item list
+        if (!this._head.next) {
+            this._head = null;
+            this._tail = null;
+            // full list
+        }
+        else {
+            this._head.next.prev = null;
+            this._head = this._head.next;
+            currentItem.next = currentItem.prev = null;
+        }
+        this._length--;
+        return currentItem.value;
+    }
+    removeTail() {
+        let currentItem = this._tail;
+        // empty list
+        if (!currentItem) {
+            return;
+        }
+        // single item list
+        if (!this._tail.prev) {
+            this._head = null;
+            this._tail = null;
+            // full list
+        }
+        else {
+            this._tail.prev.next = null;
+            this._tail = this._tail.prev;
+            currentItem.next = currentItem.prev = null;
+        }
+        this._length--;
+        return currentItem.value;
+    }
+    first(num) {
+        let iter = this.iterator();
+        let result = [];
+        let n = Math.min(num, this.length);
+        for (let i = 0; i < n; i++) {
+            let val = iter.next();
+            result.push(val.value);
+        }
+        return result;
+    }
+    toArray() {
+        return [...this];
+    }
+    isDuplicate(val) {
+        let set = new Set(this.toArray());
+        return set.has(val);
+    }
+}
+exports.LinkedList = LinkedList;
+class LinkedListItem {
+    constructor(val) {
+        this.value = val;
+        this.next = null;
+        this.prev = null;
+    }
+}
+exports.LinkedListItem = LinkedListItem;
+
+},{}],"node_modules/queue-typescript/lib/src/index.js":[function(require,module,exports) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const linked_list_typescript_1 = require("linked-list-typescript");
+class Queue extends linked_list_typescript_1.LinkedList {
+    constructor(...values) {
+        super(...values);
+    }
+    get front() {
+        return this.head;
+    }
+    enqueue(val) {
+        this.append(val);
+    }
+    dequeue() {
+        return this.removeHead();
+    }
+}
+exports.Queue = Queue;
+
+},{"linked-list-typescript":"node_modules/linked-list-typescript/lib/src/index.js"}],"src/ControllerMobs.ts":[function(require,module,exports) {
 "use strict";
 
 var __importDefault = this && this.__importDefault || function (mod) {
@@ -883,6 +1113,8 @@ var Bear_1 = __importDefault(require("./Bear"));
 
 var Tiger_1 = __importDefault(require("./Tiger"));
 
+var queue_typescript_1 = require("queue-typescript");
+
 var State;
 
 (function (State) {
@@ -899,9 +1131,17 @@ function () {
 
     if (x == 0) {
       this.Bat = new bat_1["default"]();
+      this.life = this.Bat.life;
     } else if (x == 2) {
       this.Bear = new Bear_1["default"]();
-    } else if (x == 1) this.Lion = new Lion_1["default"]();else if (x == 3) this.Tiger = new Tiger_1["default"]();
+      this.life = this.Bear.life;
+    } else if (x == 1) {
+      this.Lion = new Lion_1["default"]();
+      this.life = this.Lion.life;
+    } else if (x == 3) {
+      this.Tiger = new Tiger_1["default"]();
+      this.life = this.Tiger.life;
+    }
   }
 
   unidad.prototype.render = function () {
@@ -948,12 +1188,8 @@ function () {
   function ControllerMobs() {
     var _this = this;
 
-    this.EnemyArr = [];
-    this.allyHead = 0;
-    this.enemyHead = 0;
-    this.Arr = [];
-    this.spawnE = false;
-    this.spawnA = false;
+    this.Ally = new queue_typescript_1.Queue();
+    this.Enemy = new queue_typescript_1.Queue();
     this.gameState = State.Walk; // x tipo 0-3 and y 0 || 1  0-> ally 1 ->enemy
 
     this.addmobs = function (x, y) {
@@ -968,7 +1204,7 @@ function () {
           uni1.Bat.State = State.Walk;
           uni1.Bat.realx = 0;
 
-          _this.Arr.push(uni1);
+          _this.Ally.enqueue(uni1);
         } else if (x == 2) {
           var uni2 = new unidad(2);
           uni2.Bear.xcoord = GameContext_1["default"].context.canvas.width / 2 - 300;
@@ -977,7 +1213,7 @@ function () {
           uni2.Bear.realx = 0;
           uni2.Bear.State = State.Walk;
 
-          _this.Arr.push(uni2);
+          _this.Ally.enqueue(uni2);
         } else if (x == 1) {
           var uni2 = new unidad(1);
           uni2.Lion.xcoord = -GameContext_1["default"].context.canvas.width / 2 + 300;
@@ -986,7 +1222,7 @@ function () {
           uni2.Lion.State = State.Walk;
           uni2.Lion.realx = 0;
 
-          _this.Arr.push(uni2);
+          _this.Ally.enqueue(uni2);
         } else if (x == 3) {
           var uni2 = new unidad(3);
           uni2.Tiger.xcoord = -GameContext_1["default"].context.canvas.width / 2 + 300;
@@ -995,7 +1231,7 @@ function () {
           uni2.Tiger.realx = 0;
           uni2.Tiger.State = State.Walk;
 
-          _this.Arr.push(uni2);
+          _this.Ally.enqueue(uni2);
         } //enemy
 
       } else {
@@ -1006,7 +1242,7 @@ function () {
           uni1.Bat.Pertenece = y;
           uni1.Bat.realx = 4200;
 
-          _this.EnemyArr.push(uni1);
+          _this.Enemy.enqueue(uni1);
         } else if (x == 2) {
           var uni2 = new unidad(2);
           uni2.Bear.xcoord = GameContext_1["default"].context.canvas.width + 800;
@@ -1014,7 +1250,7 @@ function () {
           uni2.Bear.Pertenece = y;
           uni2.Bear.realx = 4200;
 
-          _this.EnemyArr.push(uni2);
+          _this.Enemy.enqueue(uni2);
         } else if (x == 1) {
           var uni2 = new unidad(1);
           uni2.Lion.xcoord = -GameContext_1["default"].context.canvas.width - 800;
@@ -1023,7 +1259,7 @@ function () {
           uni2.Lion.Pertenece = y;
           uni2.Lion.realx = 4200;
 
-          _this.EnemyArr.push(uni2);
+          _this.Enemy.enqueue(uni2);
         } else if (x == 3) {
           var uni2 = new unidad(3);
           uni2.Tiger.xcoord = -GameContext_1["default"].context.canvas.width - 800;
@@ -1031,87 +1267,98 @@ function () {
           uni2.Tiger.Pertenece = y;
           uni2.Tiger.realx = 4200;
 
-          _this.EnemyArr.push(uni2);
+          _this.Enemy.enqueue(uni2);
         }
       }
     };
   }
 
-  ControllerMobs.prototype.setAttack = function () {
-    if (this.EnemyArr != undefined) {
-      var len = this.EnemyArr.length;
+  ControllerMobs.prototype.setAttack = function () {};
 
-      for (var i = 1; i < len; i++) {
-        this.EnemyArr[i].setState(State.Stop);
+  ControllerMobs.prototype.update = function () {
+    this.checkFront();
+
+    for (var _i = 0, _a = this.Enemy.toArray(); _i < _a.length; _i++) {
+      var unit = _a[_i];
+      unit.update();
+    }
+
+    for (var _b = 0, _c = this.Ally.toArray(); _b < _c.length; _b++) {
+      var unit = _c[_b];
+      unit.update();
+    } //check for an attack
+
+
+    if (this.Ally.front != null && this.Enemy.front != null) {
+      if (this.Ally.front.life < 0) this.Ally.dequeue();
+      if (this.Enemy.front.life < 0) this.Enemy.dequeue();
+    }
+
+    if (this.Ally.front != null && this.Enemy.front != null) this.checkAttack(this.Enemy.front, this.Ally.front);
+  };
+
+  ControllerMobs.prototype.checkAttack = function (Ally, Enemy) {
+    if (Ally.accessObject().State != State.Attack || Enemy.accessObject().State != State.Attack) {
+      if (Math.abs(Ally.getXcoord() - Enemy.getXcoord()) <= 400) {
+        Ally.setState(State.Attack);
+        Enemy.setState(State.Attack);
+        return true;
+      } else if (Math.abs(Ally.getXcoord() - Enemy.getXcoord()) >= 500) {
+        Ally.setState(State.Walk);
+        Enemy.setState(State.Walk);
+        return false;
       }
-    } //ally
+    }
 
-
-    if (this.Arr != undefined) {
-      var len = this.Arr.length;
-
-      for (var i = 1; i < len; i++) {
-        this.Arr[i].setState(State.Stop);
-      }
+    if (Ally.accessObject().State == State.Attack && Enemy.accessObject().State == State.Attack) {
+      console.log(Ally.life + "   " + Enemy.life);
+      Ally.life -= Enemy.accessObject().attack;
+      Enemy.life -= Ally.accessObject().attack;
     }
   };
 
-  ControllerMobs.prototype.update = function () {
-    //enemy
-    //Atack Logic
-    if (this.gameState == State.Walk) {
-      if (this.spawnE && this.spawnA) {
-        console.log(this.Arr[this.allyHead].getXcoord() + " " + this.EnemyArr[this.enemyHead].getXcoord());
+  ControllerMobs.prototype.checkFront = function () {
+    if (this.Enemy.front != null) {
+      var temp = this.Enemy.toArray();
+      var len = temp.length;
+      if (this.Enemy.front != null && this.Ally.front == null) this.Enemy.front.setState(State.Walk);
 
-        if (this.Arr[this.allyHead].getXcoord() + 600 >= this.EnemyArr[this.enemyHead].getXcoord()) {
-          console.log("encuentro");
-          this.Arr[this.allyHead].setState(State.Attack);
-          this.EnemyArr[this.enemyHead].setState(State.Attack);
-          this.setAttack();
+      for (var i = 1; i < len; i++) {
+        if (Math.abs(temp[i].getXcoord() - temp[i - 1].getXcoord()) <= 300) {
+          temp[i].setState(State.Stop);
+        } else {
+          temp[i].setState(State.Walk);
         }
       }
+    }
 
-      if (this.EnemyArr != undefined) {
-        var len = this.EnemyArr.length;
+    if (this.Ally.front != null) {
+      var temp = this.Ally.toArray();
+      var len = temp.length;
+      if (this.Ally.front != null && this.Enemy.front == null) this.Ally.front.setState(State.Walk);
 
-        for (var i = 0; i < len; i++) {
-          this.EnemyArr[i].update();
-          this.spawnE = true;
-        }
-      } //ally
-
-
-      if (this.Arr != undefined) {
-        var len = this.Arr.length;
-
-        for (var i = 0; i < len; i++) {
-          this.Arr[i].update();
-          this.spawnA = true;
+      for (var i = 1; i < len; i++) {
+        if (Math.abs(temp[i].getXcoord() - temp[i - 1].getXcoord()) <= 300) {
+          temp[i].setState(State.Stop);
+        } else {
+          temp[i].setState(State.Walk);
         }
       }
-    } else if (this.gameState == State.Attack) {
-      this.Arr[this.allyHead];
     }
   };
 
   ControllerMobs.prototype.render = function () {
     //enemy
-    if (this.EnemyArr != undefined) {
-      var len = this.EnemyArr.length;
+    for (var _i = 0, _a = this.Enemy.toArray(); _i < _a.length; _i++) {
+      var unit = _a[_i];
+      unit.render();
+    }
 
-      for (var i = 0; i < len; i++) {
-        this.EnemyArr[i].render();
-      }
+    for (var _b = 0, _c = this.Ally.toArray(); _b < _c.length; _b++) {
+      var unit = _c[_b];
+      unit.render();
     } //ally
 
-
-    if (this.Arr != undefined) {
-      var len = this.Arr.length;
-
-      for (var i = 0; i < len; i++) {
-        this.Arr[i].render();
-      }
-    }
   };
 
   return ControllerMobs;
@@ -1119,7 +1366,7 @@ function () {
 
 ;
 exports["default"] = ControllerMobs;
-},{"./Lion":"src/Lion.ts","./bat":"src/bat.ts","./GameContext":"src/GameContext.ts","./Bear":"src/Bear.ts","./Tiger":"src/Tiger.ts"}],"src/IA.ts":[function(require,module,exports) {
+},{"./Lion":"src/Lion.ts","./bat":"src/bat.ts","./GameContext":"src/GameContext.ts","./Bear":"src/Bear.ts","./Tiger":"src/Tiger.ts","queue-typescript":"node_modules/queue-typescript/lib/src/index.js"}],"src/IA.ts":[function(require,module,exports) {
 "use strict";
 
 exports.__esModule = true;
@@ -1455,7 +1702,7 @@ function () {
 exports["default"] = BaseEnemy;
 },{"./GameContext":"src/GameContext.ts","../assets/base.png":"assets/base.png"}],"assets/Tears.mp3":[function(require,module,exports) {
 module.exports = "/Tears.4a1c11f6.mp3";
-},{}],"src/Scene/Playing.ts":[function(require,module,exports) {
+},{}],"src/Scene/Pause.ts":[function(require,module,exports) {
 "use strict";
 
 var __extends = this && this.__extends || function () {
@@ -1494,7 +1741,143 @@ exports.__esModule = true;
 
 var Scene_1 = __importDefault(require("./Scene"));
 
-var MainMenu_1 = __importDefault(require("./MainMenu"));
+var GameContext_1 = __importDefault(require("../GameContext"));
+
+var Pause =
+/** @class */
+function (_super) {
+  __extends(Pause, _super);
+
+  function Pause(Playing) {
+    var _this = _super.call(this) || this;
+
+    _this.Title = "Age Of Animals";
+    _this.options = ["Continuar", "Salir"];
+    _this.selectedOptionIndex = 0;
+    _this.backgroundColorHue = 0;
+    _this.skipUpdate = false;
+    _this.PScene = null;
+
+    _this.exit = function () {};
+
+    _this.handleKeyDown = function (event, engine) {
+      switch (event.key) {
+        case "ArrowUp":
+          _this.selectedOptionIndex = (_this.selectedOptionIndex - 1 + _this.options.length) % _this.options.length;
+          break;
+
+        case "ArrowDown":
+          _this.selectedOptionIndex = (_this.selectedOptionIndex + 1) % _this.options.length;
+          break;
+
+        case "Enter":
+          if (_this.selectedOptionIndex === 0) {
+            engine.changeScene(_this.PScene);
+          }
+
+          break;
+      }
+    };
+
+    _this.pause = function () {};
+
+    _this.handleKeyUp = function (event) {};
+
+    _this.mouseDownListener = function (event) {};
+
+    _this.mouseEnterListener = function (event) {};
+
+    _this.mouseMoveListener = function (event) {};
+
+    _this.enter = function () {};
+
+    _this.render = function () {
+      var context = GameContext_1["default"].context;
+      var _a = context.canvas,
+          width = _a.width,
+          height = _a.height;
+      context.save();
+      context.beginPath();
+
+      if (!_this.skipUpdate) {
+        _this.backgroundColorHue = (_this.backgroundColorHue + 1) % 360;
+      }
+
+      _this.skipUpdate = !_this.skipUpdate;
+      context.fillStyle = "hsl(" + _this.backgroundColorHue + ", 100%, 80%)";
+      context.fillRect(0, 0, width, height);
+      context.fillStyle = "black";
+      context.font = "80px sans-serif";
+      context.fillText(_this.Title, width / 2 - 250, 0 + 400);
+      context.closePath();
+      context.beginPath();
+      context.fillStyle = "black";
+      context.strokeStyle = "darkblue";
+      context.font = "50px sans-serif";
+      context.textAlign = "center";
+
+      for (var i = 0; i < _this.options.length; i++) {
+        var xPoint = width / 2;
+        var yPoint = height * 0.65 + i * 50;
+
+        if (_this.selectedOptionIndex === i) {
+          context.lineWidth = 2;
+          context.strokeText(_this.options[i], xPoint, yPoint);
+        }
+
+        context.fillText(_this.options[i], xPoint, yPoint);
+      }
+
+      context.closePath();
+      context.restore();
+    };
+
+    _this.PScene = Playing;
+    return _this;
+  }
+
+  return Pause;
+}(Scene_1["default"]);
+
+exports["default"] = Pause;
+},{"./Scene":"src/Scene/Scene.ts","../GameContext":"src/GameContext.ts"}],"src/Scene/Playing.ts":[function(require,module,exports) {
+"use strict";
+
+var __extends = this && this.__extends || function () {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
+      __proto__: []
+    } instanceof Array && function (d, b) {
+      d.__proto__ = b;
+    } || function (d, b) {
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
+    };
+
+    return _extendStatics(d, b);
+  };
+
+  return function (d, b) {
+    _extendStatics(d, b);
+
+    function __() {
+      this.constructor = d;
+    }
+
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+  };
+}();
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+exports.__esModule = true;
+
+var Scene_1 = __importDefault(require("./Scene"));
 
 var Camera_1 = __importDefault(require("../Camera"));
 
@@ -1509,6 +1892,8 @@ var BaseEnemy_ts_1 = __importDefault(require("../BaseEnemy.ts"));
 var Tears_mp3_1 = __importDefault(require("../../assets/Tears.mp3"));
 
 var GameContext_1 = __importDefault(require("../GameContext"));
+
+var Pause_1 = __importDefault(require("./Pause"));
 
 var Playing =
 /** @class */
@@ -1537,7 +1922,7 @@ function (_super) {
         _this.BackGroundMusic.pause();
 
         engine.clearScreen();
-        engine.changeScene(new MainMenu_1["default"]());
+        engine.changeScene(new Pause_1["default"](temp));
       }
     };
 
@@ -1608,7 +1993,7 @@ function (_super) {
 }(Scene_1["default"]);
 
 exports["default"] = Playing;
-},{"./Scene":"src/Scene/Scene.ts","./MainMenu":"src/Scene/MainMenu.ts","../Camera":"src/Camera.ts","../background":"src/background.ts","../HUD.ts":"src/HUD.ts","../Base.ts":"src/Base.ts","../BaseEnemy.ts":"src/BaseEnemy.ts","../../assets/Tears.mp3":"assets/Tears.mp3","../GameContext":"src/GameContext.ts"}],"assets/The_Healing.mp3":[function(require,module,exports) {
+},{"./Scene":"src/Scene/Scene.ts","../Camera":"src/Camera.ts","../background":"src/background.ts","../HUD.ts":"src/HUD.ts","../Base.ts":"src/Base.ts","../BaseEnemy.ts":"src/BaseEnemy.ts","../../assets/Tears.mp3":"assets/Tears.mp3","../GameContext":"src/GameContext.ts","./Pause":"src/Scene/Pause.ts"}],"assets/The_Healing.mp3":[function(require,module,exports) {
 module.exports = "/The_Healing.e43ec224.mp3";
 },{}],"assets/Forest.png":[function(require,module,exports) {
 module.exports = "/Forest.18f49d4c.png";
@@ -1915,7 +2300,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54458" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52413" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

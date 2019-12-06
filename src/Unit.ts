@@ -5,7 +5,7 @@ abstract class  Unit
 {
     abstract  Pertenece;
     abstract range;
-    abstract life;
+    
     abstract attack;
     abstract xcoord;
     abstract realx;

@@ -13,7 +13,7 @@ class Tiger extends Unit
 {
     public Pertenece;
     public range;
-    public life = 200;
+    public life = 2000;
     public attack = 10;
     public xcoord;
     public ycoord;
@@ -25,7 +25,7 @@ class Tiger extends Unit
     private frame = 0;
     private FrameCounter = 0;
     private xCutAnimation = 0;
-    private speed = 5;
+    public speed = 5;
     public realx = 0;
     
     constructor()

@@ -13,7 +13,7 @@ class bat extends Unit
     public Pertenece;
     public range;
     public attack = 20;
-    public life = 100;
+    public life = 1000;
     public xcoord;
     public ycoord;
     public State: State =  State.Walk;
@@ -23,7 +23,7 @@ class bat extends Unit
     private frame = 0;
     private FrameCounter = 0;
     private xCutAnimation = 0;
-    private speed = 5;
+    public speed = 5;
     public realx = 0;
  
     
