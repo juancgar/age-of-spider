@@ -864,6 +864,8 @@ function (_super) {
 exports["default"] = Tiger;
 },{"../src/Unit":"src/Unit.ts","../assets/tigers.png":"assets/tigers.png","./GameContext":"src/GameContext.ts"}],"assets/base.png":[function(require,module,exports) {
 module.exports = "/base.881e12d6.png";
+},{}],"assets/HealthBar.png":[function(require,module,exports) {
+module.exports = "/HealthBar.90ba5f53.png";
 },{}],"src/Base.ts":[function(require,module,exports) {
 "use strict";
 
@@ -879,6 +881,8 @@ var GameContext_1 = __importDefault(require("./GameContext"));
 
 var base_png_1 = __importDefault(require("../assets/base.png"));
 
+var HealthBar_png_1 = __importDefault(require("../assets/HealthBar.png"));
+
 var Base =
 /** @class */
 function () {
@@ -887,7 +891,10 @@ function () {
     this.xcoord = 0;
     this.ycoord = 200;
     this.Base = new Image();
+    this.life = new Image();
+    this.lifebar = 685;
     this.Base.src = base_png_1["default"];
+    this.life.src = HealthBar_png_1["default"];
     this.ycoord = 550;
     this.xcoord = GameContext_1["default"].context.canvas.width / 2 * -1 + -10;
   }
@@ -904,19 +911,25 @@ function () {
     var Context = GameContext_1["default"].context;
     Context.beginPath();
     Context.save();
+    Context.rect(this.xcoord + 50, this.ycoord - 70, this.lifebar, 50);
+    Context.fillStyle = "green";
+    Context.fill();
+    Context.drawImage(this.life, this.xcoord - 90, this.ycoord - 150);
     Context.drawImage(this.Base, this.xcoord, this.ycoord, 600, 600);
     Context.restore();
     Context.closePath();
   };
 
-  Base.prototype.update = function () {};
+  Base.prototype.update = function () {
+    this.lifebar = 685 / 3000 * this.vida;
+  };
 
   return Base;
 }();
 
 ;
 exports["default"] = Base;
-},{"./GameContext":"src/GameContext.ts","../assets/base.png":"assets/base.png"}],"src/BaseEnemy.ts":[function(require,module,exports) {
+},{"./GameContext":"src/GameContext.ts","../assets/base.png":"assets/base.png","../assets/HealthBar.png":"assets/HealthBar.png"}],"src/BaseEnemy.ts":[function(require,module,exports) {
 "use strict";
 
 var __importDefault = this && this.__importDefault || function (mod) {
@@ -931,6 +944,8 @@ var GameContext_1 = __importDefault(require("./GameContext"));
 
 var base_png_1 = __importDefault(require("../assets/base.png"));
 
+var HealthBar_png_1 = __importDefault(require("../assets/HealthBar.png"));
+
 var BaseEnemy =
 /** @class */
 function () {
@@ -939,9 +954,12 @@ function () {
     this.xcoord = 0;
     this.ycoord = 200;
     this.Base = new Image();
+    this.life = new Image();
+    this.lifebar = 685;
     this.Base.src = base_png_1["default"];
     this.ycoord = 550;
     this.xcoord = GameContext_1["default"].context.canvas.width + 1210;
+    this.life.src = HealthBar_png_1["default"];
   }
 
   BaseEnemy.prototype.getLife = function () {
@@ -957,19 +975,25 @@ function () {
     Context.beginPath();
     Context.save();
     Context.scale(-1, 1);
+    Context.rect(-this.xcoord + 50, this.ycoord - 70, this.lifebar, 50);
+    Context.fillStyle = "green";
+    Context.fill();
     Context.drawImage(this.Base, -this.xcoord, this.ycoord, 600, 600);
+    Context.drawImage(this.life, -this.xcoord - 90, this.ycoord - 150);
     Context.restore();
     Context.closePath();
   };
 
-  BaseEnemy.prototype.update = function () {};
+  BaseEnemy.prototype.update = function () {
+    this.lifebar = 685 / 3000 * this.vida;
+  };
 
   return BaseEnemy;
 }();
 
 ;
 exports["default"] = BaseEnemy;
-},{"./GameContext":"src/GameContext.ts","../assets/base.png":"assets/base.png"}],"node_modules/linked-list-typescript/lib/src/index.js":[function(require,module,exports) {
+},{"./GameContext":"src/GameContext.ts","../assets/base.png":"assets/base.png","../assets/HealthBar.png":"assets/HealthBar.png"}],"node_modules/linked-list-typescript/lib/src/index.js":[function(require,module,exports) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class LinkedList {

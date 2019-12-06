@@ -7,6 +7,7 @@ import Pause from "./Scene/Pause";
 import Scene from "./Scene/Playing";
 import Base from "./Base"
 import BaseE from "./BaseEnemy";
+
 import Playing from "./Scene/Playing";
 class HUD {
 

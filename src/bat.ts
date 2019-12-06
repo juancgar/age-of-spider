@@ -37,6 +37,7 @@ class bat extends Unit
 
     public render()
     {
+        
         let sx = 28;
         let sy = 33;
         let padding =60;
