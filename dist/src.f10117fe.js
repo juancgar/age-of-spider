@@ -1752,6 +1752,10 @@ function () {
 exports["default"] = HUD;
 },{"./GameContext":"src/GameContext.ts","../assets/HUD.png":"assets/HUD.png","./ControllerMobs":"src/ControllerMobs.ts","./IA":"src/IA.ts"}],"assets/Tears.mp3":[function(require,module,exports) {
 module.exports = "/Tears.4a1c11f6.mp3";
+},{}],"assets/Forest.png":[function(require,module,exports) {
+module.exports = "/Forest.18f49d4c.png";
+},{}],"assets/The_Healing.mp3":[function(require,module,exports) {
+module.exports = "/The_Healing.e43ec224.mp3";
 },{}],"src/Scene/Pause.ts":[function(require,module,exports) {
 "use strict";
 
@@ -1793,12 +1797,21 @@ var Scene_1 = __importDefault(require("./Scene"));
 
 var GameContext_1 = __importDefault(require("../GameContext"));
 
+var MainMenu_1 = __importDefault(require("./MainMenu"));
+
+var Forest_png_1 = __importDefault(require("../../assets/Forest.png"));
+
+var The_Healing_mp3_1 = __importDefault(require("../../assets/The_Healing.mp3"));
+
+var sound = new Audio(The_Healing_mp3_1["default"]);
+var image = new Image();
+
 var Pause =
 /** @class */
 function (_super) {
   __extends(Pause, _super);
 
-  function Pause(Playing) {
+  function Pause(Play) {
     var _this = _super.call(this) || this;
 
     _this.Title = "Age Of Animals";
@@ -1822,7 +1835,13 @@ function (_super) {
 
         case "Enter":
           if (_this.selectedOptionIndex === 0) {
+            sound.pause();
+            engine.clearScreen();
             engine.changeScene(_this.PScene);
+          } else if (_this.selectedOptionIndex === 1) {
+            sound.pause();
+            engine.clearScreen();
+            engine.changeScene(new MainMenu_1["default"]());
           }
 
           break;
@@ -1839,7 +1858,10 @@ function (_super) {
 
     _this.mouseMoveListener = function (event) {};
 
-    _this.enter = function () {};
+    _this.enter = function () {
+      sound.play();
+      image.src = Forest_png_1["default"];
+    };
 
     _this.render = function () {
       var context = GameContext_1["default"].context;
@@ -1848,27 +1870,29 @@ function (_super) {
           height = _a.height;
       context.save();
       context.beginPath();
-
-      if (!_this.skipUpdate) {
-        _this.backgroundColorHue = (_this.backgroundColorHue + 1) % 360;
+      context.drawImage(image, 0, 0);
+      context.closePath();
+      /*if (!this.skipUpdate) {
+        this.backgroundColorHue = (this.backgroundColorHue + 1) % 360;
       }
-
-      _this.skipUpdate = !_this.skipUpdate;
-      context.fillStyle = "hsl(" + _this.backgroundColorHue + ", 100%, 80%)";
+      this.skipUpdate = !this.skipUpdate;
+      context.fillStyle = `hsl(${this.backgroundColorHue}, 100%, 80%)`;
       context.fillRect(0, 0, width, height);
       context.fillStyle = "black";
-      context.font = "80px sans-serif";
-      context.fillText(_this.Title, width / 2 - 250, 0 + 400);
+      */
+
+      context.font = "160px sans-serif";
+      context.fillText(_this.Title, width / 2 - 500, 0 + 400);
       context.closePath();
       context.beginPath();
       context.fillStyle = "black";
       context.strokeStyle = "darkblue";
-      context.font = "50px sans-serif";
+      context.font = "100px sans-serif";
       context.textAlign = "center";
 
       for (var i = 0; i < _this.options.length; i++) {
         var xPoint = width / 2;
-        var yPoint = height * 0.65 + i * 50;
+        var yPoint = height * 0.65 + i * 100;
 
         if (_this.selectedOptionIndex === i) {
           context.lineWidth = 2;
@@ -1882,7 +1906,7 @@ function (_super) {
       context.restore();
     };
 
-    _this.PScene = Playing;
+    _this.PScene = Play;
     return _this;
   }
 
@@ -1890,7 +1914,7 @@ function (_super) {
 }(Scene_1["default"]);
 
 exports["default"] = Pause;
-},{"./Scene":"src/Scene/Scene.ts","../GameContext":"src/GameContext.ts"}],"src/Scene/Playing.ts":[function(require,module,exports) {
+},{"./Scene":"src/Scene/Scene.ts","../GameContext":"src/GameContext.ts","./MainMenu":"src/Scene/MainMenu.ts","../../assets/Forest.png":"assets/Forest.png","../../assets/The_Healing.mp3":"assets/The_Healing.mp3"}],"src/Scene/Playing.ts":[function(require,module,exports) {
 "use strict";
 
 var __extends = this && this.__extends || function () {
@@ -1953,9 +1977,9 @@ function (_super) {
   function Playing() {
     var _this = _super !== null && _super.apply(this, arguments) || this;
 
-    _this.camera = null;
+    _this.camera = new Camera_1["default"]();
     _this.background = null;
-    _this.HUD = null;
+    _this.HUD = new HUD_ts_1["default"]();
     _this.MobCont = null;
     _this.BackGroundMusic = new Audio(Tears_mp3_1["default"]);
 
@@ -1965,12 +1989,10 @@ function (_super) {
       _this.camera.handleKeyDown(event);
 
       if (event.key == 'p') {
-        var temp = _this;
-
         _this.BackGroundMusic.pause();
 
         engine.clearScreen();
-        engine.changeScene(new Pause_1["default"](temp));
+        engine.changeScene(new Pause_1["default"](_this));
       }
     };
 
@@ -2007,9 +2029,7 @@ function (_super) {
     _this.enter = function () {
       _this.BackGroundMusic.play();
 
-      _this.camera = new Camera_1["default"]();
       _this.background = new background_1["default"]();
-      _this.HUD = new HUD_ts_1["default"]();
     };
 
     _this.update = function () {
@@ -2033,11 +2053,7 @@ function (_super) {
 }(Scene_1["default"]);
 
 exports["default"] = Playing;
-},{"./Scene":"src/Scene/Scene.ts","../Camera":"src/Camera.ts","../background":"src/background.ts","../HUD.ts":"src/HUD.ts","../Base":"src/Base.ts","../BaseEnemy":"src/BaseEnemy.ts","../../assets/Tears.mp3":"assets/Tears.mp3","../GameContext":"src/GameContext.ts","./Pause":"src/Scene/Pause.ts"}],"assets/The_Healing.mp3":[function(require,module,exports) {
-module.exports = "/The_Healing.e43ec224.mp3";
-},{}],"assets/Forest.png":[function(require,module,exports) {
-module.exports = "/Forest.18f49d4c.png";
-},{}],"src/Scene/MainMenu.ts":[function(require,module,exports) {
+},{"./Scene":"src/Scene/Scene.ts","../Camera":"src/Camera.ts","../background":"src/background.ts","../HUD.ts":"src/HUD.ts","../Base":"src/Base.ts","../BaseEnemy":"src/BaseEnemy.ts","../../assets/Tears.mp3":"assets/Tears.mp3","../GameContext":"src/GameContext.ts","./Pause":"src/Scene/Pause.ts"}],"src/Scene/MainMenu.ts":[function(require,module,exports) {
 "use strict";
 
 var __extends = this && this.__extends || function () {
@@ -2096,7 +2112,7 @@ function (_super) {
     var _this = _super !== null && _super.apply(this, arguments) || this;
 
     _this.Title = "Age of Animals";
-    _this.options = ["Jugar", "Salir"];
+    _this.options = ["Jugar", "Config"];
     _this.selectedOptionIndex = 0;
     _this.backgroundColorHue = 0;
     _this.skipUpdate = false;
@@ -2113,6 +2129,12 @@ function (_super) {
 
         case "Enter":
           if (_this.selectedOptionIndex === 0) {
+            sound.pause();
+            engine.clearScreen();
+            engine.changeScene(new Playing_1["default"]());
+          }
+
+          if (_this.selectedOptionIndex === 1) {
             sound.pause();
             engine.clearScreen();
             engine.changeScene(new Playing_1["default"]());

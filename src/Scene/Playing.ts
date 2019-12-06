@@ -17,9 +17,9 @@ import Pause from "./Pause";
 
 class Playing extends Scene {
 
-  private camera: Camera = null;
+  private camera: Camera =  new Camera();
   private background: background = null;
-  private HUD: HUD = null;
+  private HUD: HUD = new HUD();
 
   private MobCont: MobCont = null;
   private BackGroundMusic = new Audio(music);
@@ -30,11 +30,13 @@ class Playing extends Scene {
 
     if(event.key == 'p')
     {
-      let temp: Playing = this;
-      this.BackGroundMusic.pause();
-      engine.clearScreen();
       
-      engine.changeScene(new Pause(temp));
+      this.BackGroundMusic.pause();
+      
+      engine.clearScreen();
+      engine.changeScene(new Pause(this));
+      
+      
     }
     
   };
@@ -72,12 +74,12 @@ class Playing extends Scene {
   enter = () => {
    
     this.BackGroundMusic.play();
-    this.camera = new Camera();
+    
     this.background = new background();
     
 
     
-    this.HUD = new HUD();
+    
 
         
   };
