@@ -195,7 +195,7 @@ class ControllerMobs
     {
 
         if(Ally.accessObject().State != State.Attack ||Enemy.accessObject().State != State.Attack ){
-            if(Math.abs(Ally.getXcoord() - Enemy.getXcoord()) <= 400 )
+            if(Math.abs(Ally.getXcoord() - Enemy.getXcoord()) < 500 )
                 {
                     Ally.setState(State.Attack);
                     Enemy.setState(State.Attack);
