@@ -77,8 +77,9 @@ class Playing extends Scene {
 
   };
   enter = () => {
-   
+    this.BackGroundMusic.loop = true;
     this.BackGroundMusic.play();
+    
     
     this.background = new background();
     
