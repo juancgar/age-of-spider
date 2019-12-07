@@ -1579,7 +1579,7 @@ function () {
 
   ControllerMobs.prototype.checkAttack = function (Ally, Enemy) {
     if (Ally.accessObject().State != State.Attack || Enemy.accessObject().State != State.Attack) {
-      if (Math.abs(Ally.getXcoord() - Enemy.getXcoord()) <= 400) {
+      if (Math.abs(Ally.getXcoord() - Enemy.getXcoord()) < 500) {
         Ally.setState(State.Attack);
         Enemy.setState(State.Attack);
         return true;
@@ -2539,7 +2539,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54458" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54041" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
