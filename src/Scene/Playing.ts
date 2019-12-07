@@ -20,11 +20,15 @@ class Playing extends Scene {
   private camera: Camera =  new Camera();
   private background: background = null;
   private HUD: HUD = new HUD();
-
+  private Motor;
   private MobCont: MobCont = null;
   private BackGroundMusic = new Audio(music);
   public pause = () =>{}
-
+  constructor(engine: Engine)
+  {
+    super();
+    this.Motor = engine;
+  }
   public handleKeyDown = (event: KeyboardEvent, engine: Engine) => {
     this.camera.handleKeyDown(event);
 
@@ -65,7 +69,7 @@ class Playing extends Scene {
     this.camera = new Camera();
     this.background = new background();  
 
-    this.HUD = new HUD(Base,BaseE);
+    this.HUD = new HUD(this.Motor);
     const canvas = GameContext.context.canvas;
     GameContext.context.clearRect(0,0,canvas.width,canvas.height);
 
@@ -107,6 +111,7 @@ class Playing extends Scene {
     
 
   };
+ 
 }
 
 export default Playing;

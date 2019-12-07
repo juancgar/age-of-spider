@@ -4,12 +4,12 @@ import ControllerMobs from "./ControllerMobs";
 import Coin from "../assets/GoldCoin.png";
 import IA from "./IA";
 import engine from "./Engine";
-import Pause from "./Scene/Pause";
-import Scene from "./Scene/Playing";
+import MainMenu from "./Scene/MainMenu";
 import Base from "./Base"
 import BaseE from "./BaseEnemy";
 
 import Playing from "./Scene/Playing";
+import { HighlightSpanKind } from "typescript";
 class HUD {
 
 
@@ -19,9 +19,11 @@ class HUD {
     private gold = new Image();
     private money = 0;
     private moneyRate = 2;
-
+    private winCond = 0;
+    private Motor = new engine();
     private IAm = 0;
     private moneyRateIA = 2;
+  
 
     private frame = 0;
     private FrameCounter = 0;
@@ -32,7 +34,7 @@ class HUD {
     private cont : ControllerMobs = null;
     private IA : IA = null;
     private Play : Playing = null;
-    private enemyTimer = 200;
+    
     ///alphas for each button
     private a1 = 0;
     private a2 = 0;
@@ -42,10 +44,17 @@ class HUD {
 
     private ally = 0;
 
-    private priceA;
-    private priceB;
-    private priceC;
-    private priceD;
+    private priceA = 20;
+    private priceB = 30;
+    private priceC = 40;
+    private priceD = 50;
+
+
+    private CooldownA = 50;
+    private CooldownB = 190;
+    private CooldownC = 250;
+    private CooldownD = 400;
+
 
     private stateBoton1 = false;
     private stateBoton2 = false;
@@ -56,42 +65,56 @@ class HUD {
 
     private timer = 200;
 
-    constructor()
+    private timerA = this.CooldownA;
+    private timerB = this.CooldownB;
+    private timerC = this.CooldownC;
+    private timerD = this.CooldownD;
+
+    private enemyTimerA = this.CooldownA;
+    private enemyTimerB = this.CooldownB;
+    private enemyTimerC = this.CooldownC;
+    private enemyTimerD = this.CooldownD;
+
+    constructor(m1: engine)
     {
         
         this.HUD.src = image;
         this.cont = new ControllerMobs();
         this.gold.src = Coin;
         
-        
+        this.Motor = m1;
         this.IA = new IA();
     }
     public mouseDownListener = (event: MouseEvent) => {
         
-        if(this.timer > 200 && event.offsetX > this.positionX +214 && event.offsetX < this.positionX +214+100 && event.offsetY > 230 && event.offsetY <326 )
+        if( this.money >= this.priceA && this.timerA >= this.CooldownA && event.offsetX > this.positionX +214 && event.offsetX < this.positionX +214+100 && event.offsetY > 230 && event.offsetY <326 )
         {
             
             this.cont.addmobs(0,this.ally);
-            this.timer = 0;
+            this.timerA = 0;
+            this.money -= this.priceA;
         }
 
-        if(this.timer > 200 && event.offsetX > this.positionX + 214 + 93*2 && event.offsetX < this.positionX +214+100 + 93*2 && event.offsetY > 230 && event.offsetY <326 )
+        if(this.money >= this.priceB && this.timerB >= this.CooldownB && event.offsetX > this.positionX + 214 + 93*2 && event.offsetX < this.positionX +214+100 + 93*2 && event.offsetY > 230 && event.offsetY <326 )
         {
 
-            this.cont.addmobs(2,this.ally);
-            this.timer = 0;
+            this.cont.addmobs(3,this.ally);
+            this.timerB = 0;
+            this.money -= this.priceB;
         }
-        if(this.timer > 200 && event.offsetX > this.positionX + 214 + 93*4 && event.offsetX < this.positionX +214+100 + 93*4 && event.offsetY > 230 && event.offsetY <326 )
+        if(this.money >= this.priceC && this.timerC >= this.CooldownC && event.offsetX > this.positionX + 214 + 93*4 && event.offsetX < this.positionX +214+100 + 93*4 && event.offsetY > 230 && event.offsetY <326 )
         {
 
             this.cont.addmobs(1,this.ally);
-            this.timer = 0;
+            this.timerC = 0;
+            this.money -= this.priceC;
         }
-        if(this.timer > 200 && event.offsetX > this.positionX + 214 + 93*6 && event.offsetX < this.positionX +214+100 + 93*6 && event.offsetY > 230 && event.offsetY <326 )
+        if(this.money >= this.priceD && this.timerD >= this.CooldownD && event.offsetX > this.positionX + 214 + 93*6 && event.offsetX < this.positionX +214+100 + 93*6 && event.offsetY > 230 && event.offsetY <326 )
         {
   
-        this.cont.addmobs(3,this.ally);
-        this.timer = 0;
+        this.cont.addmobs(2,this.ally);
+        this.timerD = 0;
+        this.money -= this.priceD;
             
             
         }
@@ -133,7 +156,7 @@ class HUD {
         Context.beginPath();
         Context.font = "50px Arial"
         Context.fillStyle = "#000000"
-        Context.fillText("$50 ",this.positionX + 214,200);
+        Context.fillText("$" + this.priceA,this.positionX + 214,200);
         Context.rect(this.positionX + 214,230,100,96);
         Context.fillStyle = this.backColor;
         Context.fill();
@@ -144,7 +167,7 @@ class HUD {
         Context.beginPath();
         Context.font = "50px Arial"
         Context.fillStyle = "#000000"
-        Context.fillText("$50 ",this.positionX + 214 + 93*2,200);
+        Context.fillText("$" + this.priceB,this.positionX + 214 + 93*2,200);
         Context.rect(this.positionX + 214 + 93*2,230,100,96);
         Context.fillStyle = this.backColor;
         Context.fill();
@@ -154,7 +177,7 @@ class HUD {
         Context.beginPath();
         Context.font = "50px Arial"
         Context.fillStyle = "#000000"
-        Context.fillText("$50 ",this.positionX + 214 + 93*4,200);
+        Context.fillText("$" + this.priceC,this.positionX + 214 + 93*4,200);
         Context.rect(this.positionX + 214 + 93*4,230,100,96);
         Context.fillStyle = this.backColor;
         Context.fill();
@@ -163,7 +186,7 @@ class HUD {
         Context.beginPath();
         Context.font = "50px Arial"
         Context.fillStyle = "#000000"
-        Context.fillText("$50 ",this.positionX + 214 + 93*6,200);
+        Context.fillText("$" + this.priceD,this.positionX + 214 + 93*6,200);
         Context.rect(this.positionX + 214 + 93*6,230,100,96);
         Context.fillStyle = this.backColor;
         Context.fill();
@@ -244,23 +267,60 @@ class HUD {
         const Context = GameContext.context;
         this.positionX = Canvas.scrollLeft;
         this.cont.update();
+        this.winCond = this.cont.checkWin();
+        //lose
+        if(this.winCond == 1)
+        {
+            this.Motor.clearScreen();
+            this.Motor.changeScene(new MainMenu(this.Motor));
+        }else if(this.winCond == 2)
+        {   this.Motor.clearScreen();
+            this.Motor.changeScene(new MainMenu(this.Motor));
+        }
+        this.timerA++;
         
-        this.timer =this.timer + 1;
-        this.enemyTimer = this.enemyTimer +1;
-        if(this.timer >= 200)
+        this.timerB++;
+        
+        this.timerC++;
+        
+        this.timerD++;
+
+        this.enemyTimerA++;
+        this.enemyTimerB++;
+        this.enemyTimerC++;
+        this.enemyTimerD++;
+        if(this.timerA >= this.CooldownA)
         {
         this.a1 = .0;
-        this.a2 = .0;
-        this.a3 = .0;
-        this.a4 = .0;
         }
         else
         {
         this.a1 = .6;
+        }
+        if(this.timerB >= this.CooldownB)
+        {
+        this.a2 = .0;
+        }
+        else
+        {
         this.a2 = .6;
+        }
+        if(this.timerC >= this.CooldownC)
+        {
+        this.a3 = .0;
+        }
+        else
+        {
         this.a3 = .6;
-        this.a4 = .6;
+        }
 
+        if(this.timerD >= this.CooldownD)
+        {
+        this.a4 = .0;
+        }
+        else
+        {
+        this.a4 = .6;
         }
         //money update
 
@@ -286,9 +346,32 @@ class HUD {
         let rand = this.IA.update();
         
         if(rand <= 3 && rand >= 0)
-            if(this.enemyTimer >= 200)
+            if(this.enemyTimerA >= this.CooldownA && this.IAm >= this.priceA && rand == 0)
             {
                 this.cont.addmobs(rand,1);
+                this.enemyTimerA = 0;
+                this.IAm -= this.priceA;
+
+            }
+            else if(this.enemyTimerB >= this.CooldownB && this.IAm >= this.priceB && rand == 1)
+            {
+                this.cont.addmobs(rand,1);
+                this.enemyTimerB = 0;
+                this.IAm -= this.priceB;
+            }
+            else if(this.enemyTimerC >= this.CooldownC && this.IAm >= this.priceC && rand == 3)
+            {
+                this.cont.addmobs(rand,1);
+                this.enemyTimerC = 0;
+                this.IAm -= this.priceC;
+            }
+            else if(this.enemyTimerD >= this.CooldownD && this.IAm >= this.priceD && rand == 2)
+            {
+                this.cont.addmobs(rand,1);
+                this.enemyTimerD = 0;
+                this.IAm -= this.priceD;
+            }
+            else{
 
             }
     }

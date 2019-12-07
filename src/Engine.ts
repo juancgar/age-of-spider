@@ -60,7 +60,7 @@ class Engine {
   };
 
   public init = () => {
-    this.currentScene = new MainMenu();
+    this.currentScene = new MainMenu(this);
     this.currentScene.enter();
   };
 

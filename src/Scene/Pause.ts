@@ -47,7 +47,7 @@ class Pause extends Scene {
         else if (this.selectedOptionIndex === 1) {
           sound.pause();
           engine.clearScreen();
-          engine.changeScene(new MainMenu());
+          engine.changeScene(new MainMenu(engine));
         }
         break;
     }
