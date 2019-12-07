@@ -8,6 +8,10 @@ import Pause from "./Scene/Pause";
 import Scene from "./Scene/Playing";
 import Base from "./Base"
 import BaseE from "./BaseEnemy";
+import TigerI from "../assets/TIGERI.png";
+import LionI from "../assets/LionI.png";
+import BatI from "../assets/BATI.png";
+import BearI from "../assets/BEARI.png";
 
 import Playing from "./Scene/Playing";
 class HUD {
@@ -19,6 +23,10 @@ class HUD {
     private gold = new Image();
     private money = 0;
     private moneyRate = 2;
+    private TigerI = new Image;
+    private LionI = new Image;
+    private BatI = new Image;
+    private BearI = new Image;
 
     private IAm = 0;
     private moneyRateIA = 2;
@@ -62,6 +70,10 @@ class HUD {
         this.HUD.src = image;
         this.cont = new ControllerMobs();
         this.gold.src = Coin;
+        this.TigerI.src = TigerI;
+        this.LionI.src = LionI;
+        this.BatI.src = BatI;
+        this.BearI.src = BearI;
         
         
         this.IA = new IA();
@@ -125,8 +137,9 @@ class HUD {
 
         
 
-
+        
         Context.drawImage(this.HUD,this.positionX,-Context.canvas.height/3,Context.canvas.width/2,Context.canvas.width/2);
+        
         Context.closePath();
 
        // background rectangles
@@ -138,7 +151,7 @@ class HUD {
         Context.fillStyle = this.backColor;
         Context.fill();
         Context.closePath();
-
+       
         
 
         Context.beginPath();
@@ -148,7 +161,9 @@ class HUD {
         Context.rect(this.positionX + 214 + 93*2,230,100,96);
         Context.fillStyle = this.backColor;
         Context.fill();
-        
+         Context.drawImage(this.TigerI, 413, 243, 75, 75);
+         Context.drawImage(this.BatI, 216, 240, 95, 70);
+         
         Context.closePath();
 
         Context.beginPath();
@@ -159,14 +174,17 @@ class HUD {
         Context.fillStyle = this.backColor;
         Context.fill();
         Context.closePath();
-
+        Context.drawImage(this.LionI,588, 230, 95, 95);
+        
         Context.beginPath();
         Context.font = "50px Arial"
         Context.fillStyle = "#000000"
         Context.fillText("$50 ",this.positionX + 214 + 93*6,200);
+        
         Context.rect(this.positionX + 214 + 93*6,230,100,96);
         Context.fillStyle = this.backColor;
         Context.fill();
+        Context.drawImage(this.BearI, 777, 233, 90, 90);
         Context.closePath();
        
         Context.beginPath();

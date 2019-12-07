@@ -13,6 +13,7 @@ import ControllerMobs from "../ControllerMobs";
 import music from "../../assets/Tears.mp3";
 import GameContext from "../GameContext";
 import Pause from "./Pause";
+import Lose from "./Lose";
 
 
 class Playing extends Scene {

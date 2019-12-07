@@ -3,6 +3,7 @@ import Time from "./Time";
 import Scene from "./Scene/Scene";
 import MainMenu from "./Scene/MainMenu";
 import Playing from "./Scene/Playing";
+import Lose from "./Scene/Lose";
 
 
 class Engine {
