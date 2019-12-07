@@ -20,6 +20,9 @@ class HUD {
     private money = 0;
     private moneyRate = 2;
 
+    private IAm = 0;
+    private moneyRateIA = 2;
+
     private frame = 0;
     private FrameCounter = 0;
     private frameX =0;
@@ -38,6 +41,11 @@ class HUD {
     private a5 = 1;
 
     private ally = 0;
+
+    private priceA;
+    private priceB;
+    private priceC;
+    private priceD;
 
     private stateBoton1 = false;
     private stateBoton2 = false;
@@ -270,14 +278,19 @@ class HUD {
             this.frameX = 0;
             this.frameY = 0;
         }
-        if(this.FrameCounter % 25 == 0)
+        if(this.FrameCounter % 25 == 0){
             this.money += this.moneyRate;
+            this.IAm += this.moneyRateIA;
+        }
 
         let rand = this.IA.update();
         
         if(rand <= 3 && rand >= 0)
             if(this.enemyTimer >= 200)
+            {
                 this.cont.addmobs(rand,1);
+
+            }
     }
 
 

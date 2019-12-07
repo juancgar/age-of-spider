@@ -1715,6 +1715,8 @@ function () {
     this.gold = new Image();
     this.money = 0;
     this.moneyRate = 2;
+    this.IAm = 0;
+    this.moneyRateIA = 2;
     this.frame = 0;
     this.FrameCounter = 0;
     this.frameX = 0;
@@ -1909,9 +1911,15 @@ function () {
       this.frameY = 0;
     }
 
-    if (this.FrameCounter % 25 == 0) this.money += this.moneyRate;
+    if (this.FrameCounter % 25 == 0) {
+      this.money += this.moneyRate;
+      this.IAm += this.moneyRateIA;
+    }
+
     var rand = this.IA.update();
-    if (rand <= 3 && rand >= 0) if (this.enemyTimer >= 200) this.cont.addmobs(rand, 1);
+    if (rand <= 3 && rand >= 0) if (this.enemyTimer >= 200) {
+      this.cont.addmobs(rand, 1);
+    }
   };
 
   return HUD;
