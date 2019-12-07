@@ -341,6 +341,8 @@ function () {
 exports["default"] = Unit;
 },{}],"assets/lions.png":[function(require,module,exports) {
 module.exports = "/lions.4cb7a812.png";
+},{}],"assets/LIONSA.png":[function(require,module,exports) {
+module.exports = "/LIONSA.c6feadbd.png";
 },{}],"src/Lion.ts":[function(require,module,exports) {
 "use strict";
 
@@ -382,6 +384,8 @@ var Unit_1 = __importDefault(require("./Unit"));
 
 var lions_png_1 = __importDefault(require("../assets/lions.png"));
 
+var LIONSA_png_1 = __importDefault(require("../assets/LIONSA.png"));
+
 var GameContext_1 = __importDefault(require("./GameContext"));
 
 var State;
@@ -404,6 +408,7 @@ function (_super) {
     _this.life = 3000;
     _this.State = State.Walk;
     _this.Lion = new Image();
+    _this.LionA = new Image();
     _this.frame = 0;
     _this.FrameCounter = 0;
     _this.xCutAnimation = 0;
@@ -411,25 +416,60 @@ function (_super) {
     _this.realx = 0;
     _this.Lion = new Image();
     _this.Lion.src = lions_png_1["default"];
+    _this.LionA.src = LIONSA_png_1["default"];
     return _this;
   }
 
   Lion.prototype.render = function () {
-    var sx = 0;
-    var sy = 0;
-    var sWidth = 580;
-    var sHeight = 520;
-    var context = GameContext_1["default"].context;
-    context.beginPath();
-    context.save();
+    if (this.State == State.Walk) {
+      var sx = 0;
+      var sy = 0;
+      var sWidth = 580;
+      var sHeight = 520;
+      var context = GameContext_1["default"].context;
+      context.beginPath();
+      context.save();
 
-    if (this.Pertenece == 1) {
-      context.scale(-1, 1);
+      if (this.Pertenece == 1) {
+        context.scale(-1, 1);
+      }
+
+      context.drawImage(this.Lion, sx + sWidth * this.frame, sy, sWidth, sHeight, this.xcoord, this.ycoord, 180, 140);
+      context.restore();
+      context.closePath();
+    } else if (this.State == State.Attack) {
+      var sx = 0;
+      var sy = 0;
+      var sWidth = 62;
+      var sHeight = 50;
+      var context = GameContext_1["default"].context;
+      context.beginPath();
+      context.save();
+
+      if (this.Pertenece == 1) {
+        context.scale(-1, 1);
+      }
+
+      context.drawImage(this.LionA, sx + sWidth * this.frame, sy, sWidth, sHeight, this.xcoord, this.ycoord, 230, 160);
+      context.restore();
+      context.closePath();
+    } else {
+      var sx = 0;
+      var sy = 0;
+      var sWidth = 580;
+      var sHeight = 520;
+      var context = GameContext_1["default"].context;
+      context.beginPath();
+      context.save();
+
+      if (this.Pertenece == 1) {
+        context.scale(-1, 1);
+      }
+
+      context.drawImage(this.Lion, sx + sWidth, sy, sWidth, sHeight, this.xcoord, this.ycoord, 180, 140);
+      context.restore();
+      context.closePath();
     }
-
-    context.drawImage(this.Lion, sx + sWidth * this.frame, sy, sWidth, sHeight, this.xcoord, this.ycoord, 180, 140);
-    context.restore();
-    context.closePath();
   };
 
   Lion.prototype.update = function () {
@@ -469,7 +509,7 @@ function (_super) {
 
 ;
 exports["default"] = Lion;
-},{"./Unit":"src/Unit.ts","../assets/lions.png":"assets/lions.png","./GameContext":"src/GameContext.ts"}],"assets/bat.png":[function(require,module,exports) {
+},{"./Unit":"src/Unit.ts","../assets/lions.png":"assets/lions.png","../assets/LIONSA.png":"assets/LIONSA.png","./GameContext":"src/GameContext.ts"}],"assets/bat.png":[function(require,module,exports) {
 module.exports = "/bat.91fd6996.png";
 },{}],"src/bat.ts":[function(require,module,exports) {
 "use strict";
@@ -602,6 +642,8 @@ function (_super) {
 exports["default"] = bat;
 },{"../src/Unit":"src/Unit.ts","../assets/bat.png":"assets/bat.png","./GameContext":"src/GameContext.ts"}],"assets/Bear.png":[function(require,module,exports) {
 module.exports = "/Bear.6a15ee17.png";
+},{}],"assets/BearA.png":[function(require,module,exports) {
+module.exports = "/BearA.37b7ea95.png";
 },{}],"src/Bear.ts":[function(require,module,exports) {
 "use strict";
 
@@ -645,6 +687,8 @@ var Bear_png_1 = __importDefault(require("../assets/Bear.png"));
 
 var GameContext_1 = __importDefault(require("./GameContext"));
 
+var BearA_png_1 = __importDefault(require("../assets/BearA.png"));
+
 var State;
 
 (function (State) {
@@ -665,6 +709,7 @@ function (_super) {
     _this.life = 4000;
     _this.State = State.Walk;
     _this.Bear = new Image();
+    _this.BearA = new Image();
     _this.frame = 0;
     _this.FrameCounter = 0;
     _this.xCutAnimation = 0;
@@ -672,25 +717,60 @@ function (_super) {
     _this.realx = 0;
     _this.Bear = new Image();
     _this.Bear.src = Bear_png_1["default"];
+    _this.BearA.src = BearA_png_1["default"];
     return _this;
   }
 
   Bear.prototype.render = function () {
-    var sx = 0;
-    var sy = 0;
-    var sWidth = 64;
-    var sHeight = 33;
-    var context = GameContext_1["default"].context;
-    context.beginPath();
-    context.save();
+    if (this.State == State.Walk) {
+      var sx = 0;
+      var sy = 0;
+      var sWidth = 64;
+      var sHeight = 33;
+      var context = GameContext_1["default"].context;
+      context.beginPath();
+      context.save();
 
-    if (this.Pertenece == 0) {
-      context.scale(-1, 1);
+      if (this.Pertenece == 0) {
+        context.scale(-1, 1);
+      }
+
+      context.drawImage(this.Bear, sx + sWidth * this.frame, sy, sWidth, sHeight, this.xcoord, this.ycoord, 200, 100);
+      context.restore();
+      context.closePath();
+    } else if (this.State == State.Attack) {
+      var sx = 0;
+      var sy = 0;
+      var sWidth = 74;
+      var sHeight = 48;
+      var context = GameContext_1["default"].context;
+      context.beginPath();
+      context.save();
+
+      if (this.Pertenece == 0) {
+        context.scale(-1, 1);
+      }
+
+      context.drawImage(this.BearA, sx + sWidth * this.frame, sy, sWidth, sHeight, this.xcoord, this.ycoord, 225, 150);
+      context.restore();
+      context.closePath();
+    } else {
+      var sx = 0;
+      var sy = 0;
+      var sWidth = 64;
+      var sHeight = 33;
+      var context = GameContext_1["default"].context;
+      context.beginPath();
+      context.save();
+
+      if (this.Pertenece == 0) {
+        context.scale(-1, 1);
+      }
+
+      context.drawImage(this.Bear, sx + sWidth * 4, sy, sWidth, sHeight, this.xcoord, this.ycoord, 200, 100);
+      context.restore();
+      context.closePath();
     }
-
-    context.drawImage(this.Bear, sx + sWidth * this.frame, sy, sWidth, sHeight, this.xcoord, this.ycoord, 200, 100);
-    context.restore();
-    context.closePath();
   };
 
   Bear.prototype.update = function () {
@@ -717,7 +797,7 @@ function (_super) {
         this.frame++;
       }
 
-      if (this.frame > 4) {
+      if (this.frame > 2) {
         this.frame = 0;
       }
     } else {}
@@ -728,8 +808,10 @@ function (_super) {
 
 ;
 exports["default"] = Bear;
-},{"../src/Unit":"src/Unit.ts","../assets/Bear.png":"assets/Bear.png","./GameContext":"src/GameContext.ts"}],"assets/tigers.png":[function(require,module,exports) {
+},{"../src/Unit":"src/Unit.ts","../assets/Bear.png":"assets/Bear.png","./GameContext":"src/GameContext.ts","../assets/BearA.png":"assets/BearA.png"}],"assets/tigers.png":[function(require,module,exports) {
 module.exports = "/tigers.6109efd4.png";
+},{}],"assets/TIGREA.png":[function(require,module,exports) {
+module.exports = "/TIGREA.81809316.png";
 },{}],"src/Tiger.ts":[function(require,module,exports) {
 "use strict";
 
@@ -771,6 +853,8 @@ var Unit_1 = __importDefault(require("../src/Unit"));
 
 var tigers_png_1 = __importDefault(require("../assets/tigers.png"));
 
+var TIGREA_png_1 = __importDefault(require("../assets/TIGREA.png"));
+
 var GameContext_1 = __importDefault(require("./GameContext"));
 
 var State;
@@ -793,6 +877,7 @@ function (_super) {
     _this.attack = 10;
     _this.State = State.Walk;
     _this.Tiger = new Image();
+    _this.TigerA = new Image();
     _this.frame = 0;
     _this.FrameCounter = 0;
     _this.xCutAnimation = 0;
@@ -800,25 +885,60 @@ function (_super) {
     _this.realx = 0;
     _this.Tiger = new Image();
     _this.Tiger.src = tigers_png_1["default"];
+    _this.TigerA.src = TIGREA_png_1["default"];
     return _this;
   }
 
   Tiger.prototype.render = function () {
-    var sx = 0;
-    var sy = 0;
-    var sWidth = 575;
-    var sHeight = 552;
-    var context = GameContext_1["default"].context;
-    context.beginPath();
-    context.save();
+    if (this.State == State.Walk) {
+      var sx = 0;
+      var sy = 0;
+      var sWidth = 575;
+      var sHeight = 552;
+      var context = GameContext_1["default"].context;
+      context.beginPath();
+      context.save();
 
-    if (this.Pertenece == 1) {
-      context.scale(-1, 1);
+      if (this.Pertenece == 1) {
+        context.scale(-1, 1);
+      }
+
+      context.drawImage(this.Tiger, sx + sWidth * this.frame, sy, sWidth, sHeight, this.xcoord, this.ycoord, 180, 140);
+      context.restore();
+      context.closePath();
+    } else if (this.State == State.Attack) {
+      var sx = 0;
+      var sy = 0;
+      var sWidth = 62;
+      var sHeight = 50;
+      var context = GameContext_1["default"].context;
+      context.beginPath();
+      context.save();
+
+      if (this.Pertenece == 1) {
+        context.scale(-1, 1);
+      }
+
+      context.drawImage(this.TigerA, sx + sWidth * this.frame, sy, sWidth, sHeight, this.xcoord, this.ycoord, 230, 160);
+      context.restore();
+      context.closePath();
+    } else {
+      var sx = 0;
+      var sy = 0;
+      var sWidth = 575;
+      var sHeight = 552;
+      var context = GameContext_1["default"].context;
+      context.beginPath();
+      context.save();
+
+      if (this.Pertenece == 1) {
+        context.scale(-1, 1);
+      }
+
+      context.drawImage(this.Tiger, sx + sWidth, sy, sWidth, sHeight, this.xcoord, this.ycoord, 180, 140);
+      context.restore();
+      context.closePath();
     }
-
-    context.drawImage(this.Tiger, sx + sWidth * this.frame, sy, sWidth, sHeight, this.xcoord, this.ycoord, 180, 140);
-    context.restore();
-    context.closePath();
   };
 
   Tiger.prototype.update = function () {
@@ -829,7 +949,7 @@ function (_super) {
         this.frame++;
       }
 
-      if (this.frame > 5) {
+      if (this.frame > 2) {
         this.frame = 0;
       }
 
@@ -849,9 +969,9 @@ function (_super) {
         this.frame++;
       }
 
-      if (this.frame > 5) {
+      if (this.frame > 2) {
         this.frame = 0;
-      }
+      } else {}
     }
 
     ;
@@ -862,7 +982,7 @@ function (_super) {
 
 ;
 exports["default"] = Tiger;
-},{"../src/Unit":"src/Unit.ts","../assets/tigers.png":"assets/tigers.png","./GameContext":"src/GameContext.ts"}],"assets/base.png":[function(require,module,exports) {
+},{"../src/Unit":"src/Unit.ts","../assets/tigers.png":"assets/tigers.png","../assets/TIGREA.png":"assets/TIGREA.png","./GameContext":"src/GameContext.ts"}],"assets/base.png":[function(require,module,exports) {
 module.exports = "/base.881e12d6.png";
 },{}],"src/Base.ts":[function(require,module,exports) {
 "use strict";
@@ -2316,7 +2436,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54795" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54458" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
