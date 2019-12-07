@@ -16,7 +16,7 @@ class bat extends Unit
     public range;
     public attack = 25;
     public attackB = 100;
-    public life = 1000;
+    public life = 800;
     public xcoord;
     public ycoord;
     public State: State =  State.Walk;

@@ -14,9 +14,9 @@ class Lion extends Unit
 {
     public Pertenece;
     public range;
-    public attack = 15;
+    public attack = 16;
     public xcoord;
-    public life = 3000;
+    public life = 3500;
     public attackB = 300;
     public ycoord;
     public State: State =  State.Walk;

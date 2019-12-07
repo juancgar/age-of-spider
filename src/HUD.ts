@@ -135,15 +135,6 @@ class HUD {
         if(event.offsetX > this.positionX + 214 + 93*20 && event.offsetX < this.positionX +214+100 + 93*20 && event.offsetY > 230 && event.offsetY <326 )
         {
 
-
-            if(this.stateBoton5){
-                this.a5 = 0;
-                this.stateBoton5 = false;
-            }
-            else{
-                this.a5 = 1;
-                this.stateBoton5 = true;
-            }
             
 
 
