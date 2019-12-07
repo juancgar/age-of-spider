@@ -18,7 +18,7 @@ class IA{
     {
         
         this.frameCounter++;
-        let rand = Math.floor(Math.random() * 10);
+        let rand = Math.floor(Math.random() * Level.Medium);
         if(this.frameCounter % 100 == 0)
             {
                 return rand;                

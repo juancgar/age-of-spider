@@ -14,8 +14,8 @@ class bat extends Unit
 {
     public Pertenece;
     public range;
-    public attack = 20;
-    public attackB = 8000;
+    public attack = 25;
+    public attackB = 100;
     public life = 1000;
     public xcoord;
     public ycoord;

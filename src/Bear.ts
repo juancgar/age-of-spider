@@ -14,10 +14,10 @@ class Bear extends Unit
 {
     public Pertenece;
     public range;
-    public attack = 20;
+    public attack = 12;
     public xcoord;
     public life = 4000;
-    public attackB = 8000;
+    public attackB = 800;
     public ycoord;
     public State: State =  State.Walk;
     private Bear = new Image();

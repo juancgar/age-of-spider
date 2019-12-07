@@ -2,37 +2,34 @@ import Scene from "./Scene";
 import GameContext from "../GameContext";
 import Engine from "../Engine";
 import Playing from "./Playing";
-import Config from "./Config"
+import MainMenu from "./MainMenu"
 import audio from "../../assets/The_Healing.mp3";
 import Back from "../../assets/Forest.png";
 
+const sound = new Audio(audio);
+const image = new Image;
 export enum Level {
   Easy = 6,
   Medium = 5,
   Hard = 3,
 }
-
-const sound = new Audio(audio);
-const image = new Image;
-class MainMenu extends Scene {
+class Config extends Scene {
   private Title: string = "Age of Animals";
-  private options: string[] = ["Jugar"];
+  private options: string[] = ["Easy", "Medium" , "Hard" , "Exit"];
   private selectedOptionIndex: number = 0;
   private backgroundColorHue = 0;
   private skipUpdate = false;
+  private level;
   private Motor = new Engine();
 
-  private Level: Level = Level.Easy;
-
-  
   public win(){
     return 3;
-    
   };
-  constructor(engine: Engine)
+  constructor(engine: Engine,Level:Level)
   {
     super();
     this.Motor = engine;
+    this.level = Level;
 
   }
   public handleKeyDown = (event: KeyboardEvent, engine: Engine) => {
@@ -53,10 +50,20 @@ class MainMenu extends Scene {
           this.Motor.clearScreen();
           this.Motor.changeScene(new Playing(this.Motor));
         }
-        else if (this.selectedOptionIndex === 1) {
+        if (this.selectedOptionIndex === 1) {
           sound.pause();
-          this.Motor.clearScreen();
-          this.Motor.changeScene(new Config(engine));
+          engine.clearScreen();
+          engine.changeScene(new Playing(engine));
+        }
+        if (this.selectedOptionIndex === 2) {
+          sound.pause();
+          engine.clearScreen();
+          engine.changeScene(new Playing(engine));
+        }
+        if (this.selectedOptionIndex === 3) {
+          sound.pause();
+          engine.clearScreen();
+          engine.changeScene(new Playing(engine));
         }
         break;
     }
@@ -93,15 +100,14 @@ class MainMenu extends Scene {
     context.fillStyle = "black";
 */
     context.font = "160px sans-serif";
-    context.fillStyle = "black";
     context.fillText(this.Title, width/2 - 500, 0+400);
     
     context.closePath();
     
     context.beginPath();
     context.fillStyle = "black";
-    context.strokeStyle = "lawngreen";
-    context.font = "100px sans-serif";
+    context.strokeStyle = "darkblue";
+    context.font = "80px sans-serif";
     context.textAlign = "center";
     for (let i = 0; i < this.options.length; i++) {
       const xPoint = width / 2;

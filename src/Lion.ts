@@ -14,10 +14,10 @@ class Lion extends Unit
 {
     public Pertenece;
     public range;
-    public attack = 5;
+    public attack = 15;
     public xcoord;
     public life = 3000;
-    public attackB = 8000;
+    public attackB = 300;
     public ycoord;
     public State: State =  State.Walk;
     private Lion = new Image();
