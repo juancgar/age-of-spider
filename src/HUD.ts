@@ -1,12 +1,14 @@
 import GameContext from "./GameContext";
 import image from "../assets/HUD.png";
 import ControllerMobs from "./ControllerMobs";
+import Coin from "../assets/GoldCoin.png";
 import IA from "./IA";
 import engine from "./Engine";
 import Pause from "./Scene/Pause";
 import Scene from "./Scene/Playing";
 import Base from "./Base"
 import BaseE from "./BaseEnemy";
+
 import Playing from "./Scene/Playing";
 class HUD {
 
@@ -14,6 +16,15 @@ class HUD {
     private HUD = new Image;
     public positionX: number = -50;
     private color = "#A4A5A3";
+    private gold = new Image();
+    private money = 0;
+    private moneyRate = 2;
+
+    private frame = 0;
+    private FrameCounter = 0;
+    private frameX =0;
+    private frameY = 0;
+
     
     private cont : ControllerMobs = null;
     private IA : IA = null;
@@ -42,6 +53,7 @@ class HUD {
         
         this.HUD.src = image;
         this.cont = new ControllerMobs();
+        this.gold.src = Coin;
         
         
         this.IA = new IA();
@@ -111,6 +123,9 @@ class HUD {
 
        // background rectangles
         Context.beginPath();
+        Context.font = "50px Arial"
+        Context.fillStyle = "#000000"
+        Context.fillText("$50 ",this.positionX + 214,200);
         Context.rect(this.positionX + 214,230,100,96);
         Context.fillStyle = this.backColor;
         Context.fill();
@@ -119,6 +134,9 @@ class HUD {
         
 
         Context.beginPath();
+        Context.font = "50px Arial"
+        Context.fillStyle = "#000000"
+        Context.fillText("$50 ",this.positionX + 214 + 93*2,200);
         Context.rect(this.positionX + 214 + 93*2,230,100,96);
         Context.fillStyle = this.backColor;
         Context.fill();
@@ -126,12 +144,18 @@ class HUD {
         Context.closePath();
 
         Context.beginPath();
+        Context.font = "50px Arial"
+        Context.fillStyle = "#000000"
+        Context.fillText("$50 ",this.positionX + 214 + 93*4,200);
         Context.rect(this.positionX + 214 + 93*4,230,100,96);
         Context.fillStyle = this.backColor;
         Context.fill();
         Context.closePath();
 
         Context.beginPath();
+        Context.font = "50px Arial"
+        Context.fillStyle = "#000000"
+        Context.fillText("$50 ",this.positionX + 214 + 93*6,200);
         Context.rect(this.positionX + 214 + 93*6,230,100,96);
         Context.fillStyle = this.backColor;
         Context.fill();
@@ -152,6 +176,21 @@ class HUD {
         Context.fillStyle = "BLACK";
         Context.fillText("P",this.positionX + 230 + 93*20,320);
         Context.restore();
+        Context.closePath();
+
+
+        //Money HUD
+        Context.beginPath();
+        Context.save();
+
+       
+        Context.font = "50px Arial"
+        Context.fillStyle = "#000000"
+        Context.fillText("= " + this.money,this.positionX + 230 + 93*11.1,310);
+        Context.drawImage(this.gold,6 + 32 * this.frameX,7 + 32 * this.frameY,25,25,this.positionX + 230 + 93*10,240,128,128)
+        //Context.drawImage(this.gold,6 + 32 * 2,7 + 32 * 0,25,25,this.positionX + 230 + 93*10,240,128,128)
+        Context.restore();
+
         Context.closePath();
         
         
@@ -215,6 +254,25 @@ class HUD {
         this.a4 = .6;
 
         }
+        //money update
+
+        this.FrameCounter++;
+        if(this.FrameCounter % 8 == 0)
+            this.frameX++;
+        
+        if(this.frameX % 2 == 0 && this.frameX != 0)
+        {
+            this.frameX = 0;
+            this.frameY++;
+        }
+        if(this.frameY % 4 == 0 && this.frameY != 0)
+        {
+            this.frameX = 0;
+            this.frameY = 0;
+        }
+        if(this.FrameCounter % 25 == 0)
+            this.money += this.moneyRate;
+
         let rand = this.IA.update();
         
         if(rand <= 3 && rand >= 0)

@@ -9,7 +9,7 @@ const sound = new Audio(audio);
 const image = new Image;
 class MainMenu extends Scene {
   private Title: string = "Age of Animals";
-  private options: string[] = ["Jugar", "Salir"];
+  private options: string[] = ["Jugar", "Config"];
   private selectedOptionIndex: number = 0;
   private backgroundColorHue = 0;
   private skipUpdate = false;
@@ -27,6 +27,11 @@ class MainMenu extends Scene {
         break;
       case "Enter":
         if (this.selectedOptionIndex === 0) {
+          sound.pause();
+          engine.clearScreen();
+          engine.changeScene(new Playing());
+        }
+        if (this.selectedOptionIndex === 1) {
           sound.pause();
           engine.clearScreen();
           engine.changeScene(new Playing());

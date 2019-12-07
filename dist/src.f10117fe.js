@@ -984,6 +984,8 @@ function (_super) {
 exports["default"] = Tiger;
 },{"../src/Unit":"src/Unit.ts","../assets/tigers.png":"assets/tigers.png","../assets/TIGREA.png":"assets/TIGREA.png","./GameContext":"src/GameContext.ts"}],"assets/base.png":[function(require,module,exports) {
 module.exports = "/base.881e12d6.png";
+},{}],"assets/HealthBar.png":[function(require,module,exports) {
+module.exports = "/HealthBar.90ba5f53.png";
 },{}],"src/Base.ts":[function(require,module,exports) {
 "use strict";
 
@@ -999,6 +1001,8 @@ var GameContext_1 = __importDefault(require("./GameContext"));
 
 var base_png_1 = __importDefault(require("../assets/base.png"));
 
+var HealthBar_png_1 = __importDefault(require("../assets/HealthBar.png"));
+
 var Base =
 /** @class */
 function () {
@@ -1007,7 +1011,10 @@ function () {
     this.xcoord = 0;
     this.ycoord = 200;
     this.Base = new Image();
+    this.life = new Image();
+    this.lifebar = 685;
     this.Base.src = base_png_1["default"];
+    this.life.src = HealthBar_png_1["default"];
     this.ycoord = 550;
     this.xcoord = GameContext_1["default"].context.canvas.width / 2 * -1 + -10;
   }
@@ -1024,19 +1031,25 @@ function () {
     var Context = GameContext_1["default"].context;
     Context.beginPath();
     Context.save();
+    Context.rect(this.xcoord + 50, this.ycoord - 70, this.lifebar, 50);
+    Context.fillStyle = "green";
+    Context.fill();
+    Context.drawImage(this.life, this.xcoord - 90, this.ycoord - 150);
     Context.drawImage(this.Base, this.xcoord, this.ycoord, 600, 600);
     Context.restore();
     Context.closePath();
   };
 
-  Base.prototype.update = function () {};
+  Base.prototype.update = function () {
+    this.lifebar = 685 / 3000 * this.vida;
+  };
 
   return Base;
 }();
 
 ;
 exports["default"] = Base;
-},{"./GameContext":"src/GameContext.ts","../assets/base.png":"assets/base.png"}],"src/BaseEnemy.ts":[function(require,module,exports) {
+},{"./GameContext":"src/GameContext.ts","../assets/base.png":"assets/base.png","../assets/HealthBar.png":"assets/HealthBar.png"}],"src/BaseEnemy.ts":[function(require,module,exports) {
 "use strict";
 
 var __importDefault = this && this.__importDefault || function (mod) {
@@ -1051,6 +1064,8 @@ var GameContext_1 = __importDefault(require("./GameContext"));
 
 var base_png_1 = __importDefault(require("../assets/base.png"));
 
+var HealthBar_png_1 = __importDefault(require("../assets/HealthBar.png"));
+
 var BaseEnemy =
 /** @class */
 function () {
@@ -1059,9 +1074,12 @@ function () {
     this.xcoord = 0;
     this.ycoord = 200;
     this.Base = new Image();
+    this.life = new Image();
+    this.lifebar = 685;
     this.Base.src = base_png_1["default"];
     this.ycoord = 550;
     this.xcoord = GameContext_1["default"].context.canvas.width + 1210;
+    this.life.src = HealthBar_png_1["default"];
   }
 
   BaseEnemy.prototype.getLife = function () {
@@ -1077,19 +1095,25 @@ function () {
     Context.beginPath();
     Context.save();
     Context.scale(-1, 1);
+    Context.rect(-this.xcoord + 50, this.ycoord - 70, this.lifebar, 50);
+    Context.fillStyle = "green";
+    Context.fill();
     Context.drawImage(this.Base, -this.xcoord, this.ycoord, 600, 600);
+    Context.drawImage(this.life, -this.xcoord - 90, this.ycoord - 150);
     Context.restore();
     Context.closePath();
   };
 
-  BaseEnemy.prototype.update = function () {};
+  BaseEnemy.prototype.update = function () {
+    this.lifebar = 685 / 3000 * this.vida;
+  };
 
   return BaseEnemy;
 }();
 
 ;
 exports["default"] = BaseEnemy;
-},{"./GameContext":"src/GameContext.ts","../assets/base.png":"assets/base.png"}],"node_modules/linked-list-typescript/lib/src/index.js":[function(require,module,exports) {
+},{"./GameContext":"src/GameContext.ts","../assets/base.png":"assets/base.png","../assets/HealthBar.png":"assets/HealthBar.png"}],"node_modules/linked-list-typescript/lib/src/index.js":[function(require,module,exports) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class LinkedList {
@@ -1627,7 +1651,9 @@ function () {
 
 ;
 exports["default"] = ControllerMobs;
-},{"./Lion":"src/Lion.ts","./bat":"src/bat.ts","./GameContext":"src/GameContext.ts","./Bear":"src/Bear.ts","./Tiger":"src/Tiger.ts","./Base":"src/Base.ts","./BaseEnemy":"src/BaseEnemy.ts","queue-typescript":"node_modules/queue-typescript/lib/src/index.js"}],"src/IA.ts":[function(require,module,exports) {
+},{"./Lion":"src/Lion.ts","./bat":"src/bat.ts","./GameContext":"src/GameContext.ts","./Bear":"src/Bear.ts","./Tiger":"src/Tiger.ts","./Base":"src/Base.ts","./BaseEnemy":"src/BaseEnemy.ts","queue-typescript":"node_modules/queue-typescript/lib/src/index.js"}],"assets/GoldCoin.png":[function(require,module,exports) {
+module.exports = "/GoldCoin.473ee507.png";
+},{}],"src/IA.ts":[function(require,module,exports) {
 "use strict";
 
 exports.__esModule = true;
@@ -1673,6 +1699,8 @@ var HUD_png_1 = __importDefault(require("../assets/HUD.png"));
 
 var ControllerMobs_1 = __importDefault(require("./ControllerMobs"));
 
+var GoldCoin_png_1 = __importDefault(require("../assets/GoldCoin.png"));
+
 var IA_1 = __importDefault(require("./IA"));
 
 var HUD =
@@ -1684,6 +1712,13 @@ function () {
     this.HUD = new Image();
     this.positionX = -50;
     this.color = "#A4A5A3";
+    this.gold = new Image();
+    this.money = 0;
+    this.moneyRate = 2;
+    this.frame = 0;
+    this.FrameCounter = 0;
+    this.frameX = 0;
+    this.frameY = 0;
     this.cont = null;
     this.IA = null;
     this.Play = null;
@@ -1741,6 +1776,7 @@ function () {
 
     this.HUD.src = HUD_png_1["default"];
     this.cont = new ControllerMobs_1["default"]();
+    this.gold.src = GoldCoin_png_1["default"];
     this.IA = new IA_1["default"]();
   }
 
@@ -1754,21 +1790,33 @@ function () {
     Context.closePath(); // background rectangles
 
     Context.beginPath();
+    Context.font = "50px Arial";
+    Context.fillStyle = "#000000";
+    Context.fillText("$50 ", this.positionX + 214, 200);
     Context.rect(this.positionX + 214, 230, 100, 96);
     Context.fillStyle = this.backColor;
     Context.fill();
     Context.closePath();
     Context.beginPath();
+    Context.font = "50px Arial";
+    Context.fillStyle = "#000000";
+    Context.fillText("$50 ", this.positionX + 214 + 93 * 2, 200);
     Context.rect(this.positionX + 214 + 93 * 2, 230, 100, 96);
     Context.fillStyle = this.backColor;
     Context.fill();
     Context.closePath();
     Context.beginPath();
+    Context.font = "50px Arial";
+    Context.fillStyle = "#000000";
+    Context.fillText("$50 ", this.positionX + 214 + 93 * 4, 200);
     Context.rect(this.positionX + 214 + 93 * 4, 230, 100, 96);
     Context.fillStyle = this.backColor;
     Context.fill();
     Context.closePath();
     Context.beginPath();
+    Context.font = "50px Arial";
+    Context.fillStyle = "#000000";
+    Context.fillText("$50 ", this.positionX + 214 + 93 * 6, 200);
     Context.rect(this.positionX + 214 + 93 * 6, 230, 100, 96);
     Context.fillStyle = this.backColor;
     Context.fill();
@@ -1786,6 +1834,16 @@ function () {
     Context.font = "100px Arial";
     Context.fillStyle = "BLACK";
     Context.fillText("P", this.positionX + 230 + 93 * 20, 320);
+    Context.restore();
+    Context.closePath(); //Money HUD
+
+    Context.beginPath();
+    Context.save();
+    Context.font = "50px Arial";
+    Context.fillStyle = "#000000";
+    Context.fillText("= " + this.money, this.positionX + 230 + 93 * 11.1, 310);
+    Context.drawImage(this.gold, 6 + 32 * this.frameX, 7 + 32 * this.frameY, 25, 25, this.positionX + 230 + 93 * 10, 240, 128, 128); //Context.drawImage(this.gold,6 + 32 * 2,7 + 32 * 0,25,25,this.positionX + 230 + 93*10,240,128,128)
+
     Context.restore();
     Context.closePath(); //cooldown meshes
 
@@ -1835,8 +1893,23 @@ function () {
       this.a2 = .6;
       this.a3 = .6;
       this.a4 = .6;
+    } //money update
+
+
+    this.FrameCounter++;
+    if (this.FrameCounter % 8 == 0) this.frameX++;
+
+    if (this.frameX % 2 == 0 && this.frameX != 0) {
+      this.frameX = 0;
+      this.frameY++;
     }
 
+    if (this.frameY % 4 == 0 && this.frameY != 0) {
+      this.frameX = 0;
+      this.frameY = 0;
+    }
+
+    if (this.FrameCounter % 25 == 0) this.money += this.moneyRate;
     var rand = this.IA.update();
     if (rand <= 3 && rand >= 0) if (this.enemyTimer >= 200) this.cont.addmobs(rand, 1);
   };
@@ -1846,8 +1919,12 @@ function () {
 
 ;
 exports["default"] = HUD;
-},{"./GameContext":"src/GameContext.ts","../assets/HUD.png":"assets/HUD.png","./ControllerMobs":"src/ControllerMobs.ts","./IA":"src/IA.ts"}],"assets/Tears.mp3":[function(require,module,exports) {
+},{"./GameContext":"src/GameContext.ts","../assets/HUD.png":"assets/HUD.png","./ControllerMobs":"src/ControllerMobs.ts","../assets/GoldCoin.png":"assets/GoldCoin.png","./IA":"src/IA.ts"}],"assets/Tears.mp3":[function(require,module,exports) {
 module.exports = "/Tears.4a1c11f6.mp3";
+},{}],"assets/Forest.png":[function(require,module,exports) {
+module.exports = "/Forest.18f49d4c.png";
+},{}],"assets/The_Healing.mp3":[function(require,module,exports) {
+module.exports = "/The_Healing.e43ec224.mp3";
 },{}],"src/Scene/Pause.ts":[function(require,module,exports) {
 "use strict";
 
@@ -1889,12 +1966,21 @@ var Scene_1 = __importDefault(require("./Scene"));
 
 var GameContext_1 = __importDefault(require("../GameContext"));
 
+var MainMenu_1 = __importDefault(require("./MainMenu"));
+
+var Forest_png_1 = __importDefault(require("../../assets/Forest.png"));
+
+var The_Healing_mp3_1 = __importDefault(require("../../assets/The_Healing.mp3"));
+
+var sound = new Audio(The_Healing_mp3_1["default"]);
+var image = new Image();
+
 var Pause =
 /** @class */
 function (_super) {
   __extends(Pause, _super);
 
-  function Pause(Playing) {
+  function Pause(Play) {
     var _this = _super.call(this) || this;
 
     _this.Title = "Age Of Animals";
@@ -1918,7 +2004,13 @@ function (_super) {
 
         case "Enter":
           if (_this.selectedOptionIndex === 0) {
+            sound.pause();
+            engine.clearScreen();
             engine.changeScene(_this.PScene);
+          } else if (_this.selectedOptionIndex === 1) {
+            sound.pause();
+            engine.clearScreen();
+            engine.changeScene(new MainMenu_1["default"]());
           }
 
           break;
@@ -1935,7 +2027,10 @@ function (_super) {
 
     _this.mouseMoveListener = function (event) {};
 
-    _this.enter = function () {};
+    _this.enter = function () {
+      sound.play();
+      image.src = Forest_png_1["default"];
+    };
 
     _this.render = function () {
       var context = GameContext_1["default"].context;
@@ -1944,27 +2039,29 @@ function (_super) {
           height = _a.height;
       context.save();
       context.beginPath();
-
-      if (!_this.skipUpdate) {
-        _this.backgroundColorHue = (_this.backgroundColorHue + 1) % 360;
+      context.drawImage(image, 0, 0);
+      context.closePath();
+      /*if (!this.skipUpdate) {
+        this.backgroundColorHue = (this.backgroundColorHue + 1) % 360;
       }
-
-      _this.skipUpdate = !_this.skipUpdate;
-      context.fillStyle = "hsl(" + _this.backgroundColorHue + ", 100%, 80%)";
+      this.skipUpdate = !this.skipUpdate;
+      context.fillStyle = `hsl(${this.backgroundColorHue}, 100%, 80%)`;
       context.fillRect(0, 0, width, height);
       context.fillStyle = "black";
-      context.font = "80px sans-serif";
-      context.fillText(_this.Title, width / 2 - 250, 0 + 400);
+      */
+
+      context.font = "160px sans-serif";
+      context.fillText(_this.Title, width / 2 - 500, 0 + 400);
       context.closePath();
       context.beginPath();
       context.fillStyle = "black";
       context.strokeStyle = "darkblue";
-      context.font = "50px sans-serif";
+      context.font = "100px sans-serif";
       context.textAlign = "center";
 
       for (var i = 0; i < _this.options.length; i++) {
         var xPoint = width / 2;
-        var yPoint = height * 0.65 + i * 50;
+        var yPoint = height * 0.65 + i * 100;
 
         if (_this.selectedOptionIndex === i) {
           context.lineWidth = 2;
@@ -1978,7 +2075,7 @@ function (_super) {
       context.restore();
     };
 
-    _this.PScene = Playing;
+    _this.PScene = Play;
     return _this;
   }
 
@@ -1986,7 +2083,7 @@ function (_super) {
 }(Scene_1["default"]);
 
 exports["default"] = Pause;
-},{"./Scene":"src/Scene/Scene.ts","../GameContext":"src/GameContext.ts"}],"src/Scene/Playing.ts":[function(require,module,exports) {
+},{"./Scene":"src/Scene/Scene.ts","../GameContext":"src/GameContext.ts","./MainMenu":"src/Scene/MainMenu.ts","../../assets/Forest.png":"assets/Forest.png","../../assets/The_Healing.mp3":"assets/The_Healing.mp3"}],"src/Scene/Playing.ts":[function(require,module,exports) {
 "use strict";
 
 var __extends = this && this.__extends || function () {
@@ -2049,9 +2146,9 @@ function (_super) {
   function Playing() {
     var _this = _super !== null && _super.apply(this, arguments) || this;
 
-    _this.camera = null;
+    _this.camera = new Camera_1["default"]();
     _this.background = null;
-    _this.HUD = null;
+    _this.HUD = new HUD_ts_1["default"]();
     _this.MobCont = null;
     _this.BackGroundMusic = new Audio(Tears_mp3_1["default"]);
 
@@ -2061,12 +2158,10 @@ function (_super) {
       _this.camera.handleKeyDown(event);
 
       if (event.key == 'p') {
-        var temp = _this;
-
         _this.BackGroundMusic.pause();
 
         engine.clearScreen();
-        engine.changeScene(new Pause_1["default"](temp));
+        engine.changeScene(new Pause_1["default"](_this));
       }
     };
 
@@ -2103,9 +2198,7 @@ function (_super) {
     _this.enter = function () {
       _this.BackGroundMusic.play();
 
-      _this.camera = new Camera_1["default"]();
       _this.background = new background_1["default"]();
-      _this.HUD = new HUD_ts_1["default"]();
     };
 
     _this.update = function () {
@@ -2129,11 +2222,7 @@ function (_super) {
 }(Scene_1["default"]);
 
 exports["default"] = Playing;
-},{"./Scene":"src/Scene/Scene.ts","../Camera":"src/Camera.ts","../background":"src/background.ts","../HUD.ts":"src/HUD.ts","../Base":"src/Base.ts","../BaseEnemy":"src/BaseEnemy.ts","../../assets/Tears.mp3":"assets/Tears.mp3","../GameContext":"src/GameContext.ts","./Pause":"src/Scene/Pause.ts"}],"assets/The_Healing.mp3":[function(require,module,exports) {
-module.exports = "/The_Healing.e43ec224.mp3";
-},{}],"assets/Forest.png":[function(require,module,exports) {
-module.exports = "/Forest.18f49d4c.png";
-},{}],"src/Scene/MainMenu.ts":[function(require,module,exports) {
+},{"./Scene":"src/Scene/Scene.ts","../Camera":"src/Camera.ts","../background":"src/background.ts","../HUD.ts":"src/HUD.ts","../Base":"src/Base.ts","../BaseEnemy":"src/BaseEnemy.ts","../../assets/Tears.mp3":"assets/Tears.mp3","../GameContext":"src/GameContext.ts","./Pause":"src/Scene/Pause.ts"}],"src/Scene/MainMenu.ts":[function(require,module,exports) {
 "use strict";
 
 var __extends = this && this.__extends || function () {
@@ -2192,7 +2281,7 @@ function (_super) {
     var _this = _super !== null && _super.apply(this, arguments) || this;
 
     _this.Title = "Age of Animals";
-    _this.options = ["Jugar", "Salir"];
+    _this.options = ["Jugar", "Config"];
     _this.selectedOptionIndex = 0;
     _this.backgroundColorHue = 0;
     _this.skipUpdate = false;
@@ -2209,6 +2298,12 @@ function (_super) {
 
         case "Enter":
           if (_this.selectedOptionIndex === 0) {
+            sound.pause();
+            engine.clearScreen();
+            engine.changeScene(new Playing_1["default"]());
+          }
+
+          if (_this.selectedOptionIndex === 1) {
             sound.pause();
             engine.clearScreen();
             engine.changeScene(new Playing_1["default"]());
