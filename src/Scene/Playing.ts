@@ -1,8 +1,6 @@
 import Scene from "./Scene";
-
 import Engine from "../Engine";
 import MainMenu from "./MainMenu";
-
 import Camera from "../Camera";
 import background from "../background";
 import HUD from "../HUD.ts";

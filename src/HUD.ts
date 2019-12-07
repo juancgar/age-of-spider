@@ -23,16 +23,12 @@ class HUD {
     private gold = new Image();
     private money = 0;
     private moneyRate = 2;
-<<<<<<< HEAD
     private TigerI = new Image;
     private LionI = new Image;
     private BatI = new Image;
     private BearI = new Image;
 
-=======
-    private winCond: number = 0;
-    private Motor = new engine();
->>>>>>> ce965194be4875929eb907fd1407bf0b9418633d
+    private winCond = 0;
     private IAm = 0;
     private moneyRateIA = 2;
   
@@ -98,11 +94,11 @@ class HUD {
         this.BatI.src = BatI;
         this.BearI.src = BearI;
         
-        this.Motor = m1;
+        
         this.IA = new IA();
     }
     public mouseDownListener = (event: MouseEvent,engine:engine) => {
-        this.Motor = engine;
+        
 
         if( this.money >= this.priceA && this.timerA >= this.CooldownA && event.offsetX > this.positionX +214 && event.offsetX < this.positionX +214+100 && event.offsetY > 230 && event.offsetY <326 )
         {
@@ -207,12 +203,8 @@ class HUD {
         Context.beginPath();
         Context.font = "50px Arial"
         Context.fillStyle = "#000000"
-<<<<<<< HEAD
         Context.fillText("$50 ",this.positionX + 214 + 93*6,200);
         
-=======
-        Context.fillText("$" + this.priceD,this.positionX + 214 + 93*6,200);
->>>>>>> ce965194be4875929eb907fd1407bf0b9418633d
         Context.rect(this.positionX + 214 + 93*6,230,100,96);
         Context.fillStyle = this.backColor;
         Context.fill();

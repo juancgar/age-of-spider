@@ -4,7 +4,7 @@ import Scene from "./Scene/Scene";
 import MainMenu from "./Scene/MainMenu";
 import Playing from "./Scene/Playing";
 import Lose from "./Scene/Lose";
-
+import Winner from "./Scene/Win"
 
 class Engine {
   private currentScene: Scene = null;
@@ -79,16 +79,18 @@ class Engine {
     this.winCond = this.currentScene.win();
     if(this.winCond == 1)
     {
-      this.currentScene.exit();
+      
       this.clearScreen();
-      this.changeScene(new MainMenu(this));
+      this.currentScene.exit();
+      this.changeScene(new Lose(this));
 
     }
     else if(this.winCond == 2)
     {
-      this.currentScene.exit();
+      
       this.clearScreen();
-      this.changeScene(new MainMenu(this));
+      this.currentScene.exit();
+      this.changeScene(new Winner(this));
 
     }
     else

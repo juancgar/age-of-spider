@@ -5,17 +5,28 @@ import Playing from "./Playing";
 import audio from "../../assets/The_Healing.mp3";
 import Back from "../../assets/LOSE.jpg";
 import Loser from "../../assets/gameover.png"
+import MainMenu from "./MainMenu";
 
 const sound = new Audio(audio);
 
 class Win extends Scene {
   private Title: string = "";
-  private options: string[] = ["Jugar", "Salir"];
+  private options: string[] = ["Regresar Al Menu"];
   private selectedOptionIndex: number = 0;
   private backgroundColorHue = 0;
   private skipUpdate = false;
   private image = new Image();
   private Loser = new Image();
+  private Motor: Engine;
+  public win(){
+    return 3;
+  };
+  constructor(engine: Engine)
+  {
+    super();
+    this.Motor = engine;
+
+  }
   public handleKeyDown = (event: KeyboardEvent, engine: Engine) => {
     switch (event.key) {
       case "ArrowUp":
@@ -31,12 +42,7 @@ class Win extends Scene {
         if (this.selectedOptionIndex === 0) {
           sound.pause();
           engine.clearScreen();
-          engine.changeScene(new Playing());
-        }
-        if (this.selectedOptionIndex === 1) {
-          sound.pause();
-          engine.clearScreen();
-          engine.changeScene(new Playing());
+          engine.changeScene(new MainMenu(this.Motor));
         }
         break;
     }
