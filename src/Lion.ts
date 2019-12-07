@@ -15,7 +15,7 @@ class Lion extends Unit
     public attack = 5;
     public xcoord;
     public life = 3000;
-    public attackB = 500;
+    public attackB = 8000;
     public ycoord;
     public State: State =  State.Walk;
     private Lion = new Image();

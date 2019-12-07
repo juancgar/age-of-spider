@@ -8,6 +8,7 @@ import Playing from "./Scene/Playing";
 class Engine {
   private currentScene: Scene = null;
   // Iniciar el motor del juego.
+  private winCond = 0;
   public start = () => {
     this.init();
     requestAnimationFrame(this.tick);
@@ -30,6 +31,10 @@ class Engine {
     this.currentScene.mouseMoveListener(event);
 
   };
+  public win (){
+    return this.currentScene.win();
+  };
+  
 
   public ScenePause = (scene:Scene) =>{
 
@@ -58,7 +63,7 @@ class Engine {
     context.closePath();
     context.restore();
   };
-
+ 
   public init = () => {
     this.currentScene = new MainMenu(this);
     this.currentScene.enter();
@@ -68,8 +73,29 @@ class Engine {
   public tick = () => {
     this.clearScreen();
     Time.update();
+    
     this.currentScene.update();
+    this.winCond = this.currentScene.win();
+    if(this.winCond == 1)
+    {
+      this.currentScene.exit();
+      this.clearScreen();
+      this.changeScene(new MainMenu(this));
+
+    }
+    else if(this.winCond == 2)
+    {
+      this.currentScene.exit();
+      this.clearScreen();
+      this.changeScene(new MainMenu(this));
+
+    }
+    else
+    {
+
+    }
     this.currentScene.render();
+    
     requestAnimationFrame(this.tick);
   };
 }

@@ -16,7 +16,7 @@ class Tiger extends Unit
     public range;
     public life = 2000;
     public attack = 10;
-    public attackB = 200;
+    public attackB = 8000;
     public xcoord;
     public ycoord;
     public State: State =  State.Walk;

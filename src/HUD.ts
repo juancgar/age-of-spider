@@ -19,7 +19,7 @@ class HUD {
     private gold = new Image();
     private money = 0;
     private moneyRate = 2;
-    private winCond = 0;
+    private winCond: number = 0;
     private Motor = new engine();
     private IAm = 0;
     private moneyRateIA = 2;
@@ -85,8 +85,9 @@ class HUD {
         this.Motor = m1;
         this.IA = new IA();
     }
-    public mouseDownListener = (event: MouseEvent) => {
-        
+    public mouseDownListener = (event: MouseEvent,engine:engine) => {
+        this.Motor = engine;
+
         if( this.money >= this.priceA && this.timerA >= this.CooldownA && event.offsetX > this.positionX +214 && event.offsetX < this.positionX +214+100 && event.offsetY > 230 && event.offsetY <326 )
         {
             
@@ -259,7 +260,18 @@ class HUD {
         Context.restore();
         
     }
+   
+    public CheckWin(cont:ControllerMobs)
+    {
+       
+        return cont.checkWin();
+        
 
+    }
+    public win(){
+      return this.winCond;
+    }
+    
     public update()
     {
         
@@ -267,16 +279,7 @@ class HUD {
         const Context = GameContext.context;
         this.positionX = Canvas.scrollLeft;
         this.cont.update();
-        this.winCond = this.cont.checkWin();
-        //lose
-        if(this.winCond == 1)
-        {
-            this.Motor.clearScreen();
-            this.Motor.changeScene(new MainMenu(this.Motor));
-        }else if(this.winCond == 2)
-        {   this.Motor.clearScreen();
-            this.Motor.changeScene(new MainMenu(this.Motor));
-        }
+        this.winCond = this.CheckWin(this.cont);
         this.timerA++;
         
         this.timerB++;

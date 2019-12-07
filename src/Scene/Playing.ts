@@ -27,8 +27,11 @@ class Playing extends Scene {
   constructor(engine: Engine)
   {
     super();
-    this.Motor = engine;
+    this.Motor = {engine};
   }
+  public win(){
+    return this.HUD.win();
+  };
   public handleKeyDown = (event: KeyboardEvent, engine: Engine) => {
     this.camera.handleKeyDown(event);
 
@@ -53,6 +56,9 @@ class Playing extends Scene {
 
     
   };
+ 
+
+
   public mouseEnterListener = (event: MouseEvent) => {
     this.camera.mouseEnterListener(event);
   };
@@ -66,12 +72,7 @@ class Playing extends Scene {
   };
 
   exit = () =>{
-    this.camera = new Camera();
-    this.background = new background();  
-
-    this.HUD = new HUD(this.Motor);
-    const canvas = GameContext.context.canvas;
-    GameContext.context.clearRect(0,0,canvas.width,canvas.height);
+    this.BackGroundMusic.pause();
 
 
   };
