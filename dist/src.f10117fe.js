@@ -1531,7 +1531,9 @@ function () {
 
 ;
 exports["default"] = ControllerMobs;
-},{"./Lion":"src/Lion.ts","./bat":"src/bat.ts","./GameContext":"src/GameContext.ts","./Bear":"src/Bear.ts","./Tiger":"src/Tiger.ts","./Base":"src/Base.ts","./BaseEnemy":"src/BaseEnemy.ts","queue-typescript":"node_modules/queue-typescript/lib/src/index.js"}],"src/IA.ts":[function(require,module,exports) {
+},{"./Lion":"src/Lion.ts","./bat":"src/bat.ts","./GameContext":"src/GameContext.ts","./Bear":"src/Bear.ts","./Tiger":"src/Tiger.ts","./Base":"src/Base.ts","./BaseEnemy":"src/BaseEnemy.ts","queue-typescript":"node_modules/queue-typescript/lib/src/index.js"}],"assets/GoldCoin.png":[function(require,module,exports) {
+module.exports = "/GoldCoin.473ee507.png";
+},{}],"src/IA.ts":[function(require,module,exports) {
 "use strict";
 
 exports.__esModule = true;
@@ -1577,6 +1579,8 @@ var HUD_png_1 = __importDefault(require("../assets/HUD.png"));
 
 var ControllerMobs_1 = __importDefault(require("./ControllerMobs"));
 
+var GoldCoin_png_1 = __importDefault(require("../assets/GoldCoin.png"));
+
 var IA_1 = __importDefault(require("./IA"));
 
 var HUD =
@@ -1588,6 +1592,13 @@ function () {
     this.HUD = new Image();
     this.positionX = -50;
     this.color = "#A4A5A3";
+    this.gold = new Image();
+    this.money = 0;
+    this.moneyRate = 2;
+    this.frame = 0;
+    this.FrameCounter = 0;
+    this.frameX = 0;
+    this.frameY = 0;
     this.cont = null;
     this.IA = null;
     this.Play = null;
@@ -1645,6 +1656,7 @@ function () {
 
     this.HUD.src = HUD_png_1["default"];
     this.cont = new ControllerMobs_1["default"]();
+    this.gold.src = GoldCoin_png_1["default"];
     this.IA = new IA_1["default"]();
   }
 
@@ -1658,21 +1670,33 @@ function () {
     Context.closePath(); // background rectangles
 
     Context.beginPath();
+    Context.font = "50px Arial";
+    Context.fillStyle = "#000000";
+    Context.fillText("$50 ", this.positionX + 214, 200);
     Context.rect(this.positionX + 214, 230, 100, 96);
     Context.fillStyle = this.backColor;
     Context.fill();
     Context.closePath();
     Context.beginPath();
+    Context.font = "50px Arial";
+    Context.fillStyle = "#000000";
+    Context.fillText("$50 ", this.positionX + 214 + 93 * 2, 200);
     Context.rect(this.positionX + 214 + 93 * 2, 230, 100, 96);
     Context.fillStyle = this.backColor;
     Context.fill();
     Context.closePath();
     Context.beginPath();
+    Context.font = "50px Arial";
+    Context.fillStyle = "#000000";
+    Context.fillText("$50 ", this.positionX + 214 + 93 * 4, 200);
     Context.rect(this.positionX + 214 + 93 * 4, 230, 100, 96);
     Context.fillStyle = this.backColor;
     Context.fill();
     Context.closePath();
     Context.beginPath();
+    Context.font = "50px Arial";
+    Context.fillStyle = "#000000";
+    Context.fillText("$50 ", this.positionX + 214 + 93 * 6, 200);
     Context.rect(this.positionX + 214 + 93 * 6, 230, 100, 96);
     Context.fillStyle = this.backColor;
     Context.fill();
@@ -1690,6 +1714,16 @@ function () {
     Context.font = "100px Arial";
     Context.fillStyle = "BLACK";
     Context.fillText("P", this.positionX + 230 + 93 * 20, 320);
+    Context.restore();
+    Context.closePath(); //Money HUD
+
+    Context.beginPath();
+    Context.save();
+    Context.font = "50px Arial";
+    Context.fillStyle = "#000000";
+    Context.fillText("= " + this.money, this.positionX + 230 + 93 * 11.1, 310);
+    Context.drawImage(this.gold, 6 + 32 * this.frameX, 7 + 32 * this.frameY, 25, 25, this.positionX + 230 + 93 * 10, 240, 128, 128); //Context.drawImage(this.gold,6 + 32 * 2,7 + 32 * 0,25,25,this.positionX + 230 + 93*10,240,128,128)
+
     Context.restore();
     Context.closePath(); //cooldown meshes
 
@@ -1739,8 +1773,23 @@ function () {
       this.a2 = .6;
       this.a3 = .6;
       this.a4 = .6;
+    } //money update
+
+
+    this.FrameCounter++;
+    if (this.FrameCounter % 8 == 0) this.frameX++;
+
+    if (this.frameX % 2 == 0 && this.frameX != 0) {
+      this.frameX = 0;
+      this.frameY++;
     }
 
+    if (this.frameY % 4 == 0 && this.frameY != 0) {
+      this.frameX = 0;
+      this.frameY = 0;
+    }
+
+    if (this.FrameCounter % 25 == 0) this.money += this.moneyRate;
     var rand = this.IA.update();
     if (rand <= 3 && rand >= 0) if (this.enemyTimer >= 200) this.cont.addmobs(rand, 1);
   };
@@ -1750,7 +1799,7 @@ function () {
 
 ;
 exports["default"] = HUD;
-},{"./GameContext":"src/GameContext.ts","../assets/HUD.png":"assets/HUD.png","./ControllerMobs":"src/ControllerMobs.ts","./IA":"src/IA.ts"}],"assets/Tears.mp3":[function(require,module,exports) {
+},{"./GameContext":"src/GameContext.ts","../assets/HUD.png":"assets/HUD.png","./ControllerMobs":"src/ControllerMobs.ts","../assets/GoldCoin.png":"assets/GoldCoin.png","./IA":"src/IA.ts"}],"assets/Tears.mp3":[function(require,module,exports) {
 module.exports = "/Tears.4a1c11f6.mp3";
 },{}],"assets/Forest.png":[function(require,module,exports) {
 module.exports = "/Forest.18f49d4c.png";
