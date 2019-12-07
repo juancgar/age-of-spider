@@ -82,13 +82,14 @@ class MainMenu extends Scene {
     context.fillStyle = "black";
 */
     context.font = "160px sans-serif";
+    context.fillStyle = "black";
     context.fillText(this.Title, width/2 - 500, 0+400);
     
     context.closePath();
     
     context.beginPath();
     context.fillStyle = "black";
-    context.strokeStyle = "darkblue";
+    context.strokeStyle = "lawngreen";
     context.font = "100px sans-serif";
     context.textAlign = "center";
     for (let i = 0; i < this.options.length; i++) {

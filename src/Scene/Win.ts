@@ -3,8 +3,8 @@ import GameContext from "../GameContext";
 import Engine from "../Engine";
 import Playing from "./Playing";
 import audio from "../../assets/The_Healing.mp3";
-import Back from "../../assets/LOSE.jpg";
-import Loser from "../../assets/gameover.png"
+import Back from "../../assets/Win.jpg";
+import Winner from "../../assets/Victory.png"
 import MainMenu from "./MainMenu";
 
 const sound = new Audio(audio);
@@ -16,7 +16,7 @@ class Win extends Scene {
   private backgroundColorHue = 0;
   private skipUpdate = false;
   private image = new Image();
-  private Loser = new Image();
+  private Winner = new Image();
   private Motor: Engine;
   public win(){
     return 3;
@@ -57,7 +57,7 @@ class Win extends Scene {
   public enter = () => {
     sound.play();
     this.image.src = Back;
-    this.Loser.src = Loser;
+    this.Winner.src = Winner;
   };
 
   public render = () => {
@@ -69,7 +69,7 @@ class Win extends Scene {
 
 
     context.drawImage(this.image,0,0,2400,1200);
-    context.drawImage(this.Loser,800,100,800,600);
+    context.drawImage(this.Winner,850,200,700,400);
 
     context.closePath();
     /*if (!this.skipUpdate) {
@@ -86,8 +86,8 @@ class Win extends Scene {
     context.closePath();
     
     context.beginPath();
-    context.fillStyle = "red";
-    context.strokeStyle = "cyan";
+    context.fillStyle = "black";
+    context.strokeStyle = "purple";
     context.font = "100px sans-serif";
     context.textAlign = "center";
     for (let i = 0; i < this.options.length; i++) {
