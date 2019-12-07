@@ -1,6 +1,7 @@
 
 import Unit from "./Unit";
 import image from "../assets/lions.png";
+import imageA from "../assets/LIONSA.png";
 import GameContext from "./GameContext";
 export enum State {
     Attack = -1,
@@ -17,6 +18,7 @@ class Lion extends Unit
     public ycoord;
     public State: State =  State.Walk;
     private Lion = new Image();
+    private LionA = new Image();
     //animation variables
     private padding;
     private frame = 0;
@@ -31,31 +33,75 @@ class Lion extends Unit
         super();
         this.Lion = new Image();
         this.Lion.src = image;
+        this.LionA.src = imageA;
     }
 
 
     public render()
     {
-        let sx = 0;
-        let sy = 0;
-        
-        let sWidth = 580;
-        let sHeight = 520;
+        if(this.State == State.Walk){
+            let sx = 0;
+            let sy = 0;
+            
+            let sWidth = 580;
+            let sHeight = 520;
 
-        const context = GameContext.context;
+            const context = GameContext.context;
 
-        context.beginPath();
-        context.save();
-        if(this.Pertenece == 1)
-        {
-            context.scale(-1,1);
+            context.beginPath();
+            context.save();
+            if(this.Pertenece == 1)
+            {
+                context.scale(-1,1);
+            }
+            context.drawImage(this.Lion,sx + sWidth*this.frame,sy,sWidth,sHeight,this.xcoord,this.ycoord,180,140);
+            
+            context.restore();
+
+            context.closePath();
         }
-        context.drawImage(this.Lion,sx + sWidth*this.frame,sy,sWidth,sHeight,this.xcoord,this.ycoord,180,140);
-        
-        context.restore();
+        else if(this.State == State.Attack){
+            let sx = 0;
+            let sy = 0;
+            
+            let sWidth = 62;
+            let sHeight = 50;
 
-        context.closePath();
+            const context = GameContext.context;
 
+            context.beginPath();
+            context.save();
+            if(this.Pertenece == 1)
+            {
+                context.scale(-1,1);
+            }
+            context.drawImage(this.LionA,sx + sWidth*this.frame,sy,sWidth,sHeight,this.xcoord,this.ycoord,230,160);
+            
+            context.restore();
+
+            context.closePath();
+        }
+        else{
+            let sx = 0;
+            let sy = 0;
+            
+            let sWidth = 580;
+            let sHeight = 520;
+
+            const context = GameContext.context;
+
+            context.beginPath();
+            context.save();
+            if(this.Pertenece == 1)
+            {
+                context.scale(-1,1);
+            }
+            context.drawImage(this.Lion,sx + sWidth,sy,sWidth,sHeight,this.xcoord,this.ycoord,180,140);
+            
+            context.restore();
+
+            context.closePath();
+        }
 
     }
     public update()

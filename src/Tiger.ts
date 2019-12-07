@@ -1,6 +1,7 @@
 
 import Unit from "../src/Unit";
 import image from "../assets/tigers.png";
+import imageA from "../assets/TIGREA.png";
 import GameContext from "./GameContext";
 
 
@@ -20,6 +21,7 @@ class Tiger extends Unit
     public State: State =  State.Walk;
     
     private Tiger = new Image();
+    private TigerA = new Image();
     //animation variables
     private padding;
     private frame = 0;
@@ -33,31 +35,75 @@ class Tiger extends Unit
         super();
         this.Tiger = new Image();
         this.Tiger.src = image;
+        this.TigerA.src = imageA;
     }
 
 
     public render()
     {
-        let sx = 0;
-        let sy = 0;
-        
-        let sWidth = 575;
-        let sHeight = 552;
+        if(this.State == State.Walk){
+            let sx = 0;
+            let sy = 0;
+            
+            let sWidth = 575;
+            let sHeight = 552;
 
-        const context = GameContext.context;
+            const context = GameContext.context;
 
-        context.beginPath();
-        context.save();
-        if(this.Pertenece == 1)
-        {
-            context.scale(-1,1);
+            context.beginPath();
+            context.save();
+            if(this.Pertenece == 1)
+            {
+                context.scale(-1,1);
+            }
+            context.drawImage(this.Tiger,sx + sWidth*this.frame,sy,sWidth,sHeight,this.xcoord,this.ycoord,180,140);
+            
+            context.restore();
+
+            context.closePath();
         }
-        context.drawImage(this.Tiger,sx + sWidth*this.frame,sy,sWidth,sHeight,this.xcoord,this.ycoord,180,140);
-        
-        context.restore();
+        else if(this.State == State.Attack){
+            let sx = 0;
+            let sy = 0;
+            
+            let sWidth = 62;
+            let sHeight = 50;
 
-        context.closePath();
+            const context = GameContext.context;
 
+            context.beginPath();
+            context.save();
+            if(this.Pertenece == 1)
+            {
+                context.scale(-1,1);
+            }
+            context.drawImage(this.TigerA,sx + sWidth*this.frame,sy,sWidth,sHeight,this.xcoord,this.ycoord,230,160);
+            
+            context.restore();
+
+            context.closePath();
+        }
+        else{
+            let sx = 0;
+            let sy = 0;
+            
+            let sWidth = 575;
+            let sHeight = 552;
+
+            const context = GameContext.context;
+
+            context.beginPath();
+            context.save();
+            if(this.Pertenece == 1)
+            {
+                context.scale(-1,1);
+            }
+            context.drawImage(this.Tiger,sx + sWidth,sy,sWidth,sHeight,this.xcoord,this.ycoord,180,140);
+            
+            context.restore();
+
+            context.closePath();
+        }
 
     }
     public update()
@@ -67,7 +113,7 @@ class Tiger extends Unit
             if(this.FrameCounter % 8 == 0){
                 this.frame++;
             }
-            if(this.frame > 5)
+            if(this.frame > 2)
             {
                 this.frame = 0;
             }
@@ -92,9 +138,12 @@ class Tiger extends Unit
             if(this.FrameCounter % 8 == 0){
                 this.frame++;
             }
-            if(this.frame > 5)
+            if(this.frame > 2)
             {
                 this.frame = 0;
+            }
+            else{
+
             }
 
             
