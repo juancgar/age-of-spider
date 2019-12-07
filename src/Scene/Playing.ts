@@ -13,21 +13,29 @@ import GameContext from "../GameContext";
 import Pause from "./Pause";
 import Lose from "./Lose";
 import Win from "./Win";
-
+export enum Level {
+  Easy = 6,
+  Medium = 5,
+  Hard = 3,
+}
 
 class Playing extends Scene {
 
   private camera: Camera =  new Camera();
   private background: background = null;
-  private HUD: HUD = new HUD();
+  private HUD: HUD;
   private Motor;
+  private Level;
   private MobCont: MobCont = null;
   private BackGroundMusic = new Audio(music);
   public pause = () =>{}
-  constructor(engine: Engine)
+  constructor(engine: Engine,Level : Level)
   {
     super();
     this.Motor = {engine};
+    console.log("Play Level: " + Level);
+    this.Level = Level;
+    this.HUD = new HUD(this.Motor,Level);
   }
   public win(){
     return this.HUD.win();

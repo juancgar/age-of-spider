@@ -15,7 +15,7 @@ export enum Level {
 }
 class Config extends Scene {
   private Title: string = "Age of Animals";
-  private options: string[] = ["Easy", "Medium" , "Hard" , "Exit"];
+  private options: string[] = ["Easy", "Medium" , "Hard"];
   private selectedOptionIndex: number = 0;
   private backgroundColorHue = 0;
   private skipUpdate = false;
@@ -25,7 +25,7 @@ class Config extends Scene {
   public win(){
     return 3;
   };
-  constructor(engine: Engine,Level:Level)
+  constructor(engine: Engine)
   {
     super();
     this.Motor = engine;
@@ -48,22 +48,17 @@ class Config extends Scene {
           sound.pause();
           
           this.Motor.clearScreen();
-          this.Motor.changeScene(new Playing(this.Motor));
+          this.Motor.changeScene(new Playing(this.Motor,Level.Easy));
         }
         if (this.selectedOptionIndex === 1) {
           sound.pause();
-          engine.clearScreen();
-          engine.changeScene(new Playing(engine));
+          this.Motor.clearScreen();
+          this.Motor.changeScene(new Playing(this.Motor,Level.Medium));
         }
         if (this.selectedOptionIndex === 2) {
           sound.pause();
-          engine.clearScreen();
-          engine.changeScene(new Playing(engine));
-        }
-        if (this.selectedOptionIndex === 3) {
-          sound.pause();
-          engine.clearScreen();
-          engine.changeScene(new Playing(engine));
+          this.Motor.clearScreen();
+          this.Motor.changeScene(new Playing(this.Motor,Level.Hard));
         }
         break;
     }
@@ -127,4 +122,4 @@ class Config extends Scene {
   public update: () => {};
 }
 
-export default MainMenu;
+export default Config;

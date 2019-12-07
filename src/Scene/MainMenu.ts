@@ -22,7 +22,7 @@ class MainMenu extends Scene {
   private skipUpdate = false;
   private Motor = new Engine();
 
-  private Level: Level = Level.Easy;
+
 
   
   public win(){
@@ -51,13 +51,9 @@ class MainMenu extends Scene {
           sound.pause();
           
           this.Motor.clearScreen();
-          this.Motor.changeScene(new Playing(this.Motor));
+          this.Motor.changeScene(new Config(this.Motor));
         }
-        else if (this.selectedOptionIndex === 1) {
-          sound.pause();
-          this.Motor.clearScreen();
-          this.Motor.changeScene(new Config(engine));
-        }
+        
         break;
     }
   };
