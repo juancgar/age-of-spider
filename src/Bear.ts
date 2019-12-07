@@ -15,7 +15,7 @@ class Bear extends Unit
     public attack = 20;
     public xcoord;
     public life = 4000;
-    public attackB = 8000;
+    public attackB = 800;
     public ycoord;
     public State: State =  State.Walk;
     private Bear = new Image();
