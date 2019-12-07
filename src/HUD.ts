@@ -69,7 +69,7 @@ class HUD {
     private stateBoton3 = false;
     private stateBoton4 = false;
     private stateBoton5 = true;
-    private backColor = "green"
+    private backColor = "#764DAD";
 
     private timer = 200;
 

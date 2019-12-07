@@ -12,6 +12,7 @@ import music from "../../assets/Tears.mp3";
 import GameContext from "../GameContext";
 import Pause from "./Pause";
 import Lose from "./Lose";
+import Win from "./Win";
 
 
 class Playing extends Scene {
