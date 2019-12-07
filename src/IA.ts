@@ -1,3 +1,4 @@
+import { State } from "./Lion";
 
 export enum Level {
     Easy = 6,
@@ -11,14 +12,19 @@ class IA{
 
     private first = false;
 
-    
+    private Level:Level;
+    constructor(Level:Level)
+    {
+        this.Level = Level;
+    }
 
 
     public update()
     {
-        
+        console.log(this.Level)
         this.frameCounter++;
-        let rand = Math.floor(Math.random() * Level.Medium);
+        let rand = Math.floor(Math.random() * this.Level);
+
         if(this.frameCounter % 100 == 0)
             {
                 return rand;                

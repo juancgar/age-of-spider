@@ -3,6 +3,7 @@ import Time from "./Time";
 import Scene from "./Scene/Scene";
 import MainMenu from "./Scene/MainMenu";
 import Playing from "./Scene/Playing";
+import Config from "./Scene/Config";
 import Lose from "./Scene/Lose";
 import Winner from "./Scene/Win"
 

@@ -14,6 +14,11 @@ import BearI from "../assets/BEARI.png";
 
 import Playing from "./Scene/Playing";
 import { HighlightSpanKind } from "typescript";
+export enum Level {
+    Easy = 6,
+    Medium = 5,
+    Hard = 3,
+  }
 class HUD {
 
 
@@ -28,6 +33,7 @@ class HUD {
     private BatI = new Image;
     private BearI = new Image;
 
+    private Level;
     private winCond = 0;
     private IAm = 0;
     private moneyRateIA = 2;
@@ -83,7 +89,7 @@ class HUD {
     private enemyTimerC = this.CooldownC;
     private enemyTimerD = this.CooldownD;
 
-    constructor(m1: engine)
+    constructor(m1: engine,Level:Level)
     {
         
         this.HUD.src = image;
@@ -93,9 +99,10 @@ class HUD {
         this.LionI.src = LionI;
         this.BatI.src = BatI;
         this.BearI.src = BearI;
+
         
         
-        this.IA = new IA();
+        this.IA = new IA(Level);
     }
     public mouseDownListener = (event: MouseEvent,engine:engine) => {
         
