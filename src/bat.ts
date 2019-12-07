@@ -13,6 +13,7 @@ class bat extends Unit
     public Pertenece;
     public range;
     public attack = 20;
+    public attackB = 8000;
     public life = 1000;
     public xcoord;
     public ycoord;
@@ -23,7 +24,7 @@ class bat extends Unit
     private frame = 0;
     private FrameCounter = 0;
     private xCutAnimation = 0;
-    public speed = 5;
+    public speed = 12;
     public realx = 0;
  
     

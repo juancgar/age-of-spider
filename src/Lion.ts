@@ -15,6 +15,7 @@ class Lion extends Unit
     public attack = 5;
     public xcoord;
     public life = 3000;
+    public attackB = 8000;
     public ycoord;
     public State: State =  State.Walk;
     private Lion = new Image();
@@ -24,7 +25,7 @@ class Lion extends Unit
     private frame = 0;
     private FrameCounter = 0;
     private xCutAnimation = 0;
-    public speed = 5;
+    public speed = 6;
     public realx = 0;
  
     

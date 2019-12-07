@@ -11,6 +11,7 @@ abstract class Scene {
   public abstract mouseDownListener = (event: MouseEvent,engine: Engine) => {};
   public abstract mouseEnterListener = (event: MouseEvent) => {};
   public abstract mouseMoveListener = (event: MouseEvent) => {};
+  public abstract win();
 }
 
 export default Scene;

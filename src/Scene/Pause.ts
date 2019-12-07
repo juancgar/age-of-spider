@@ -17,7 +17,9 @@ class Pause extends Scene {
   private skipUpdate = false;
   private PScene: Scene = null;
 
-
+  public  win(){
+    return 3;
+  };
   constructor( Play:Playing)
   {
       
@@ -26,7 +28,10 @@ class Pause extends Scene {
       
 
   }
-  exit = () =>{}
+  exit = () =>{
+    
+  }
+  
   public handleKeyDown = (event: KeyboardEvent, engine: Engine) => {
     switch (event.key) {
       case "ArrowUp":
@@ -47,7 +52,7 @@ class Pause extends Scene {
         else if (this.selectedOptionIndex === 1) {
           sound.pause();
           engine.clearScreen();
-          engine.changeScene(new MainMenu());
+          engine.changeScene(new MainMenu(engine));
         }
         break;
     }

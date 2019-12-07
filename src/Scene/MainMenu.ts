@@ -13,7 +13,17 @@ class MainMenu extends Scene {
   private selectedOptionIndex: number = 0;
   private backgroundColorHue = 0;
   private skipUpdate = false;
+  private Motor = new Engine();
 
+  public win(){
+    return 3;
+  };
+  constructor(engine: Engine)
+  {
+    super();
+    this.Motor = engine;
+
+  }
   public handleKeyDown = (event: KeyboardEvent, engine: Engine) => {
     switch (event.key) {
       case "ArrowUp":
@@ -28,13 +38,14 @@ class MainMenu extends Scene {
       case "Enter":
         if (this.selectedOptionIndex === 0) {
           sound.pause();
-          engine.clearScreen();
-          engine.changeScene(new Playing());
+          
+          this.Motor.clearScreen();
+          this.Motor.changeScene(new Playing(this.Motor));
         }
         if (this.selectedOptionIndex === 1) {
           sound.pause();
           engine.clearScreen();
-          engine.changeScene(new Playing());
+          engine.changeScene(new Playing(engine));
         }
         break;
     }

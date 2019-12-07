@@ -133,8 +133,14 @@ class ControllerMobs
         this.BaseB = new BaseE();
     }
 
-    private setAttack()
+    public checkWin()
     {
+        if(this.BaseA.getLife() <= 0)
+            return 1
+        else if(this.BaseB.getLife() <= 0)
+            return 2
+        else
+            return 0
         
       
     }
@@ -163,13 +169,13 @@ class ControllerMobs
         
         if(this.Ally.front != null && this.Ally.front.getXcoord() >= 4000)
         {
-            this.subtractLifeEnemy(this.Ally.front.accessObject().attack);
+            this.subtractLifeEnemy(this.Ally.front.accessObject().attackB);
             this.Ally.dequeue();
             
         }
         if(this.Enemy.front != null && this.Enemy.front.getXcoord() <= 200)
         {
-            this.subtractLifeAlly(this.Enemy.front.accessObject().attack);
+            this.subtractLifeAlly(this.Enemy.front.accessObject().attackB);
             this.Enemy.dequeue();
             
         }

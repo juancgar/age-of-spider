@@ -21,11 +21,18 @@ class Playing extends Scene {
   private camera: Camera =  new Camera();
   private background: background = null;
   private HUD: HUD = new HUD();
-
+  private Motor;
   private MobCont: MobCont = null;
   private BackGroundMusic = new Audio(music);
   public pause = () =>{}
-
+  constructor(engine: Engine)
+  {
+    super();
+    this.Motor = {engine};
+  }
+  public win(){
+    return this.HUD.win();
+  };
   public handleKeyDown = (event: KeyboardEvent, engine: Engine) => {
     this.camera.handleKeyDown(event);
 
@@ -50,6 +57,9 @@ class Playing extends Scene {
 
     
   };
+ 
+
+
   public mouseEnterListener = (event: MouseEvent) => {
     this.camera.mouseEnterListener(event);
   };
@@ -63,12 +73,7 @@ class Playing extends Scene {
   };
 
   exit = () =>{
-    this.camera = new Camera();
-    this.background = new background();  
-
-    this.HUD = new HUD(Base,BaseE);
-    const canvas = GameContext.context.canvas;
-    GameContext.context.clearRect(0,0,canvas.width,canvas.height);
+    this.BackGroundMusic.pause();
 
 
   };
@@ -108,6 +113,7 @@ class Playing extends Scene {
     
 
   };
+ 
 }
 
 export default Playing;

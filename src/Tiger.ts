@@ -16,6 +16,7 @@ class Tiger extends Unit
     public range;
     public life = 2000;
     public attack = 10;
+    public attackB = 8000;
     public xcoord;
     public ycoord;
     public State: State =  State.Walk;
@@ -27,7 +28,7 @@ class Tiger extends Unit
     private frame = 0;
     private FrameCounter = 0;
     private xCutAnimation = 0;
-    public speed = 5;
+    public speed = 8;
     public realx = 0;
     
     constructor()
