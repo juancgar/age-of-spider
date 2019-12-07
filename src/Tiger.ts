@@ -3,6 +3,7 @@ import Unit from "../src/Unit";
 import image from "../assets/tigers.png";
 import imageA from "../assets/TIGREA.png";
 import GameContext from "./GameContext";
+import Slap from "../assets/slap2.flac";
 
 
 export enum State {
@@ -10,6 +11,7 @@ export enum State {
     Stop = 0,
     Walk = 1,
   }
+  const sound = new Audio(Slap);
 class Tiger extends Unit
 {
     public Pertenece;
@@ -137,6 +139,7 @@ class Tiger extends Unit
         {
             this.FrameCounter++;
             if(this.FrameCounter % 8 == 0){
+                sound.play();
                 this.frame++;
             }
             if(this.frame > 2)

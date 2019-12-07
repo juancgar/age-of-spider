@@ -2,12 +2,14 @@
 import Unit from "../src/Unit";
 import image from "../assets/bat.png";
 import GameContext from "./GameContext";
+import Slap from "../assets/slap4.flac";
 export enum State {
     Attack = -1,
     Stop = 0,
     Walk = 1,
   }
 
+  const sound = new Audio(Slap);
 class bat extends Unit
 {
     public Pertenece;
@@ -89,6 +91,7 @@ class bat extends Unit
         {
             this.FrameCounter++;
             if(this.FrameCounter % 8 == 0){
+                sound.play();
                 this.frame++;
         
                 

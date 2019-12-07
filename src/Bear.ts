@@ -3,11 +3,13 @@ import Unit from "../src/Unit";
 import image from "../assets/Bear.png";
 import GameContext from "./GameContext";
 import imageA from "../assets/BearA.png";
+import Slap from "../assets/slap1.wav";
 export enum State {
     Attack = -1,
     Stop = 0,
     Walk = 1,
   }
+  const sound = new Audio(Slap);
 class Bear extends Unit
 {
     public Pertenece;
@@ -129,6 +131,7 @@ class Bear extends Unit
         {
             this.FrameCounter++;
             if(this.FrameCounter % 10 == 0){
+                sound.play();
                 this.frame++;
             }
             if(this.frame > 2)
